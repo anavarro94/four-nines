@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1b4457">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Four Nines — Office</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+</head>
+<body class="app">
+
+<header><div class="wrap bar">
+  <h1><span class="mark">9999</span><span id="hTitle">Jobs</span></h1>
+  <div class="row"><button class="btn sm ghost" style="color:#fff;border-color:#ffffff44" onclick="refresh()">↻</button>
+  <button class="btn sm ghost" style="color:#fff;border-color:#ffffff44" onclick="openSettings()">⚙</button></div>
+</div></header>
+
+<main class="wrap" id="view"></main>
+
+<nav class="tabs" id="tabs">
+  <button data-t="Jobs"><span class="i">🔨</span>Jobs</button>
+  <button data-t="Requests"><span class="i">📥</span>Requests<span class="badge" id="reqBadge" hidden></span></button>
+  <button data-t="Customers"><span class="i">👥</span>Customers</button>
+  <button data-t="Billing"><span class="i">🧾</span>Quotes/Inv</button>
+  <button data-t="Expenses"><span class="i">💵</span>Expenses</button>
+</nav>
+
+<dialog id="dlg"></dialog>
+<div id="print"></div>
+<div id="toast"></div>
+
+<script>
+// ================= setup =================
+const C = window.FN_CONFIG;
+const TABLES = ['Requests','Customers','Jobs','Docs','Expenses'];
+const JOB_STATUS = ['Lead','Quoted','Scheduled','In progress','Done','Paid'];
+const DOC_STATUS = ['Draft','Sent','Accepted','Paid','Void'];
+const EXP_CAT = ['Materials','Tools','Fuel','Disposal','Subcontractor','Other'];
+const REMOTE = !!C.scriptUrl;
+const LS = { get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}, del:k=>{try{localStorage.removeItem(k)}catch(e){}} };
+let KEY = LS.get('fn_key') || '';
+let DB = {}; TABLES.forEach(t => DB[t] = []);
+const S = { tab: 'Jobs', jobFilter: 'Open', q: '', billFilter: 'All' };
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const today = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+const money = n => '$' + (+n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const digits = p => String(p || '').replace(/\D/g, '');
+const fmtPhone = p => { const d = digits(p); return d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : (p || ''); };
+const fmtDate = s => { if (!s) return ''; const d = new Date(s.length === 10 ? s + 'T12:00' : s); return isNaN(d) ? s : d.toLocaleDateString(undefined, { month:'short', day:'numeric', year: d.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined }); };
+const fmtWhen = s => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? s : d.toLocaleString(undefined, { weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }); };
+const thisMonth = s => String(s || '').slice(0, 7) === today().slice(0, 7);
+const cust = id => DB.Customers.find(c => c.id === id);
+const job = id => DB.Jobs.find(j => j.id === id);
+const custName = id => cust(id)?.name || '—';
+const pill = s => `<span class="pill ${esc(s)}">${esc(s)}</span>`;
+const mapUrl = a => 'https://maps.google.com/?q=' + encodeURIComponent(a);
+function toast(m, bad) { const t = $('#toast'); t.textContent = m; t.className = 'show' + (bad ? ' bad' : ''); clearTimeout(t._h); t._h = setTimeout(() => t.className = '', 2600); }
+const items = d => Array.isArray(d.items) ? d.items : (() => { try { return JSON.parse(d.items || '[]'); } catch (e) { return []; } })();
+function totals(d) { const sub = items(d).reduce((a, i) => a + (+i.qty || 0) * (+i.rate || 0), 0); const tax = sub * (+d.taxRate || 0) / 100; return { sub, tax, total: sub + tax }; }
+
+// ================= data =================
+async function api(p) {
+  const r = await fetch(C.scriptUrl, { method: 'POST', body: JSON.stringify({ ...p, key: KEY }) });
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error || 'Server error');
+  return j;
+}
+async function load() {
+  if (REMOTE) { const j = await api({ action: 'list' }); TABLES.forEach(t => DB[t] = j.data[t] || []); }
+  else { let s = {}; try { s = JSON.parse(LS.get('fn_db') || '{}'); } catch (e) {} TABLES.forEach(t => DB[t] = s[t] || []); }
+  TABLES.forEach(t => DB[t].sort((a, b) => String(b.created).localeCompare(String(a.created))));
+}
+function persist() { if (!REMOTE) LS.set('fn_db', JSON.stringify(DB)); }
+async function save(t, row, quiet) {
+  row.id = row.id || uid(); row.created = row.created || new Date().toISOString();
+  const i = DB[t].findIndex(r => r.id === row.id);
+  if (i >= 0) DB[t][i] = row; else DB[t].unshift(row);
+  persist(); render();
+  if (REMOTE) { try { await api({ action: 'save', table: t, row }); if (!quiet) toast('Saved'); } catch (e) { toast('Not saved to sheet: ' + e.message, true); } }
+  else if (!quiet) toast('Saved');
+  return row;
+}
+async function del(t, id) {
+  DB[t] = DB[t].filter(r => r.id !== id); persist(); render();
+  if (REMOTE) { try { await api({ action: 'delete', table: t, id }); } catch (e) { toast('Delete failed: ' + e.message, true); } }
+}
+async function refresh() { try { await load(); render(); toast('Up to date'); } catch (e) { toast(e.message, true); } }
+
+// ================= rendering =================
+function render() {
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === S.tab));
+  $('#hTitle').textContent = { Jobs:'Jobs', Requests:'Quote requests', Customers:'Customers', Billing:'Quotes & invoices', Expenses:'Expenses' }[S.tab];
+  const n = DB.Requests.filter(r => !r.status || r.status === 'New').length;
+  $('#reqBadge').hidden = !n; $('#reqBadge').textContent = n;
+  $('#view').innerHTML = ({ Jobs: vJobs, Requests: vRequests, Customers: vCustomers, Billing: vBilling, Expenses: vExpenses })[S.tab]();
+}
+document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => { S.tab = b.dataset.t; S.q = ''; render(); scrollTo(0, 0); });
+const go = (tab, k, v) => { S.tab = tab; if (k) S[k] = v; render(); };
+
+function stats() {
+  const inv = DB.Docs.filter(d => d.type === 'invoice');
+  const open = DB.Jobs.filter(j => !['Done','Paid'].includes(j.status)).length;
+  const owed = inv.filter(d => !['Paid','Void','Draft'].includes(d.status)).reduce((a, d) => a + totals(d).total, 0);
+  const paid = inv.filter(d => d.status === 'Paid' && thisMonth(d.paidDate || d.date)).reduce((a, d) => a + totals(d).total, 0);
+  const spent = DB.Expenses.filter(e => thisMonth(e.date)).reduce((a, e) => a + (+e.amount || 0), 0);
+  return `<div class="stats">
+    <div class="stat"><b>${open}</b><span>Open jobs</span></div>
+    <div class="stat"><b>${money(owed)}</b><span>Owed to you</span></div>
+    <div class="stat"><b>${money(paid)}</b><span>Paid this month</span></div>
+    <div class="stat"><b>${money(spent)}</b><span>Spent this month</span></div></div>`;
+}
+const chips = (opts, cur, key) => `<div class="chips">${opts.map(o => `<button class="chip ${o === cur ? 'on' : ''}" onclick="go(S.tab,'${key}','${o}')">${o}</button>`).join('')}</div>`;
+const callBtns = p => digits(p) ? `<a class="btn alt" href="tel:${digits(p)}">Call</a><a class="btn ghost" href="sms:${digits(p)}">Text</a>` : '';
+
+// ---- Jobs
+function vJobs() {
+  const f = S.jobFilter;
+  let L = DB.Jobs.filter(j => f === 'All' ? true : f === 'Open' ? !['Done','Paid'].includes(j.status) : j.status === f);
+  L.sort((a, b) => (a.scheduled || 'z').localeCompare(b.scheduled || 'z'));
+  return stats() + `<div class="toolbar"><button class="btn" onclick="openForm('Jobs',{status:'Lead'})">+ New job</button></div>`
+    + chips(['Open', ...JOB_STATUS, 'All'], f, 'jobFilter')
+    + (L.length ? `<div class="list">${L.map(jobCard).join('')}</div>` : `<div class="empty">No jobs here yet.</div>`);
+}
+function jobCard(j) {
+  const c = cust(j.customerId) || {}, addr = j.address || c.address;
+  const docs = DB.Docs.filter(d => d.jobId === j.id);
+  return `<div class="item"><div class="hd" onclick="openForm('Jobs',job('${j.id}'))">
+    <div><h3>${esc(j.title || 'Untitled job')}</h3>
+    <div class="meta">${esc(c.name || 'No customer')}${j.scheduled ? ' · ' + esc(fmtWhen(j.scheduled)) : ''}${+j.price ? ' · ' + money(j.price) : ''}</div>
+    ${docs.length ? `<div class="meta">${docs.map(d => esc(d.number) + ' ' + d.status).join(' · ')}</div>` : ''}</div>${pill(j.status || 'Lead')}</div>
+    <div class="acts">${callBtns(c.phone)}${addr ? `<a class="btn ghost" target="_blank" href="${mapUrl(addr)}">Map</a>` : ''}
+    <button class="btn ghost" onclick="newDoc('quote','${j.id}')">Quote</button>
+    <button class="btn ghost" onclick="newDoc('invoice','${j.id}')">Invoice</button>
+    <button class="btn ghost" onclick="openForm('Expenses',{date:today(),jobId:'${j.id}',category:'Materials'})">+ Expense</button></div></div>`;
+}
+
+// ---- Requests
+function vRequests() {
+  const order = { New: 0, '': 0, Converted: 1, Archived: 2 };
+  const L = [...DB.Requests].sort((a, b) => (order[a.status || ''] - order[b.status || '']) || String(b.created).localeCompare(String(a.created)));
+  const note = REMOTE ? '' : `<div class="card small" style="margin-bottom:12px">Website quote requests show up here once the Google Sheet is connected (see README). Until then they arrive as text messages.</div>`;
+  return note + (L.length ? `<div class="list">${L.map(r => {
+    const ph = Array.isArray(r.photos) ? r.photos : String(r.photos || '').split(/\s+/).filter(Boolean);
+    return `<div class="item"><div class="hd"><div><h3>${esc(r.name)} — ${esc(r.service)}</h3>
+      <div class="meta">${esc(fmtDate(r.created))} · ${esc(fmtPhone(r.phone))}${r.email ? ' · ' + esc(r.email) : ''}</div></div>${pill(r.status || 'New')}</div>
+      <p style="margin:8px 0 4px">${esc(r.details)}</p>
+      <div class="meta">${esc(r.address)}${r.preferredTime ? ' · Best: ' + esc(r.preferredTime) : ''}</div>
+      ${ph.length ? `<div class="photos">${ph.map((u, i) => `<a target="_blank" href="${esc(u)}">📷 Photo ${i + 1}</a>`).join('')}</div>` : ''}
+      <div class="acts">${callBtns(r.phone)}
+      ${r.status === 'Converted' ? '' : `<button class="btn" onclick="convert('${r.id}')">Make job</button>`}
+      ${r.status === 'Archived' ? '' : `<button class="btn ghost" onclick="setReq('${r.id}','Archived')">Archive</button>`}</div></div>`;
+  }).join('')}</div>` : `<div class="empty">No quote requests yet.</div>`);
+}
+function setReq(id, status) { const r = DB.Requests.find(x => x.id === id); save('Requests', { ...r, status }); }
+async function convert(id) {
+  const r = DB.Requests.find(x => x.id === id);
+  let c = DB.Customers.find(x => digits(x.phone) && digits(x.phone) === digits(r.phone));
+  if (!c) c = await save('Customers', { name: r.name, phone: r.phone, email: r.email, address: r.address, notes: '' }, true);
+  const j = await save('Jobs', { title: r.service, customerId: c.id, address: r.address, status: 'Lead', scheduled: '', price: '',
+    notes: r.details + (r.preferredTime ? `\nBest time: ${r.preferredTime}` : '') }, true);
+  await save('Requests', { ...r, status: 'Converted' }, true);
+  S.tab = 'Jobs'; S.jobFilter = 'Open'; render(); toast('Job created'); openForm('Jobs', job(j.id));
+}
+
+// ---- Customers
+function vCustomers() {
+  const q = S.q.toLowerCase();
+  const L = DB.Customers.filter(c => !q || [c.name, c.phone, c.address, c.email].join(' ').toLowerCase().includes(q)).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  return `<div class="toolbar"><input placeholder="Search customers" value="${esc(S.q)}" oninput="S.q=this.value;const p=this.selectionStart;render();const i=document.querySelector('.toolbar input');i.focus();i.setSelectionRange(p,p)">
+    <button class="btn" onclick="openForm('Customers',{})">+ New</button></div>`
+    + (L.length ? `<div class="list">${L.map(c => {
+      const js = DB.Jobs.filter(j => j.customerId === c.id);
+      const billed = DB.Docs.filter(d => d.customerId === c.id && d.type === 'invoice' && d.status === 'Paid').reduce((a, d) => a + totals(d).total, 0);
+      return `<div class="item"><div class="hd" onclick="openForm('Customers',cust('${c.id}'))"><div><h3>${esc(c.name)}</h3>
+        <div class="meta">${esc(fmtPhone(c.phone))}${c.address ? ' · ' + esc(c.address) : ''}</div>
+        <div class="meta">${js.length} job${js.length === 1 ? '' : 's'}${billed ? ' · ' + money(billed) + ' paid' : ''}</div></div></div>
+        <div class="acts">${callBtns(c.phone)}${c.address ? `<a class="btn ghost" target="_blank" href="${mapUrl(c.address)}">Map</a>` : ''}
+        <button class="btn ghost" onclick="openForm('Jobs',{status:'Lead',customerId:'${c.id}'})">+ Job</button></div></div>`;
+    }).join('')}</div>` : `<div class="empty">No customers${q ? ' match' : ' yet'}.</div>`);
+}
+
+// ---- Billing
+function vBilling() {
+  const f = S.billFilter;
+  const L = DB.Docs.filter(d => f === 'All' ? true : f === 'Quotes' ? d.type === 'quote' : f === 'Invoices' ? d.type === 'invoice' : f === 'Unpaid' ? d.type === 'invoice' && !['Paid','Void'].includes(d.status) : true);
+  return stats() + `<div class="toolbar"><button class="btn" onclick="newDoc('quote')">+ Quote</button><button class="btn alt" onclick="newDoc('invoice')">+ Invoice</button></div>`
+    + chips(['All','Quotes','Invoices','Unpaid'], f, 'billFilter')
+    + (L.length ? `<div class="list">${L.map(d => `<div class="item"><div class="hd" onclick="openDoc('${d.id}')"><div>
+      <h3>${esc(d.number)} · ${money(totals(d).total)}</h3><div class="meta">${d.type === 'quote' ? 'Quote' : 'Invoice'} · ${esc(custName(d.customerId))} · ${esc(fmtDate(d.date))}</div></div>${pill(d.status || 'Draft')}</div>
+      <div class="acts"><button class="btn ghost" onclick="printDoc('${d.id}')">View / send</button>
+      ${d.type === 'invoice' && d.status !== 'Paid' ? `<button class="btn" onclick="markPaid('${d.id}')">Mark paid</button>` : ''}
+      ${d.type === 'quote' ? `<button class="btn ghost" onclick="quoteToInvoice('${d.id}')">→ Invoice</button>` : ''}</div></div>`).join('')}</div>`
+      : `<div class="empty">No ${f === 'All' ? 'quotes or invoices' : f.toLowerCase()} yet.</div>`);
+}
+function nextNum(type) {
+  const pre = type === 'quote' ? 'Q-' : 'INV-';
+  const n = DB.Docs.filter(d => String(d.number).startsWith(pre)).map(d => parseInt(String(d.number).slice(pre.length)) || 0);
+  return pre + (Math.max(1000, ...n) + 1);
+}
+function newDoc(type, jobId) {
+  const j = jobId ? job(jobId) : null;
+  openDoc(null, { type, number: nextNum(type), date: today(), status: 'Draft', customerId: j?.customerId || '', jobId: jobId || '',
+    items: [{ desc: j?.title || '', qty: 1, rate: j?.price || '' }], taxRate: C.taxRate || 0, notes: type === 'invoice' ? C.paymentNote : 'Quote valid for 30 days.' });
+}
+async function markPaid(id) {
+  const d = DB.Docs.find(x => x.id === id);
+  await save('Docs', { ...d, status: 'Paid', paidDate: d.paidDate || today() });
+  if (d.jobId && job(d.jobId)) save('Jobs', { ...job(d.jobId), status: 'Paid' }, true);
+}
+function quoteToInvoice(id) {
+  const q = DB.Docs.find(x => x.id === id);
+  if (q.status !== 'Accepted') save('Docs', { ...q, status: 'Accepted' }, true);
+  openDoc(null, { ...q, id: '', created: '', type: 'invoice', number: nextNum('invoice'), date: today(), status: 'Draft', notes: C.paymentNote, paidDate: '' });
+}
+
+// ---- Expenses
+function vExpenses() {
+  const months = {};
+  DB.Expenses.forEach(e => { const m = String(e.date || '').slice(0, 7); (months[m] = months[m] || []).push(e); });
+  const keys = Object.keys(months).sort().reverse();
+  return `<div class="toolbar"><button class="btn" onclick="openForm('Expenses',{date:today(),category:'Materials'})">+ Expense</button></div>`
+    + (keys.length ? keys.map(m => {
+      const L = months[m].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+      const label = m ? new Date(m + '-15').toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : 'No date';
+      return `<h3 style="margin:18px 0 8px;display:flex;justify-content:space-between"><span>${label}</span><span>${money(L.reduce((a, e) => a + (+e.amount || 0), 0))}</span></h3>
+      <div class="list">${L.map(e => `<div class="item"><div class="hd" onclick="openForm('Expenses',DB.Expenses.find(x=>x.id==='${e.id}'))"><div>
+        <h3>${money(e.amount)} · ${esc(e.vendor || e.category)}</h3><div class="meta">${esc(fmtDate(e.date))} · ${esc(e.category)}${e.description ? ' · ' + esc(e.description) : ''}${e.jobId && job(e.jobId) ? ' · ' + esc(job(e.jobId).title) : ''}</div></div></div></div>`).join('')}</div>`;
+    }).join('') : `<div class="empty">No expenses logged yet.</div>`);
+}
+
+// ================= forms =================
+const FIELDS = {
+  Customers: [['name','Name'],['phone','Phone','tel'],['email','Email','email'],['address','Address'],['notes','Notes','textarea']],
+  Jobs: [['title','Job description'],['customerId','Customer','customer'],['status','Status',JOB_STATUS],['scheduled','Scheduled for','datetime-local'],['price','Price ($)','number'],['address','Address (if not customer\'s)'],['notes','Notes','textarea']],
+  Expenses: [['date','Date','date'],['amount','Amount ($)','number'],['vendor','Store / vendor'],['category','Category',EXP_CAT],['description','What for'],['jobId','For job','job']],
+};
+const custOpts = sel => `<option value="">— choose —</option>` + [...DB.Customers].sort((a, b) => String(a.name).localeCompare(String(b.name))).map(c => `<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${esc(c.name)}</option>`).join('') + `<option value="__new">+ New customer…</option>`;
+const jobOpts = sel => `<option value="">— none —</option>` + DB.Jobs.map(j => `<option value="${j.id}" ${j.id === sel ? 'selected' : ''}>${esc(j.title)} (${esc(custName(j.customerId))})</option>`).join('');
+function field([k, label, type], v) {
+  v = v ?? '';
+  let inp;
+  if (Array.isArray(type)) inp = `<select name="${k}">${type.map(o => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+  else if (type === 'textarea') inp = `<textarea name="${k}">${esc(v)}</textarea>`;
+  else if (type === 'customer') inp = `<select name="${k}" onchange="if(this.value==='__new')quickCust(this)">${custOpts(v)}</select>`;
+  else if (type === 'job') inp = `<select name="${k}">${jobOpts(v)}</select>`;
+  else inp = `<input name="${k}" type="${type || 'text'}" ${type === 'number' ? 'step="0.01" inputmode="decimal"' : ''} value="${esc(v)}">`;
+  return `<label>${label}</label>${inp}`;
+}
+function openForm(t, row = {}) {
+  const dlg = $('#dlg'), isNew = !row.id;
+  const name = { Customers: 'customer', Jobs: 'job', Expenses: 'expense' }[t];
+  dlg.innerHTML = `<form method="dialog"><h2>${isNew ? 'New ' : 'Edit '}${name}</h2>${FIELDS[t].map(f => field(f, row[f[0]])).join('')}
+    <div class="dlgacts">${isNew ? '' : `<button type="button" class="btn danger sm left" id="dDel">Delete</button>`}
+    <button type="button" class="btn ghost" onclick="$('#dlg').close()">Cancel</button><button class="btn" value="save">Save</button></div></form>`;
+  dlg.querySelector('form').onsubmit = e => {
+    e.preventDefault();
+    const vals = Object.fromEntries(new FormData(e.target));
+    if (vals.customerId === '__new') vals.customerId = '';
+    dlg.close(); save(t, { ...row, ...vals });
+  };
+  if (!isNew) $('#dDel').onclick = () => { if (confirm(`Delete this ${name}?`)) { dlg.close(); del(t, row.id); } };
+  dlg.showModal();
+}
+async function quickCust(sel) {
+  const n = prompt('New customer name:'); if (!n) { sel.value = ''; return; }
+  const p = prompt('Phone (optional):') || '';
+  const c = await save('Customers', { name: n, phone: p, email: '', address: '', notes: '' }, true);
+  sel.innerHTML = custOpts(c.id);
+}
+
+// ---- Quote / invoice editor
+let EDIT = null;
+function openDoc(id, draft) {
+  EDIT = id ? JSON.parse(JSON.stringify(DB.Docs.find(d => d.id === id))) : draft;
+  EDIT.items = items(EDIT); if (!EDIT.items.length) EDIT.items.push({ desc: '', qty: 1, rate: '' });
+  const d = EDIT, isNew = !d.id, label = d.type === 'quote' ? 'Quote' : 'Invoice';
+  const dlg = $('#dlg');
+  dlg.innerHTML = `<form><h2>${isNew ? 'New ' : ''}${label} ${esc(d.number)}</h2>
+    <div class="two"><div>${field(['customerId','Customer','customer'], d.customerId)}</div><div>${field(['jobId','Job','job'], d.jobId)}</div>
+    <div>${field(['date','Date','date'], d.date)}</div><div>${field(['status','Status',DOC_STATUS], d.status)}</div></div>
+    <label>Line items</label><div class="items" id="lis"></div>
+    <button type="button" class="btn ghost sm" onclick="EDIT.items.push({desc:'',qty:1,rate:''});drawItems()">+ Add line</button>
+    <div class="two"><div>${field(['taxRate','Tax %','number'], d.taxRate)}</div><div class="tot" id="tot"></div></div>
+    ${field(['notes','Notes / terms','textarea'], d.notes)}
+    <div class="dlgacts">${isNew ? '' : `<button type="button" class="btn danger sm left" id="dDel">Delete</button>`}
+    <button type="button" class="btn ghost" onclick="$('#dlg').close()">Cancel</button>
+    <button type="button" class="btn alt" id="dView">Save & view</button><button class="btn">Save</button></div></form>`;
+  const form = dlg.querySelector('form');
+  const collect = () => { const v = Object.fromEntries(new FormData(form)); ['desc','qty','rate'].forEach(k => delete v[k]); if (v.customerId === '__new') v.customerId = '';
+    Object.assign(EDIT, v); if (EDIT.status === 'Paid' && !EDIT.paidDate) EDIT.paidDate = today(); return EDIT; };
+  form.taxRate.oninput = drawTot;
+  form.onsubmit = async e => { e.preventDefault(); dlg.close(); await saveDoc(collect()); };
+  $('#dView').onclick = async () => { dlg.close(); const r = await saveDoc(collect()); printDoc(r.id); };
+  if (!isNew) $('#dDel').onclick = () => { if (confirm('Delete this ' + label.toLowerCase() + '?')) { dlg.close(); del('Docs', d.id); } };
+  drawItems(); dlg.showModal();
+}
+async function saveDoc(d) {
+  d.items = items(d).filter(i => i.desc || +i.rate);
+  const r = await save('Docs', d);
+  if (d.type === 'invoice' && d.status === 'Paid' && d.jobId && job(d.jobId) && job(d.jobId).status !== 'Paid') save('Jobs', { ...job(d.jobId), status: 'Paid' }, true);
+  if (d.type === 'quote' && d.status === 'Sent' && d.jobId && job(d.jobId)?.status === 'Lead') save('Jobs', { ...job(d.jobId), status: 'Quoted' }, true);
+  return r;
+}
+function drawItems() {
+  $('#lis').innerHTML = `<div class="li small muted"><span>Description</span><span>Qty</span><span>Rate $</span><span></span></div>` +
+    EDIT.items.map((it, i) => `<div class="li"><input name="desc" value="${esc(it.desc)}" oninput="EDIT.items[${i}].desc=this.value" placeholder="Labor, materials…">
+    <input name="qty" type="number" step="0.25" inputmode="decimal" value="${esc(it.qty)}" oninput="EDIT.items[${i}].qty=this.value;drawTot()">
+    <input name="rate" type="number" step="0.01" inputmode="decimal" value="${esc(it.rate)}" oninput="EDIT.items[${i}].rate=this.value;drawTot()">
+    <button type="button" onclick="EDIT.items.splice(${i},1);drawItems()">×</button></div>`).join('');
+  drawTot();
+}
+function drawTot() {
+  const tr = $('#dlg form')?.taxRate?.value; const t = totals({ items: EDIT.items, taxRate: tr ?? EDIT.taxRate });
+  $('#tot').innerHTML = `Subtotal ${money(t.sub)}${t.tax ? `<br>Tax ${money(t.tax)}` : ''}<br><b>Total ${money(t.total)}</b>`;
+}
+
+// ---- Printable / shareable view
+function docHtml(d) {
+  const c = cust(d.customerId) || {}, t = totals(d), j = job(d.jobId);
+  const label = d.type === 'quote' ? 'QUOTE' : 'INVOICE';
+  return `<div class="doc"><div class="dh"><div><h1 style="font-family:var(--serif)">9999 · ${esc(C.legalName || C.businessName)}</h1>
+    <div>${esc(fmtPhone(C.phone))}<br>${esc(C.email)}<br>${esc(C.serviceArea)}</div></div>
+    <div style="text-align:right"><h1 style="color:var(--accent2)">${label}</h1><div><b>${esc(d.number)}</b><br>Date: ${esc(fmtDate(d.date))}
+    ${d.status === 'Paid' ? `<br><b style="color:var(--ok)">PAID ${esc(fmtDate(d.paidDate))}</b>` : ''}</div></div></div>
+    <div><b>${d.type === 'quote' ? 'Prepared for' : 'Bill to'}:</b><br>${esc(c.name || '')}<br>${esc((j && j.address) || c.address || '')}<br>${esc(fmtPhone(c.phone))} ${c.email ? '· ' + esc(c.email) : ''}</div>
+    ${j ? `<p><b>Job:</b> ${esc(j.title)}</p>` : ''}
+    <table><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>
+    ${items(d).map(i => `<tr><td>${esc(i.desc)}</td><td>${esc(i.qty)}</td><td>${money(i.rate)}</td><td>${money((+i.qty || 0) * (+i.rate || 0))}</td></tr>`).join('')}</tbody></table>
+    <div class="sum"><div><span>Subtotal</span><span>${money(t.sub)}</span></div>
+    ${t.tax ? `<div><span>Tax (${esc(d.taxRate)}%)</span><span>${money(t.tax)}</span></div>` : ''}
+    <div class="big"><span>${d.type === 'quote' ? 'Estimated total' : d.status === 'Paid' ? 'Total paid' : 'Amount due'}</span><span>${money(t.total)}</span></div></div>
+    ${d.notes ? `<p style="margin-top:24px;white-space:pre-wrap">${esc(d.notes)}</p>` : ''}
+    <p style="margin-top:28px;color:#666">Thank you for choosing ${esc(C.legalName || C.businessName)}!</p></div>`;
+}
+function printDoc(id) {
+  const d = DB.Docs.find(x => x.id === id), c = cust(d.customerId) || {}, t = totals(d);
+  const p = $('#print');
+  const summary = `${C.businessName} ${d.type === 'quote' ? 'quote' : 'invoice'} ${d.number}: ${money(t.total)}${d.type === 'invoice' && d.status !== 'Paid' ? ' due' : ''}. ${items(d).map(i => i.desc).filter(Boolean).join(', ')}. Questions? Call ${fmtPhone(C.phone)}.`;
+  p.innerHTML = `<div class="pbar"><button class="btn ghost" style="color:#fff;border-color:#fff5" onclick="closePrint()">← Back</button>
+    <button class="btn" onclick="window.print()">Save PDF / Print</button>
+    ${digits(c.phone) ? `<a class="btn alt" href="sms:${digits(c.phone)}?&body=${encodeURIComponent(summary)}">Text</a>` : ''}
+    ${c.email ? `<a class="btn alt" href="mailto:${esc(c.email)}?subject=${encodeURIComponent(C.businessName + ' ' + d.number)}&body=${encodeURIComponent(summary + '\n\nPDF attached.')}">Email</a>` : ''}</div>${docHtml(d)}`;
+  p.classList.add('open'); document.body.classList.add('printing');
+  if (d.status === 'Draft') saveDoc({ ...d, status: 'Sent' });
+}
+function closePrint() { $('#print').classList.remove('open'); document.body.classList.remove('printing'); }
+
+// ================= settings & login =================
+function openSettings() {
+  const dlg = $('#dlg');
+  dlg.innerHTML = `<form method="dialog"><h2>Settings</h2>
+    <p><b>Storage:</b> ${REMOTE ? 'Google Sheet (syncs across your phone & computer)' : 'This device only — connect a Google Sheet to sync (see README)'}</p>
+    <p class="small muted">${DB.Customers.length} customers · ${DB.Jobs.length} jobs · ${DB.Docs.length} quotes/invoices · ${DB.Expenses.length} expenses</p>
+    <div class="row"><button type="button" class="btn ghost" onclick="exportData()">Download backup</button>
+    ${REMOTE ? '' : `<label class="btn ghost" style="margin:0">Restore backup<input type="file" accept=".json" hidden onchange="importData(this.files[0])"></label>`}
+    ${REMOTE ? `<button type="button" class="btn ghost" onclick="LS.del('fn_key');location.reload()">Log out</button>` : ''}</div>
+    <div class="dlgacts"><button class="btn">Close</button></div></form>`;
+  dlg.showModal();
+}
+function exportData() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(DB, null, 2)], { type: 'application/json' }));
+  a.download = `four-nines-backup-${today()}.json`; a.click();
+}
+async function importData(file) {
+  if (!file || !confirm('Replace everything on this device with this backup?')) return;
+  const s = JSON.parse(await file.text()); TABLES.forEach(t => DB[t] = s[t] || []); persist(); $('#dlg').close(); render(); toast('Restored');
+}
+function loginScreen(err) {
+  $('#tabs').hidden = true;
+  $('#view').innerHTML = `<form class="card login" id="lf"><span class="mark" style="font-size:1.4rem">.9999</span><h2 style="margin-top:12px">${esc(C.businessName)} office</h2>
+    <label>Passcode</label><input type="password" name="k" autocomplete="current-password" required>
+    ${err ? `<div class="msg bad">${esc(err)}</div>` : ''}<button class="btn" style="width:100%;margin-top:14px">Unlock</button></form>`;
+  $('#lf').onsubmit = async e => { e.preventDefault(); KEY = e.target.k.value; try { await load(); LS.set('fn_key', KEY); start(); } catch (x) { loginScreen(x.message); } };
+}
+function start() { $('#tabs').hidden = false; render(); }
+
+(async () => {
+  if (!REMOTE) { await load(); start(); return; }
+  if (!KEY) return loginScreen();
+  try { await load(); start(); } catch (e) { loginScreen(e.message); }
+})();
+</script>
+</body>
+</html>

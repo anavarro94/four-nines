@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Four Nines Enterprise LLC — Handyman Services</title>
+<meta name="description" content="Local handyman services — repairs, installs, carpentry and small projects. Free quotes.">
+<meta name="theme-color" content="#1b4457">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+</head>
+<body class="site">
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#"><span class="mark">9999</span><span class="wordmark"><b>Four Nines</b><small>ENTERPRISE LLC</small></span></a>
+    <a class="btn sm" href="#quote">Free quote</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="logo" aria-hidden="true"><span class="n">9999</span><span class="w">Four Nines</span><span class="e">ENTERPRISE LLC</span></div>
+    <h1 id="tagline"></h1>
+    <p id="subhead"></p>
+    <div class="row" style="margin-top:22px">
+      <a class="btn" href="#quote">Request a free quote</a>
+      <a class="btn ghost" id="heroCall" href="#">Call now</a>
+    </div>
+    <p class="area" id="area"></p>
+  </div>
+</section>
+
+<section id="services" class="wrap sec">
+  <h2>Services</h2>
+  <div class="grid" id="svcGrid"></div>
+  <p class="muted small" style="margin-top:14px">Prices are starting points. Every job gets a clear quote before work begins.</p>
+</section>
+
+<section id="work" class="wrap sec" hidden>
+  <h2>Recent work</h2>
+  <div class="grid" id="gallery"></div>
+</section>
+
+<section id="quote" class="wrap sec">
+  <h2>Request a free quote</h2>
+  <p class="muted">Tell us what's going on. Photos help us quote faster.</p>
+  <form id="qf" class="card" autocomplete="on">
+    <div class="two">
+      <div><label for="name">Your name</label><input id="name" name="name" required autocomplete="name"></div>
+      <div><label for="phone">Phone</label><input id="phone" name="phone" type="tel" required autocomplete="tel"></div>
+    </div>
+    <label for="email">Email <span class="muted">(optional)</span></label>
+    <input id="email" name="email" type="email" autocomplete="email">
+    <label for="address">Job address</label>
+    <input id="address" name="address" required autocomplete="street-address">
+    <label for="service">What do you need?</label>
+    <select id="service" name="service" required></select>
+    <label for="details">Details</label>
+    <textarea id="details" name="details" placeholder="e.g. Fist-size hole in hallway drywall, needs patch and paint" required></textarea>
+    <label for="preferredTime">Best days/times <span class="muted">(optional)</span></label>
+    <input id="preferredTime" name="preferredTime" placeholder="Weekday mornings, after 3pm, etc.">
+    <label for="photos">Photos <span class="muted">(up to 5, optional)</span></label>
+    <input id="photos" name="photos" type="file" accept="image/*" multiple>
+    <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button class="btn" type="submit" style="width:100%;margin-top:18px">Send request</button>
+    <div id="qmsg" role="status"></div>
+  </form>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong id="fName"></strong><br>
+      <span id="fArea"></span><br>
+      <span id="fHours"></span></p>
+    <p><a id="fPhone" href="#"></a> · <a id="fEmail" href="#"></a></p>
+    <p class="small">© <span id="yr"></span> <span id="fName2"></span></p>
+  </div>
+</footer>
+
+<nav class="dock">
+  <a class="btn alt" id="dockCall" href="#">Call</a>
+  <a class="btn" id="dockText" href="#">Text</a>
+</nav>
+
+<script>
+const C = window.FN_CONFIG;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtPhone = p => { const d = String(p).replace(/\D/g,''); return d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : p; };
+const tel = 'tel:' + C.phone, sms = 'sms:' + C.phone;
+
+document.title = (C.legalName || C.businessName) + ' — Handyman Services';
+$('#tagline').textContent = C.tagline;
+$('#subhead').textContent = C.subhead;
+$('#area').textContent = 'Serving ' + C.serviceArea;
+$('#fName').textContent = $('#fName2').textContent = C.legalName || C.businessName;
+$('#fArea').textContent = 'Serving ' + C.serviceArea;
+$('#fHours').textContent = C.hours;
+$('#fPhone').textContent = fmtPhone(C.phone); $('#fPhone').href = tel;
+$('#fEmail').textContent = C.email; $('#fEmail').href = 'mailto:' + C.email;
+$('#yr').textContent = new Date().getFullYear();
+$('#heroCall').href = $('#dockCall').href = tel;
+$('#heroCall').textContent = 'Call ' + fmtPhone(C.phone);
+$('#dockText').href = sms;
+
+$('#svcGrid').innerHTML = C.services.map(s =>
+  `<div class="card svc"><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p><div class="price">${esc(s.price)}</div></div>`).join('');
+$('#service').innerHTML = '<option value="">Choose one…</option>' +
+  C.services.map(s => `<option>${esc(s.name)}</option>`).join('') + '<option>Something else</option>';
+
+if (C.gallery && C.gallery.length) {
+  $('#work').hidden = false;
+  $('#gallery').innerHTML = C.gallery.map(g => `
+    <figure class="card ba"><div class="pair">
+      ${g.before ? `<div><img src="${esc(g.before)}" alt="Before" loading="lazy"><span>Before</span></div>` : ''}
+      <div${g.before ? '' : ' style="grid-column:1/-1"'}><img src="${esc(g.after)}" alt="After" loading="lazy"><span>After</span></div>
+    </div><figcaption>${esc(g.caption)}</figcaption></figure>`).join('');
+}
+
+// Shrink photos on the phone before sending (keeps uploads fast)
+async function shrink(file, max = 1280) {
+  const url = URL.createObjectURL(file);
+  const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+  const s = Math.min(1, max / Math.max(img.width, img.height));
+  const c = document.createElement('canvas');
+  c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  URL.revokeObjectURL(url);
+  return c.toDataURL('image/jpeg', 0.8).split(',')[1];
+}
+
+$('#qf').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target, btn = f.querySelector('[type=submit]'), msg = $('#qmsg');
+  const data = Object.fromEntries(new FormData(f));
+  delete data.photos;
+  if (data.website) return; // spam bot
+  delete data.website;
+
+  if (!C.scriptUrl) { // not connected yet → open a text message
+    const text = `Quote request — ${data.name}, ${data.phone}\n${data.address}\n${data.service}: ${data.details}\nBest time: ${data.preferredTime || 'any'}`;
+    location.href = `${sms}?&body=${encodeURIComponent(text)}`;
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Sending…'; msg.className = ''; msg.textContent = '';
+  try {
+    const photos = [];
+    for (const file of [...f.photos.files].slice(0, 5)) photos.push(await shrink(file));
+    const r = await fetch(C.scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error);
+    f.reset();
+    msg.className = 'msg ok';
+    msg.textContent = "Got it! We'll reach out within one business day.";
+  } catch (err) {
+    msg.className = 'msg bad';
+    msg.innerHTML = `Couldn't send right now — please <a href="${tel}">call</a> or <a href="${sms}">text</a> us.`;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send request';
+  }
+});
+</script>
+</body>
+</html>
