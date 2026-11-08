@@ -421,3 +421,16 @@ footer h4{font-family:var(--caps);font-size:.95rem;letter-spacing:.2em}
   .seal::after{inset:30px}
   .seal .ring text{font-size:20px}
 }
+@media(max-width:979px){
+  .seal{width:170px}
+  .seal .ring{display:none}
+  .seal::after{inset:12px}
+  .seal .mascot{width:130px!important}
+}
+@media(max-width:480px){
+  .brand{gap:9px}
+  .brand .nn{font-size:1.3rem;padding:5px 8px 3px}
+  .brand .wm b{font-size:1.05rem;white-space:nowrap}
+  .brand .wm small{font-size:.58rem;letter-spacing:.2em;white-space:nowrap}
+  .top .btn.sm{padding:9px 12px;font-size:.9rem}
+}
