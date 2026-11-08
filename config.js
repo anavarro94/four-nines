@@ -15,7 +15,7 @@ window.FN_CONFIG = {
   // Paste your Google Apps Script web-app URL here (see README).
   // Leave blank to test: quote form will open a text message instead,
   // and the owner app will save data on this device only.
-  scriptUrl: "",
+  scriptUrl: "https://script.google.com/macros/s/AKfycbxnNNW6lomqosiwASAX9jwDRSxZwvrWHvy32dmPkRZshDmkh7QxbNhjZsuoMInvFGV_/exec",
 
   // Default tax rate for quotes/invoices (percent). 0 = no tax line.
   taxRate: 0,
