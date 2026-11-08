@@ -451,3 +451,5 @@ footer{border-image:none;border-top:6px solid var(--brass)}
 .fast-card::before{width:6px;background:var(--brass)}
 form.card::before{height:6px;background:var(--brass)}
 .eyebrow::before,.center .eyebrow::after{height:2px;width:30px;background:currentColor}
+.stats b{white-space:nowrap}
+@media(max-width:480px){.stats b{font-size:2.1rem}.stats li{padding:24px 10px}}

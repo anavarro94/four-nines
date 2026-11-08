@@ -62,7 +62,7 @@
     <button class="fnc-btn" aria-label="Chat with Four Nines">${icon}<span class="dot"></span></button>
     <div class="fnc-hint" hidden>Need a quote? Chat with us 👋</div>
     <div class="fnc" role="dialog" aria-label="Four Nines chat">
-      <div class="fnc-hd"><div class="fnc-av">${icon}</div><div><b>Four Nines Assistant</b><small>Quick answers &amp; free quotes</small></div>
+      <div class="fnc-hd"><div class="fnc-av">${icon}</div><div><b>Four Nines Assistant</b><small>Usually replies instantly</small></div>
         <button class="fnc-x" aria-label="Close chat">×</button></div>
       <div class="fnc-log" aria-live="polite"></div>
       <form class="fnc-in" hidden><input autocomplete="off" aria-label="Type your answer"><button aria-label="Send">${send}</button></form>
@@ -205,7 +205,7 @@
   function open() {
     box.classList.add('open'); hint.hidden = true;
     if (!started) { started = true;
-      (async () => { await bot("Hi there! 👋 I'm the Four Nines assistant. I can get you a free quote or answer quick questions.", 400); mainMenu(true); })(); }
+      (async () => { await bot("Hey there! 👋 Need something fixed? I can get you a price or answer a quick question.", 400); mainMenu(true); })(); }
   }
   $('.fnc-btn').onclick = open; hint.onclick = open;
   $('.fnc-x').onclick = () => box.classList.remove('open');

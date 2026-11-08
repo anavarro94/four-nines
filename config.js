@@ -5,8 +5,8 @@
 window.FN_CONFIG = {
   businessName: "Four Nines",
   legalName: "Four Nines Enterprise, LLC",   // shown in footer and on quotes/invoices
-  tagline: "Handyman work done right — 99.99% of the time.",
-  subhead: "Repairs, installs, and small projects. Honest quotes, clean job sites, and work you won't have to call someone else to fix.",
+  tagline: "Your to-do list, done right.",
+  subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Upfront prices. Pay when it's done.",
   phone: "8030000000",            // <-- your real number, digits only
   email: "you@example.com",       // <-- your business email
   serviceArea: "Elgin, Lugoff, Camden, Blythewood & Northeast Columbia",
@@ -19,19 +19,19 @@ window.FN_CONFIG = {
 
   // Default tax rate for quotes/invoices (percent). 0 = no tax line.
   taxRate: 0,
-  paymentNote: "Payment due on completion. Cash, check, Zelle, or Venmo accepted.",
+  paymentNote: "Nothing up front. You pay when the job is done, by cash, check, Zelle or Venmo.",
 
   services: [
-    { name: "Drywall repair",        price: "From $125", desc: "Holes, cracks, water damage — patched, textured and painted to match.", img: "https://images.unsplash.com/photo-1768839725085-829e6ac7ac26?w=900&q=70&auto=format&fit=crop" },
-    { name: "Ceiling fans",          price: "From $125", desc: "Swap an old fan or replace a light with a new fan, assembled and balanced.", img: "https://images.unsplash.com/photo-1609519479841-5fd3b2884e17?w=900&q=70&auto=format&fit=crop" },
-    { name: "Outlets & switches",    price: "From $65", desc: "Replace worn outlets and switches, add USB or GFCI outlets, new cover plates.", img: "https://images.unsplash.com/photo-1635335874521-7987db781153?w=900&q=70&auto=format&fit=crop" },
-    { name: "TV mounting & shelves", price: "From $85",  desc: "TVs of any size mounted level and secure, wires hidden, plus shelves, mirrors and curtain rods.", img: "https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=900&q=70&auto=format&fit=crop" },
-    { name: "Furniture assembly",    price: "From $65", desc: "Beds, dressers, desks, shelves, patio sets — built right and cleaned up.", img: "https://images.unsplash.com/photo-1772338537689-056082f100a9?w=900&q=70&auto=format&fit=crop" },
-    { name: "Carpet & LVP flooring", price: "Quoted", desc: "Luxury vinyl plank and carpet installs, room by room, with trim and transitions.", img: "https://images.unsplash.com/photo-1598718544285-7180f670198b?w=900&q=70&auto=format&fit=crop" },
-    { name: "Small yard work",       price: "From $75", desc: "Trimming, edging, leaf cleanup, bush and hedge shaping.", img: "https://images.unsplash.com/photo-1689728318937-17d24bc0a65c?w=900&q=70&auto=format&fit=crop" },
-    { name: "Small junk removal",    price: "From $95", desc: "Old furniture, boxes and clutter hauled away — we load it, you relax.", img: "https://images.unsplash.com/photo-1757837593538-b4a8654132f1?w=900&q=70&auto=format&fit=crop" },
-    { name: "Small cleaning",        price: "From $85", desc: "Move-out touch-ups, post-project cleanup, garages and tough spots.", img: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=900&q=70&auto=format&fit=crop" },
-    { name: "Honey-do list",         price: "From $65/hr", desc: "A bunch of small jobs? Send the list — we'll knock it out in one visit.", img: "https://images.unsplash.com/photo-1599619585752-c3edb42a414c?w=900&q=70&auto=format&fit=crop" }
+    { name: "Drywall repair",        price: "From $125", desc: "Holes, cracks and water spots patched, textured and painted so you can't find them.", img: "https://images.unsplash.com/photo-1768839725085-829e6ac7ac26?w=900&q=70&auto=format&fit=crop" },
+    { name: "Ceiling fans",          price: "From $125", desc: "Old fan out, new fan in, or swap a light for a fan. Assembled, balanced, no wobble.", img: "https://images.unsplash.com/photo-1609519479841-5fd3b2884e17?w=900&q=70&auto=format&fit=crop" },
+    { name: "Outlets & switches",    price: "From $65", desc: "Swap worn or outdated outlets and switches, add USB or GFCI outlets, fresh cover plates.", img: "https://images.unsplash.com/photo-1635335874521-7987db781153?w=900&q=70&auto=format&fit=crop" },
+    { name: "TV mounting & shelves", price: "From $85",  desc: "Any size TV mounted level and secure, wires hidden. Shelves, mirrors and curtain rods too.", img: "https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=900&q=70&auto=format&fit=crop" },
+    { name: "Furniture assembly",    price: "From $65", desc: "Beds, dressers, desks, patio sets. Built solid, boxes hauled off.", img: "https://images.unsplash.com/photo-1772338537689-056082f100a9?w=900&q=70&auto=format&fit=crop" },
+    { name: "Carpet & LVP flooring", price: "Quoted", desc: "LVP and carpet installed room by room, with clean trim and transitions.", img: "https://images.unsplash.com/photo-1598718544285-7180f670198b?w=900&q=70&auto=format&fit=crop" },
+    { name: "Small yard work",       price: "From $75", desc: "Trimming, edging, leaf cleanup and hedge shaping to get your yard back in shape.", img: "https://images.unsplash.com/photo-1689728318937-17d24bc0a65c?w=900&q=70&auto=format&fit=crop" },
+    { name: "Small junk removal",    price: "From $95", desc: "Old furniture, boxes and clutter hauled away. We do the lifting.", img: "https://images.unsplash.com/photo-1757837593538-b4a8654132f1?w=900&q=70&auto=format&fit=crop" },
+    { name: "Small cleaning",        price: "From $85", desc: "Move-out touch-ups, garages, and the spots that never get cleaned.", img: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=900&q=70&auto=format&fit=crop" },
+    { name: "Honey-do list",         price: "From $65/hr", desc: "Send the whole list. One visit, everything checked off.", img: "https://images.unsplash.com/photo-1599619585752-c3edb42a414c?w=900&q=70&auto=format&fit=crop" }
   ],
 
   // Instant ballpark ranges shown on the site — [option, low $, high $].
