@@ -442,3 +442,12 @@ footer h4{font-family:var(--caps);font-size:.95rem;letter-spacing:.2em}
 .band::after{content:none}
 .brand .wm b{font-size:1.6rem;letter-spacing:.08em}
 @media(max-width:480px){.brand .wm b{font-size:1.3rem}}
+/* No hazard/construction stripes — solid brass accents instead */
+:root{--hazard:var(--brass)}
+.top{border-image:none;border-bottom:4px solid var(--brass)}
+.hero::after{height:6px;background:var(--brass)}
+.band{border-image:none;border-top:0;border-bottom:0}
+footer{border-image:none;border-top:6px solid var(--brass)}
+.fast-card::before{width:6px;background:var(--brass)}
+form.card::before{height:6px;background:var(--brass)}
+.eyebrow::before,.center .eyebrow::after{height:2px;width:30px;background:currentColor}
