@@ -98,11 +98,17 @@
   }
 
   // ---------- conversation ----------
-  const menu = [['Get a free quote','quote'],['Prices','prices'],['Service area','area'],['When can you come?','hours'],['How do I pay?','pay'],['Talk to a person','person']];
+  const menu = [['📷 Quick photo quote','photo'],['Get a free quote','quote'],['Prices','prices'],['Service area','area'],['When can you come?','hours'],['How do I pay?','pay'],['Talk to a person','person']];
   async function mainMenu(first) {
     if (!first) await bot('Anything else I can help with?', 400);
     const pick = await opts(menu);
-    ({ quote, prices, area, hours, pay, person })[pick]();
+    ({ photo, quote, prices, area, hours, pay, person })[pick]();
+  }
+  async function photo() {
+    const fast = document.getElementById('fast');
+    if (!fast) return quote();
+    await bot("Easiest way — snap a photo and we'll text you a price. Taking you there now 👇", 500);
+    await wait(700); box.classList.remove('open'); fast.scrollIntoView({ behavior: 'smooth' });
   }
   async function prices() {
     await bot('Here are our starting prices:<br><br>' + C.services.map(s => `<b>${esc(s.name)}</b> — ${esc(s.price)}`).join('<br>') +

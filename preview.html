@@ -44,7 +44,7 @@
       <h1 id="tagline"></h1>
       <p class="sub" id="subhead"></p>
       <div class="ctas">
-        <a class="btn brass" href="#quote">Get my free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn brass" href="#fast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Photo quote in 60 seconds</a>
         <a class="btn line" id="heroCall" href="#"></a>
       </div>
       <div class="proof">
@@ -68,6 +68,37 @@
   </ul></div>
 </section>
 
+<section id="fast" class="sec fast">
+  <div class="wrap">
+    <div class="fast-card rv">
+      <div class="fast-copy">
+        <p class="eyebrow">Fastest way to a price</p>
+        <h2>Snap it. Send it. <em>Get a quote.</em></h2>
+        <p class="lede">Take a picture of the problem, add your number, and we'll text you a price — usually without even coming out.</p>
+        <ol class="mini-steps"><li><b>1</b>Take or pick photos</li><li><b>2</b>Tell us your town</li><li><b>3</b>Get a quote by text</li></ol>
+      </div>
+      <form id="ff" class="fast-form" autocomplete="on">
+        <label class="drop" for="fPhotos">
+          <input id="fPhotos" type="file" accept="image/*" multiple>
+          <span class="drop-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><b>Tap to add photos</b><small>Up to 5 · camera or gallery</small></span>
+          <span class="thumbs" id="fThumbs"></span>
+        </label>
+        <label for="fWhat">What's going on?</label>
+        <input id="fWhat" name="details" required placeholder="e.g. Leaky kitchen faucet">
+        <div class="two">
+          <div><label for="fName">Name</label><input id="fName" name="name" required autocomplete="name"></div>
+          <div><label for="fTel">Phone</label><input id="fTel" name="phone" type="tel" required autocomplete="tel" inputmode="tel"></div>
+        </div>
+        <label for="fTown">Town</label>
+        <select id="fTown" name="address" required></select>
+        <button class="btn brass" type="submit" style="width:100%;margin-top:18px;padding:17px">Send my photos</button>
+        <p class="fine">We'll text you back. No spam, ever.</p>
+        <div id="fmsg" role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section id="services" class="sec">
   <div class="wrap">
     <div class="sec-head rv">
@@ -76,6 +107,25 @@
     </div>
     <div class="svc-grid" id="svcGrid"></div>
     <p class="note">Prices are starting points. Every job gets a clear, written quote before any work begins.</p>
+  </div>
+</section>
+
+<section id="estimate" class="sec alt-est">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <p class="eyebrow">Instant ballpark</p>
+      <h2>What will it <em>cost?</em></h2>
+      <p class="lede">Pick your job and get a price range right now. Your written quote locks in the exact number.</p>
+    </div>
+    <div class="est rv">
+      <div class="est-step"><span class="est-n">1</span><b>Choose a job</b></div>
+      <div class="chips" id="estSvc"></div>
+      <div id="estQ" hidden>
+        <div class="est-step"><span class="est-n">2</span><b id="estQText"></b></div>
+        <div class="chips" id="estOpts"></div>
+      </div>
+      <div class="est-out" id="estOut" hidden></div>
+    </div>
   </div>
 </section>
 
@@ -147,6 +197,7 @@
       <div class="direct">
         <a id="qCall" href="#"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span><b>Call us</b><small id="qCallNum"></small></span></a>
         <a id="qText" href="#"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span><b>Text photos</b><small>The fastest way to a quote</small></span></a>
+        <a id="saveContact" href="#" download="Four Nines.vcf"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span><span><b>Save our number</b><small>Add Four Nines to your contacts</small></span></a>
       </div>
     </div>
     <form id="qf" class="card" autocomplete="on">
@@ -164,8 +215,9 @@
       <select id="service" name="service" required></select>
       <label for="details">Details</label>
       <textarea id="details" name="details" placeholder="e.g. Fist-size hole in hallway drywall, needs patch and paint" required></textarea>
-      <label for="preferredTime">Best days/times <span class="opt">(optional)</span></label>
-      <input id="preferredTime" name="preferredTime" placeholder="Weekday evenings, Saturday morning, etc.">
+      <label>Pick times that work <span class="opt">(tap all that fit)</span></label>
+      <div class="chips slots" id="slots"></div>
+      <input type="hidden" id="preferredTime" name="preferredTime">
       <label for="photos">Photos <span class="opt">(up to 5, optional)</span></label>
       <input id="photos" name="photos" type="file" accept="image/*" multiple>
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -280,6 +332,113 @@ if (C.gallery && C.gallery.length) {
     </div><figcaption>${esc(g.caption)}</figcaption></figure>`).join('');
 }
 
+
+// ---------- Convenience features ----------
+const towns = C.serviceArea.split(/,|&/).map(t => t.trim()).filter(Boolean);
+
+// Remember returning customers (stored only on their own phone)
+function remember(d) { try { localStorage.setItem('fn-me', JSON.stringify({ name: d.name, phone: d.phone, email: d.email || '', address: d.address || '' })); } catch (e) {} }
+function prefill() {
+  let me = null; try { me = JSON.parse(localStorage.getItem('fn-me') || 'null'); } catch (e) {}
+  if (!me) return;
+  [['#name', me.name], ['#phone', me.phone], ['#email', me.email], ['#address', me.address], ['#fName', me.name], ['#fTel', me.phone]]
+    .forEach(([s, v]) => { const el = $(s); if (el && v && !el.value) el.value = v; });
+}
+prefill();
+
+// Time-slot picker: next two weeks of evenings and weekends
+(function () {
+  const out = [], d = new Date(); d.setHours(0,0,0,0);
+  const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  for (let i = 1; i <= 14 && out.length < 12; i++) {
+    const x = new Date(d); x.setDate(d.getDate() + i);
+    const lab = `${wd[x.getDay()]} ${x.getMonth()+1}/${x.getDate()}`;
+    if (x.getDay() === 0 || x.getDay() === 6) { out.push(lab + ' · Morning', lab + ' · Afternoon'); }
+    else out.push(lab + ' · Evening');
+  }
+  out.push("I'm flexible");
+  $('#slots').innerHTML = out.map(t => `<button type="button" class="chip">${esc(t)}</button>`).join('');
+  $('#slots').addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    b.classList.toggle('on');
+    $('#preferredTime').value = [...$('#slots').querySelectorAll('.chip.on')].map(c => c.textContent).join(', ');
+  });
+})();
+
+// Instant ballpark estimator (ranges live in config.js)
+(function () {
+  const E = C.estimator || {};
+  let cur = null;
+  $('#estSvc').innerHTML = C.services.map(s => `<button type="button" class="chip" data-s="${esc(s.name)}">${esc(s.name)}</button>`).join('');
+  $('#estSvc').addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    $('#estSvc').querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === b));
+    cur = b.dataset.s; const q = E[cur]; $('#estOut').hidden = true;
+    if (!q) { $('#estQ').hidden = true; showOut(null); return; }
+    $('#estQ').hidden = false; $('#estQText').textContent = q.q;
+    $('#estOpts').innerHTML = q.opts.map((o, i) => `<button type="button" class="chip" data-i="${i}">${esc(o[0])}</button>`).join('');
+  });
+  $('#estOpts').addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    $('#estOpts').querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === b));
+    showOut(E[cur].opts[+b.dataset.i]);
+  });
+  function showOut(o) {
+    const el = $('#estOut'); el.hidden = false;
+    el.innerHTML = o
+      ? `<div><span class="lbl">Typical range</span><div class="rng">$${o[1]}<i>–</i>$${o[2]}</div><small>Labor for: ${esc(cur)} · ${esc(o[0])}. Materials are extra. Your written quote is the final price.</small></div>
+         <a class="btn brass" href="#fast" id="estGo">Lock in an exact quote →</a>`
+      : `<div><span class="lbl">Custom job</span><div class="rng" style="font-size:1.8rem">Every one is different</div><small>Send a few photos and we'll price it for you — usually the same day.</small></div>
+         <a class="btn brass" href="#fast" id="estGo">Send photos for a quote →</a>`;
+    $('#estGo').onclick = () => { $('#fWhat').value = cur + (o ? ' — ' + o[0] : ''); };
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+})();
+
+// Photo quote fast lane
+(function () {
+  $('#fTown').innerHTML = '<option value="">Choose your town…</option>' + towns.map(t => `<option>${esc(t)}</option>`).join('') + '<option>Somewhere else nearby</option>';
+  const inp = $('#fPhotos'), th = $('#fThumbs');
+  inp.addEventListener('change', () => {
+    const files = [...inp.files].slice(0, 5);
+    th.innerHTML = files.map(f => `<img src="${URL.createObjectURL(f)}" alt="">`).join('');
+    inp.closest('.drop').classList.toggle('has', files.length > 0);
+    inp.closest('.drop').querySelector('.drop-in b').textContent = files.length ? `${files.length} photo${files.length > 1 ? 's' : ''} added — tap to change` : 'Tap to add photos';
+  });
+  $('#ff').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target, btn = f.querySelector('[type=submit]'), msg = $('#fmsg');
+    const data = { name: $('#fName').value.trim(), phone: $('#fTel').value.trim(), email: '', address: $('#fTown').value,
+      service: 'Photo quote', details: $('#fWhat').value.trim() + ' (photo quote)', preferredTime: '' };
+    remember(data);
+    if (!C.scriptUrl) {
+      const n = inp.files.length;
+      const text = `Photo quote — ${data.name}, ${data.phone}\nTown: ${data.address}\n${$('#fWhat').value.trim()}` + (n ? `\n(Attaching ${n} photo${n > 1 ? 's' : ''})` : '');
+      msg.className = 'msg ok'; msg.textContent = n ? 'Your text is ready — just attach your photos and hit send.' : 'Your text is ready — hit send.';
+      location.href = `${sms}?&body=${encodeURIComponent(text)}`;
+      return;
+    }
+    btn.disabled = true; btn.textContent = 'Sending…'; msg.className = ''; msg.textContent = '';
+    try {
+      const photos = []; for (const file of [...inp.files].slice(0, 5)) photos.push(await shrink(file));
+      const r = await fetch(C.scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
+      const j = await r.json(); if (!j.ok) throw new Error(j.error);
+      f.reset(); th.innerHTML = ''; inp.closest('.drop').classList.remove('has'); prefill();
+      msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll text you a quote soon.`;
+    } catch (err) {
+      msg.className = 'msg bad'; msg.innerHTML = `Couldn't send right now — please <a href="${sms}">text us your photos</a>.`;
+    } finally { btn.disabled = false; btn.textContent = 'Send my photos'; }
+  });
+})();
+
+// "Save our number" contact card
+(function () {
+  const v = ['BEGIN:VCARD','VERSION:3.0',`N:;${name};;;`,`FN:${name}`,`ORG:${name}`,'TITLE:Handyman Services',
+    `TEL;TYPE=WORK,VOICE:${ph}`, C.email ? `EMAIL;TYPE=WORK:${C.email}` : '', `URL:${location.origin + location.pathname.replace(/[^/]*$/, '')}`,
+    `NOTE:Repairs, installs & small projects. ${C.hours}. Serving ${C.serviceArea}.`, 'END:VCARD'].filter(Boolean).join('\r\n');
+  $('#saveContact').href = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(v);
+})();
+
 // Fade sections in as you scroll
 const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' }) : null;
 document.querySelectorAll('.rv').forEach(el => io ? io.observe(el) : el.classList.add('in'));
@@ -317,7 +476,10 @@ $('#qf').addEventListener('submit', async e => {
     const r = await fetch(C.scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
     const j = await r.json();
     if (!j.ok) throw new Error(j.error);
+    remember(data);
     f.reset();
+    document.querySelectorAll('#slots .chip.on').forEach(c => c.classList.remove('on'));
+    prefill();
     msg.className = 'msg ok';
     msg.textContent = "Got it! We'll reach out within one business day.";
   } catch (err) {

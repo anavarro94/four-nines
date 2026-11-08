@@ -31,6 +31,17 @@ window.FN_CONFIG = {
     { name: "Honey-do list",           price: "From $65/hr", desc: "A bunch of small jobs? Send the list — we'll knock it out." , img: "https://images.unsplash.com/photo-1599619585752-c3edb42a414c?w=900&q=70&auto=format&fit=crop" }
   ],
 
+  // Instant ballpark ranges shown on the site — [option, low $, high $].
+  // Labor only. Edit these to match how you actually price jobs.
+  // Services not listed here show "send photos for a custom quote".
+  estimator: {
+    "Drywall repair":        { q: "How big is the damage?", opts: [["Nail holes or small cracks",125,175],["Fist-size hole",175,250],["Bigger than a basketball",250,450]] },
+    "Doors & trim":          { q: "What's the job?", opts: [["Fix a sticking door",95,140],["Replace door hardware",95,150],["Hang a new interior door",200,350],["Baseboard or trim (one room)",250,450]] },
+    "TV mounting & shelves": { q: "What are we mounting?", opts: [["TV up to 55\"",85,125],["TV 65\" or bigger",125,175],["TV + hide the wires",175,275],["Shelf, mirror or rod (each)",60,95]] },
+    "Fixture swaps":         { q: "What are we swapping?", opts: [["Light fixture",85,150],["Faucet",125,200],["Ceiling fan",150,250],["Toilet",175,275]] },
+    "Honey-do list":         { q: "About how long is the list?", opts: [["2–3 small things (~2 hrs)",130,195],["Half a day",260,325],["Full day",455,520]] }
+  },
+
   // Photos. These are free stock photos for now — swap in your own job
   // photos over time (upload to an /img folder, then use "img/your-photo.jpg").
   heroImage: "https://images.unsplash.com/photo-1676311396794-f14881e9daaa?w=1800&q=70&auto=format&fit=crop",
