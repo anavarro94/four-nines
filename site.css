@@ -406,3 +406,18 @@ footer h4{font-family:var(--caps);font-size:.95rem;letter-spacing:.2em}
 .seal .lg .n{font-size:4.8rem}
 .seal .lg .w{font-size:1.3rem;letter-spacing:.16em}
 .seal .lg .e{font-size:.78rem}
+/* Honey badger mascot */
+.seal{-webkit-mask:none;mask:none}
+.seal .mascot{position:relative;z-index:1;width:200px;margin-top:6px;transform:rotate(8deg);filter:drop-shadow(0 8px 14px #0007)}
+.seal::after{inset:44px;background:#14323F}
+.about .pic .chip{display:flex;align-items:center;gap:12px}
+.about .pic .chip img{width:58px;height:58px;background:var(--sand);border-radius:3px}
+.fbadger{width:90px;margin-bottom:12px;background:var(--sand);border-radius:4px;border:3px solid var(--brass)}
+.seal .mascot{width:210px!important;max-width:none}
+@media(max-width:979px){
+  .hero .wrap{padding-top:40px}
+  .seal{display:grid;width:210px;justify-self:center;order:-1;margin-bottom:-12px}
+  .seal .mascot{width:140px!important}
+  .seal::after{inset:30px}
+  .seal .ring text{font-size:20px}
+}

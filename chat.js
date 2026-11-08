@@ -13,9 +13,9 @@
   // ---------- styles ----------
   const css = `
   .fnc-btn{position:fixed;right:18px;bottom:22px;z-index:40;width:62px;height:62px;border-radius:50%;border:0;cursor:pointer;
-    background:#A36F2B;color:#fff;box-shadow:0 10px 28px #14323f66;display:grid;place-items:center;transition:transform .15s}
+    background:#E6D8BC;color:#fff;border:3px solid #14323F!important;box-shadow:0 10px 28px #14323f66;display:grid;place-items:center;transition:transform .15s}
   .fnc-btn:hover{transform:scale(1.06)}
-  .fnc-btn svg{width:28px;height:28px}
+  .fnc-btn svg{width:28px;height:28px}.fnc-btn img{width:52px;height:52px;margin-top:4px}.fnc-av img{width:40px;height:40px;margin-top:3px}
   .fnc-btn .dot{position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;background:#2e9d5b;border:2px solid #fff}
   .fnc-hint{position:fixed;right:90px;bottom:34px;z-index:40;background:#fff;color:#1F4A5C;font:600 .9rem/1.3 Inter,system-ui,sans-serif;
     padding:10px 14px;border-radius:14px 14px 4px 14px;box-shadow:0 8px 24px #14323f33;max-width:220px;cursor:pointer}
@@ -59,10 +59,10 @@
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
   const send = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>';
   document.body.insertAdjacentHTML('beforeend', `
-    <button class="fnc-btn" aria-label="Chat with Four Nines">${icon}<span class="dot"></span></button>
+    <button class="fnc-btn" aria-label="Chat with Four Nines"><img src="${C.mascot || 'img/badger.svg'}" alt=""><span class="dot"></span></button>
     <div class="fnc-hint" hidden>Need a quote? Chat with us 👋</div>
     <div class="fnc" role="dialog" aria-label="Four Nines chat">
-      <div class="fnc-hd"><div class="fnc-av">99</div><div><b>Four Nines Assistant</b><small>Quick answers &amp; free quotes</small></div>
+      <div class="fnc-hd"><div class="fnc-av"><img src="${C.mascot || 'img/badger.svg'}" alt=""></div><div><b>Badger · Four Nines</b><small>Quick answers &amp; free quotes</small></div>
         <button class="fnc-x" aria-label="Close chat">×</button></div>
       <div class="fnc-log" aria-live="polite"></div>
       <form class="fnc-in" hidden><input autocomplete="off" aria-label="Type your answer"><button aria-label="Send">${send}</button></form>
@@ -205,7 +205,7 @@
   function open() {
     box.classList.add('open'); hint.hidden = true;
     if (!started) { started = true;
-      (async () => { await bot("Hi there! 👋 I'm the Four Nines assistant. I can get you a free quote or answer quick questions.", 400); mainMenu(true); })(); }
+      (async () => { await bot("Hi there! 👋 I'm Badger, the Four Nines assistant. I can get you a free quote or answer quick questions.", 400); mainMenu(true); })(); }
   }
   $('.fnc-btn').onclick = open; hint.onclick = open;
   $('.fnc-x').onclick = () => box.classList.remove('open');
