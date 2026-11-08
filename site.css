@@ -434,3 +434,11 @@ footer h4{font-family:var(--caps);font-size:.95rem;letter-spacing:.2em}
   .brand .wm small{font-size:.58rem;letter-spacing:.2em;white-space:nowrap}
   .top .btn.sm{padding:9px 12px;font-size:.9rem}
 }
+
+/* No logo mark until the real logo is designed */
+.hero .wrap{grid-template-columns:1fr!important}
+.hero h1,.hero p.sub{max-width:16ch}
+.hero p.sub{max-width:52ch}
+.band::after{content:none}
+.brand .wm b{font-size:1.6rem;letter-spacing:.08em}
+@media(max-width:480px){.brand .wm b{font-size:1.3rem}}
