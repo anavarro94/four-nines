@@ -9,6 +9,8 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const fmtPhone = p => { const d = String(p).replace(/\D/g,''); return d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : p; };
   const tel = 'tel:' + C.phone, sms = 'sms:' + C.phone, ph = fmtPhone(C.phone);
+  const HAS_PHONE = String(C.phone || '').replace(/\D/g, '').length >= 10, mail = 'mailto:' + C.email;
+  const reach = HAS_PHONE ? `<a href="${sms}">text us at ${esc(ph)}</a> or <a href="${tel}">call</a>` : `email us at <a href="${mail}">${esc(C.email)}</a>`;
 
   // ---------- styles ----------
   const css = `
@@ -107,7 +109,7 @@
   async function photo() {
     const fast = document.getElementById('fast');
     if (!fast) return quote();
-    await bot("Easiest way — snap a photo and we'll text you a price. Taking you there now 👇", 500);
+    await bot("Easiest way — snap a photo and we'll send you a price. Taking you there now 👇", 500);
     await wait(700); box.classList.remove('open'); fast.scrollIntoView({ behavior: 'smooth' });
   }
   async function prices() {
@@ -125,7 +127,7 @@
   }
   async function pay() { await bot(esc(C.paymentNote) + ' No deposit needed for most small jobs.'); mainMenu(); }
   async function person() {
-    await bot(`Sure! The quickest way is to <a href="${sms}">text us at ${esc(ph)}</a> or <a href="${tel}">call</a>. If we're on a job, leave a message and we'll get right back to you.`);
+    await bot(`Sure! The quickest way is to ${reach}. If we're on a job, we'll get right back to you.`);
     mainMenu();
   }
 
@@ -181,10 +183,10 @@
     const req = { name: q.name, phone: q.phone, email: '', address: q.address, service: q.service,
       details: q.details + ' (via website chat)', preferredTime: q.preferredTime };
     if (!C.scriptUrl) { // Sheet not connected yet → hand off as a text message
-      await bot("Tap below to send it to us by text — it's already filled in for you.");
+      await bot(`Tap below to send it to us by ${HAS_PHONE ? 'text' : 'email'} — it's already filled in for you.`);
       const body = `Quote request — ${req.name}, ${req.phone}\n${req.address}\n${req.service}: ${q.details}\nBest time: ${req.preferredTime}` +
         (q.files.length ? '\n(I have photos to send too)' : '');
-      log.insertAdjacentHTML('beforeend', `<div class="fnc-opts"><button type="button" onclick="location.href='${sms}?&body=${encodeURIComponent(body).replace(/'/g,'%27')}'">📩 Send by text</button></div>`);
+      log.insertAdjacentHTML('beforeend', `<div class="fnc-opts"><button type="button" onclick="location.href='${HAS_PHONE ? sms + '?&body=' : mail + '?subject=Quote%20request&body='}${encodeURIComponent(body).replace(/'/g,'%27')}'">📩 Send it</button></div>`);
       scroll(); return;
     }
     await bot('Sending…', 300);
@@ -196,7 +198,7 @@
       try { localStorage.setItem('fnc-sent', '1'); } catch (e) {}
       mainMenu();
     } catch (e) {
-      await bot(`Sorry — that didn't go through. Please <a href="${sms}">text us at ${esc(ph)}</a> and we'll take care of you.`);
+      await bot(`Sorry — that didn't go through. Please ${reach} and we'll take care of you.`);
     }
   }
 

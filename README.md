@@ -7,7 +7,9 @@ Free to run: GitHub Pages hosts the pages, a Google Sheet stores your data.
 | `index.html` | Customer site — services, photos, quote form, tap-to-call/text |
 | `admin.html` | Your office app — jobs, quote requests, customers, quotes/invoices, expenses |
 | `config.js` | **Edit this** — phone, email, services, prices, photos |
-| `style.css` | Look and colors |
+| `site.css` | Website look and colors |
+| `style.css` | Office app look |
+| `chat.js` | Free chat assistant on the website |
 | `google-sheet-backend.gs` | Goes in Google Sheets, not GitHub (step 2) |
 
 ## 1. Put the site on GitHub Pages
@@ -23,7 +25,7 @@ The site works right away: the quote form opens a text to your phone, and the of
 Easiest on a computer, ~10 minutes, one time.
 1. Go to sheets.new — name it **Four Nines**.
 2. **Extensions → Apps Script**. Delete what's there, paste all of `google-sheet-backend.gs`.
-3. Change `SECRET` to your own passcode. Optional: put your email in `NOTIFY_EMAIL` to get an email for every quote request.
+3. Change `SECRET` to your own passcode. `NOTIFY_EMAIL` is already set to a.navarro@fourninesenterprise.com — every quote request (with photos) is emailed there.
 4. Pick `setup` in the function menu → **Run** → allow permissions (it's your own script; click *Advanced → Go to project*).
 5. **Deploy → New deployment** → gear → *Web app*. Execute as: **Me**. Who has access: **Anyone**. Deploy → copy the URL.
 6. On GitHub, edit `config.js` → paste the URL into `scriptUrl: ""` → Commit.
@@ -36,5 +38,6 @@ If you edit the script later: **Deploy → Manage deployments → Edit → Versi
 ## Notes
 - The office page is protected by your passcode; your data lives only in your Google account. The Sheet itself is private.
 - **Backups:** office app → ⚙ → Download backup.
-- **Custom domain** (e.g. fourninesllc.com): buy one (~$12/yr), then Settings → Pages → Custom domain.
+- **Domain:** the site lives at fourninesenterprise.com (DNS at Squarespace Domains → GitHub Pages).
+- **No business phone yet?** Leave `phone` blank in `config.js` — the site switches to email-only automatically.
 - **Before/after photos:** upload images into an `img` folder in the repo and list them in `config.js` under `gallery`.
