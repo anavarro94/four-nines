@@ -441,7 +441,7 @@ prefill();
     btn.disabled = true; btn.textContent = 'Sending…'; msg.className = ''; msg.textContent = '';
     try {
       const photos = []; for (const file of [...inp.files].slice(0, 5)) photos.push(await shrink(file));
-      const r = await fetch(C.scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
+      const r = await fetch(C.scriptUrl, { method: 'POST', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
       const j = await r.json(); if (!j.ok) throw new Error(j.error);
       f.reset(); th.innerHTML = ''; inp.closest('.drop').classList.remove('has'); prefill();
       msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll text you a quote soon.`;
@@ -493,7 +493,7 @@ $('#qf').addEventListener('submit', async e => {
   try {
     const photos = [];
     for (const file of [...f.photos.files].slice(0, 5)) photos.push(await shrink(file));
-    const r = await fetch(C.scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
+    const r = await fetch(C.scriptUrl, { method: 'POST', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
     const j = await r.json();
     if (!j.ok) throw new Error(j.error);
     remember(data);
