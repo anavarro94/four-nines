@@ -266,3 +266,143 @@ footer .legal{border-top:1px solid #e6d8bc22;margin-top:44px;padding-top:22px;fo
 .est-out .rng i{font-style:normal;color:var(--brass-lt);margin:0 4px}
 .est-out small{display:block;max-width:46ch;color:#e6d8bcbf;font-size:.86rem}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* =========================================================
+   RUGGED THEME — workwear / tool-shop look
+   Stenciled numbers, condensed block type, hard edges,
+   canvas texture and hazard-stripe accents.
+   ========================================================= */
+:root{
+  --serif:"Oswald","Arial Narrow",Impact,sans-serif;
+  --caps:"Barlow Condensed","Arial Narrow",sans-serif;
+  --sans:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --stencil:"Big Shoulders Stencil Display","Oswald",Impact,sans-serif;
+  --r:4px;
+  --hard:6px 6px 0 #14323F;
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.2 0 0 0 0 0.25 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  --hazard:repeating-linear-gradient(-45deg,var(--brass) 0 14px,#14323F 14px 28px);
+}
+body{background:var(--sand-lt) var(--noise);font-size:17.5px}
+h1,h2{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.02}
+h2{font-size:clamp(2.1rem,5.6vw,3.4rem)}
+h1 em,h2 em{font-style:normal;color:var(--brass)}
+h3{font-family:var(--caps);font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:1.3rem}
+.eyebrow{font-family:var(--caps);font-weight:700;font-size:.92rem;letter-spacing:.2em}
+.eyebrow::before{width:22px;height:8px;background:var(--hazard)}
+.center .eyebrow::after{width:22px;height:8px;background:var(--hazard)}
+
+/* Buttons: chunky, square, hard shadow */
+.btn{border-radius:var(--r);font-family:var(--caps);font-weight:700;font-size:1.12rem;text-transform:uppercase;letter-spacing:.06em;padding:15px 24px;box-shadow:4px 4px 0 #0b1d25}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #0b1d25}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 #0b1d25}
+.btn.brass{box-shadow:4px 4px 0 #0b1d25}
+.btn.line{box-shadow:inset 0 0 0 2px #e6d8bcb3}
+.btn.sm{font-size:.98rem;padding:10px 16px;box-shadow:3px 3px 0 #0b1d25}
+
+/* Header + stenciled 9999 badge */
+.top{background:#14323F var(--noise);border-bottom:5px solid transparent;border-image:var(--hazard) 5}
+.brand .nn{font-family:var(--stencil);font-weight:900;font-size:1.65rem;letter-spacing:.04em;border-radius:3px;padding:6px 10px 4px;
+  background:var(--sand);color:#14323F;box-shadow:inset 0 0 0 2px #14323F,inset 0 0 0 4px var(--sand),inset 0 0 0 5px #14323F}
+.brand .wm b{font-family:var(--serif);font-weight:700;font-size:1.35rem;letter-spacing:.06em}
+.brand .wm small{font-family:var(--caps);font-size:.68rem;letter-spacing:.3em;font-weight:700}
+.nav a{font-family:var(--caps);text-transform:uppercase;letter-spacing:.1em;font-weight:700;font-size:1rem}
+.top .call{font-family:var(--caps);font-size:1.1rem;letter-spacing:.04em}
+
+/* Hero: darker, grittier */
+.hero::before{background:linear-gradient(100deg,#0f2731f5 0%,#14323Fe6 45%,#1F4A5C99 78%,#1F4A5C66 100%),var(--noise)}
+.hero::after{height:12px;background:var(--hazard)}
+.hero h1{font-size:clamp(2.8rem,8.4vw,5.6rem);letter-spacing:.005em;line-height:.98;text-shadow:3px 3px 0 #0b1d2580}
+.hero p.sub{font-size:1.2rem}
+.hero .proof{font-family:var(--caps);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:1rem}
+
+/* Rubber-stamp seal */
+.seal{position:relative;width:310px;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transform:rotate(-8deg);color:var(--sand);
+  -webkit-mask:var(--noise) center/180px,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude}
+.seal::before{content:"";position:absolute;inset:0;border-radius:50%;border:6px solid var(--sand);box-shadow:inset 0 0 0 10px transparent,inset 0 0 0 13px var(--sand)}
+.seal::after{content:"";position:absolute;inset:62px;border-radius:50%;border:3px solid var(--brass-lt)}
+.seal .ring{position:absolute;inset:0;width:100%;height:100%}
+.seal .ring text{font-family:var(--caps);font-weight:700;font-size:18px;fill:var(--sand)}
+.seal .lg{position:relative;z-index:1;font-family:var(--serif)}
+.seal .lg .n{font-family:var(--stencil);font-weight:900;font-size:5.4rem;line-height:.9;letter-spacing:.02em;color:#fff}
+.seal .lg .w{font-family:var(--serif);font-size:1.5rem;letter-spacing:.18em;margin-top:6px;color:var(--sand)}
+.seal .lg .e{font-family:var(--caps);font-size:.85rem;letter-spacing:.3em;color:var(--brass-lt);margin-top:6px}
+
+/* Stats: stenciled numbers on dark plate */
+.stats{background:#14323F var(--noise);color:var(--sand)}
+.stats li{border-color:#e6d8bc22!important}
+.stats b{font-family:var(--stencil);font-weight:900;font-size:clamp(2.4rem,6vw,3.4rem);color:#fff;letter-spacing:.02em}
+.stats b i{color:var(--brass-lt)}
+.stats span{font-family:var(--caps);font-size:.85rem;color:#e6d8bcb3;letter-spacing:.18em;font-weight:700}
+
+/* Cards: square edges, hard shadow, thick borders */
+.svc,.fast-card,.area-box,form.card,.ba{border-radius:var(--r);border:2px solid #14323F;box-shadow:var(--hard)}
+.svc:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 #14323F}
+.svc .ph{border-bottom:2px solid #14323F}
+.svc .ph .tag{border-radius:3px;font-family:var(--caps);font-size:1.05rem;letter-spacing:.03em;border:2px solid #14323F;box-shadow:3px 3px 0 #14323F}
+.svc .ico{border-radius:4px;border:2px solid #14323F;box-shadow:3px 3px 0 #14323F}
+.svc .go{font-family:var(--caps);text-transform:uppercase;letter-spacing:.08em;font-size:1.02rem}
+.svc .bd p{font-size:1rem}
+.fast-card::before{width:10px;background:var(--hazard)}
+.drop{border-radius:var(--r);border:3px dashed #14323F}
+.mini-steps b,.est-n{border-radius:3px;font-family:var(--stencil);font-weight:900;font-size:1.1rem}
+.chip{border-radius:3px;border:2px solid #14323F;font-family:var(--caps);text-transform:uppercase;letter-spacing:.05em;font-size:1rem;font-weight:700}
+.chip.on{box-shadow:3px 3px 0 var(--brass)}
+.slots .chip{font-size:.92rem}
+.est-out{border-radius:var(--r);border:2px solid #0b1d25;box-shadow:var(--hard);background:#14323F var(--noise)}
+.est-out .rng{font-family:var(--stencil);font-weight:900;letter-spacing:.02em}
+.alt-est{background:var(--paper) var(--noise)}
+input,select,textarea{border-radius:3px;border:2px solid #c9b998}
+form.card{border-top:10px solid transparent;border-image:none}
+form.card::before{content:"";display:block;height:10px;margin:-32px -32px 24px;background:var(--hazard)}
+@media(max-width:560px){form.card::before{margin:-22px -22px 18px}}
+form.card h3{font-family:var(--serif);text-transform:uppercase;font-size:1.9rem}
+label{font-family:var(--caps);text-transform:uppercase;letter-spacing:.08em;font-size:.95rem}
+label .opt{text-transform:none;letter-spacing:0;font-family:var(--sans);font-size:.85rem}
+
+/* Dark sections: diamond-plate feel */
+.dark{background:#1F4A5C var(--noise)}
+.dark::before{opacity:1;background-image:
+  radial-gradient(ellipse 5px 2px at 25% 25%,#ffffff12 98%,transparent),
+  radial-gradient(ellipse 2px 5px at 75% 75%,#ffffff12 98%,transparent);background-size:26px 26px}
+.step .num{border-radius:4px;transform:rotate(45deg);width:72px;height:72px;box-shadow:inset 0 0 0 3px var(--brass-lt),0 0 0 8px #1F4A5C}
+.step .num{font-family:var(--stencil);font-weight:900;font-size:2.2rem}
+.step .num::after{content:none}
+.steps .step .num{display:grid}
+.step .num{color:transparent;position:relative}
+.step .num::before{content:attr(data-n);position:absolute;inset:0;display:grid;place-items:center;transform:rotate(-45deg);color:var(--sand)}
+@media(min-width:860px){.steps::before{top:36px;border-top:3px dashed #d2a766}}
+.qside .direct a{border-radius:var(--r);border:2px solid #e6d8bc40}
+.qside .direct .ic{border-radius:4px}
+
+/* Why section photo + chip */
+.about .pic::before{border-radius:var(--r);border:3px solid var(--brass);inset:16px -16px -16px 16px}
+.about .pic div{border-radius:var(--r);border:2px solid #14323F}
+.about .pic .chip{border-radius:3px;border:2px solid #0b1d25;box-shadow:4px 4px 0 var(--brass)}
+.about .pic .chip b{font-family:var(--stencil);font-weight:900;font-size:2.4rem}
+.about .pic .chip span{font-family:var(--caps);font-size:.8rem;font-weight:700}
+.checks .ck{border-radius:3px;background:var(--teal);color:var(--sand);box-shadow:none}
+.checks li b{font-family:var(--caps);text-transform:uppercase;letter-spacing:.05em;font-size:1.15rem}
+
+/* Hazard CTA band */
+.band{background:var(--brass) var(--noise);border-top:12px solid transparent;border-bottom:12px solid transparent;border-image:var(--hazard) 12}
+.band::after{font-family:var(--stencil);font-weight:900;font-size:16rem;color:#ffffff1c}
+.band .btn{box-shadow:4px 4px 0 #0b1d25}
+
+/* Towns, FAQ, footer */
+.towns span{border-radius:3px;border:2px solid #14323F;font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.towns span::before{border-radius:0;transform:rotate(45deg)}
+.faq details{border-radius:var(--r);border:2px solid #14323F}
+.faq details[open]{box-shadow:var(--hard);border-color:#14323F}
+.faq summary{font-family:var(--caps);text-transform:uppercase;letter-spacing:.05em;font-size:1.15rem}
+.faq summary::after{border-radius:3px}
+footer{background:#0f2731 var(--noise);border-top:12px solid transparent;border-image:var(--hazard) 12}
+footer .flogo .n{font-family:var(--stencil);font-weight:900;font-size:3.4rem;letter-spacing:.03em}
+footer .flogo .w{font-family:var(--serif);letter-spacing:.12em}
+footer h4{font-family:var(--caps);font-size:.95rem;letter-spacing:.2em}
+.dock .btn{box-shadow:none}
+.fnc-btn{border-radius:6px!important;box-shadow:4px 4px 0 #0b1d25!important}
+.hero h1 em{font-style:normal;color:var(--brass-lt)}
+.seal::after{inset:50px}
+.seal .lg .n{font-size:4.8rem}
+.seal .lg .w{font-size:1.3rem;letter-spacing:.16em}
+.seal .lg .e{font-size:.78rem}
