@@ -8,7 +8,7 @@ window.FN_CONFIG = {
   tagline: "Your to-do list, done right.",
   subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Upfront prices. Pay when it's done.",
   phone: "8030000000",            // <-- your real number, digits only
-  email: "you@example.com",       // <-- your business email
+  email: "a.navarro@fourninesenterprise.com",
   serviceArea: "Elgin, Lugoff, Camden, Blythewood & Northeast Columbia",
   hours: "Evenings & weekends",
 
