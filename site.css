@@ -453,3 +453,6 @@ form.card::before{height:6px;background:var(--brass)}
 .eyebrow::before,.center .eyebrow::after{height:2px;width:30px;background:currentColor}
 .stats b{white-space:nowrap}
 @media(max-width:480px){.stats b{font-size:2.1rem}.stats li{padding:24px 10px}}
+/* Gallery: single "after" photos match the height of before/after pairs */
+.ba .pair div[style*="grid-column"] img{aspect-ratio:2/1}
+.ba-grid{align-items:start}

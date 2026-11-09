@@ -24,13 +24,13 @@ window.FN_CONFIG = {
 
   services: [
     { name: "Drywall repair",        price: "From $125", desc: "Holes, cracks and water spots patched, textured and painted so you can't find them.", img: "https://images.unsplash.com/photo-1768839725085-829e6ac7ac26?w=900&q=70&auto=format&fit=crop" },
-    { name: "Ceiling fans",          price: "From $125", desc: "Old fan out, new fan in, or swap a light for a fan. Assembled, balanced, no wobble.", img: "https://images.unsplash.com/photo-1609519479841-5fd3b2884e17?w=900&q=70&auto=format&fit=crop" },
-    { name: "Outlets & switches",    price: "From $65", desc: "Swap worn or outdated outlets and switches, add USB or GFCI outlets, fresh cover plates.", img: "https://images.unsplash.com/photo-1635335874521-7987db781153?w=900&q=70&auto=format&fit=crop" },
-    { name: "TV mounting & shelves", price: "From $85",  desc: "Any size TV mounted level and secure, wires hidden. Shelves, mirrors and curtain rods too.", img: "https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=900&q=70&auto=format&fit=crop" },
-    { name: "Furniture assembly",    price: "From $65", desc: "Beds, dressers, desks, patio sets. Built solid, boxes hauled off.", img: "https://images.unsplash.com/photo-1772338537689-056082f100a9?w=900&q=70&auto=format&fit=crop" },
+    { name: "Ceiling fans",          price: "From $125", desc: "Old fan out, new fan in, or swap a light for a fan. Assembled, balanced, no wobble.", img: "img/ceiling-fan.jpg" },
+    { name: "Outlets & switches",    price: "From $65", desc: "Swap worn or outdated outlets and switches, add USB or GFCI outlets, fresh cover plates.", img: "img/gfci-after.jpg" },
+    { name: "TV mounting & shelves", price: "From $85",  desc: "Any size TV mounted level and secure, wires hidden. Shelves, mirrors and curtain rods too.", img: "img/tv-after.jpg" },
+    { name: "Furniture assembly",    price: "From $65", desc: "Beds, dressers, desks, patio sets. Built solid, boxes hauled off.", img: "img/garage-racks.jpg" },
     { name: "Carpet & LVP flooring", price: "Quoted", desc: "LVP and carpet installed room by room, with clean trim and transitions.", img: "https://images.unsplash.com/photo-1598718544285-7180f670198b?w=900&q=70&auto=format&fit=crop" },
-    { name: "Small yard work",       price: "From $75", desc: "Trimming, edging, leaf cleanup and hedge shaping to get your yard back in shape.", img: "https://images.unsplash.com/photo-1689728318937-17d24bc0a65c?w=900&q=70&auto=format&fit=crop" },
-    { name: "Small junk removal",    price: "From $95", desc: "Old furniture, boxes and clutter hauled away. We do the lifting.", img: "https://images.unsplash.com/photo-1757837593538-b4a8654132f1?w=900&q=70&auto=format&fit=crop" },
+    { name: "Small yard work",       price: "From $75", desc: "Trimming, edging, leaf cleanup and hedge shaping to get your yard back in shape.", img: "img/fire-pit.jpg" },
+    { name: "Small junk removal",    price: "From $95", desc: "Old furniture, boxes and clutter hauled away. We do the lifting.", img: "img/deck-before.jpg" },
     { name: "Small cleaning",        price: "From $85", desc: "Move-out touch-ups, garages, and the spots that never get cleaned.", img: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=900&q=70&auto=format&fit=crop" },
     { name: "Honey-do list",         price: "From $65/hr", desc: "Send the whole list. One visit, everything checked off.", img: "https://images.unsplash.com/photo-1599619585752-c3edb42a414c?w=900&q=70&auto=format&fit=crop" }
   ],
@@ -52,12 +52,20 @@ window.FN_CONFIG = {
 
   // Photos. These are free stock photos for now — swap in your own job
   // photos over time (upload to an /img folder, then use "img/your-photo.jpg").
-  heroImage: "https://images.unsplash.com/photo-1676311396794-f14881e9daaa?w=1800&q=70&auto=format&fit=crop",
-  aboutImage: "https://images.unsplash.com/photo-1505798577917-a65157d3320a?w=1100&q=70&auto=format&fit=crop",
+  heroImage: "img/garage-racks.jpg",
+  aboutImage: "img/mirror.jpg",
 
   // Before/after photos. Upload images to the /img folder on GitHub,
   // then list them here. Leave the list empty to hide the section.
   gallery: [
-    // { before: "img/bath-before.jpg", after: "img/bath-after.jpg", caption: "Bathroom vanity swap — Elgin" }
+    { before: "img/sink-before.jpg", after: "img/sink-after.jpg", caption: "Water-damaged sink cabinet floor rebuilt and sealed" },
+    { before: "img/tv-before.jpg",   after: "img/tv-after.jpg",   caption: "Bedroom TV mounted level and secure" },
+    { before: "img/gfci-before.jpg", after: "img/gfci-after.jpg", caption: "Worn kitchen outlet upgraded to GFCI" },
+    { before: "img/deck-before.jpg", after: "img/deck-after.jpg", caption: "Cluttered patio cleared and junk hauled off" },
+    { before: "img/yard-before.jpg", after: "img/yard-after.jpg", caption: "Overgrown fence line trimmed and cleaned up" },
+    { after: "img/garage-racks.jpg", caption: "Overhead garage storage racks installed" },
+    { after: "img/fire-pit.jpg",     caption: "Backyard fire pit area with paver border and lights" },
+    { after: "img/ceiling-fan.jpg",  caption: "Ceiling fan installed and balanced" },
+    { after: "img/mirror.jpg",       caption: "Large statement mirror hung level" }
   ]
 };
