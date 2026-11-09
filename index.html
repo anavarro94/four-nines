@@ -86,6 +86,7 @@
         </div>
         <label for="fTown">Town</label>
         <select id="fTown" name="address" required></select>
+        <input class="hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="btn brass" type="submit" style="width:100%;margin-top:18px;padding:17px">Send my photos</button>
         <p class="fine">We get right back to you. No spam, no sales calls.</p>
         <div id="fmsg" role="status"></div>
@@ -353,6 +354,19 @@ if (C.gallery && C.gallery.length) {
 }
 
 
+// ---------- Spam protection (invisible to real customers) ----------
+const LOADED = Date.now();
+function looksLikeSpam(form, text, phone) {
+  const hp = form.querySelector('.hp');
+  if (hp && hp.value) return 'trap';                              // hidden field only bots fill in
+  if (Date.now() - LOADED < 4000) return 'fast';                  // nobody fills a form in under 4 seconds
+  if ((String(text).match(/https?:\/\/|www\./gi) || []).length) return 'link';   // spam almost always has links
+  if (/\b(seo|backlinks?|crypto|bitcoin|casino|viagra|loan offer|guest post|rank your (site|website))\b/i.test(text)) return 'words';
+  if (phone && String(phone).replace(/\D/g, '').length < 10) return 'phone';
+  return '';
+}
+function fakeSuccess(msg, text) { msg.className = 'msg ok'; msg.textContent = text; }
+
 // ---------- Convenience features ----------
 const towns = C.serviceArea.split(/,|&/).map(t => t.trim()).filter(Boolean);
 
@@ -430,6 +444,9 @@ prefill();
     const f = e.target, btn = f.querySelector('[type=submit]'), msg = $('#fmsg');
     const data = { name: $('#fName').value.trim(), phone: $('#fTel').value.trim(), email: '', address: $('#fTown').value,
       service: 'Photo quote', details: $('#fWhat').value.trim() + ' (photo quote)', preferredTime: '' };
+    const why = looksLikeSpam(f, data.details + ' ' + data.name, data.phone);
+    if (why === 'phone') { msg.className = 'msg bad'; msg.textContent = 'Please enter your full 10-digit phone number so we can reach you.'; return; }
+    if (why) { f.reset(); return fakeSuccess(msg, "Got it! We'll get back to you soon with your price."); }
     remember(data);
     if (!C.scriptUrl) {
       const n = inp.files.length;
@@ -481,7 +498,9 @@ $('#qf').addEventListener('submit', async e => {
   const f = e.target, btn = f.querySelector('[type=submit]'), msg = $('#qmsg');
   const data = Object.fromEntries(new FormData(f));
   delete data.photos;
-  if (data.website) return; // spam bot
+  const why = looksLikeSpam(f, `${data.name} ${data.details} ${data.email}`, data.phone);
+  if (why === 'phone') { msg.className = 'msg bad'; msg.textContent = 'Please enter your full 10-digit phone number so we can reach you.'; return; }
+  if (why) { f.reset(); return fakeSuccess(msg, "Got it! We'll reach out within one business day."); }
   delete data.website;
 
   if (!C.scriptUrl) { // not connected yet → open a text or email

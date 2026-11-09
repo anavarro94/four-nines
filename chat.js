@@ -167,6 +167,7 @@
       (q.files.length ? `<br>📷 ${q.files.length} photo(s)` : '') + '<br><br>Send it?', 600);
     const ok = await opts([['✅ Send request','send'],['Start over','redo']]);
     if (ok === 'redo') return quote();
+    if (/https?:\/\/|www\./i.test(q.details + q.name) || Date.now() - OPENED < 15000) { await bot(`All set, ${esc(q.name.split(' ')[0])}! ✅ We'll reach out soon.`, 400); return; } // spam guard
     submit(q);
   }
 
@@ -202,9 +203,9 @@
   }
 
   // ---------- open / close ----------
-  let started = false;
+  let started = false, OPENED = Date.now();
   function open() {
-    box.classList.add('open'); hint.hidden = true;
+    box.classList.add('open'); hint.hidden = true; if (!started) OPENED = Date.now();
     if (!started) { started = true;
       (async () => { await bot("Hey there! 👋 Need something fixed? I can get you a price or answer a quick question.", 400); mainMenu(true); })(); }
   }
