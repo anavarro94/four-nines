@@ -456,3 +456,4 @@ form.card::before{height:6px;background:var(--brass)}
 /* Gallery: single "after" photos match the height of before/after pairs */
 .ba .pair div[style*="grid-column"] img{aspect-ratio:2/1}
 .ba-grid{align-items:start}
+.ba img[src*="mailbox"]{object-position:center 22%}
