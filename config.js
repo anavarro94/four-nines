@@ -62,6 +62,7 @@ window.FN_CONFIG = {
     { before: "img/tv-before.jpg",   after: "img/tv-after.jpg",   caption: "Bedroom TV mounted level and secure" },
     { before: "img/gfci-before.jpg", after: "img/gfci-after.jpg", caption: "Worn kitchen outlet upgraded to GFCI" },
     { before: "img/pipe-before.jpg", after: "img/pipe-after.jpg", caption: "Damaged roof vent pipe repaired" },
+    { before: "img/pool-before.jpg", after: "img/pool-after.jpg", caption: "Pool safety cover installed and anchored tight" },
     { before: "img/deck-before.jpg", after: "img/deck-after.jpg", caption: "Cluttered patio cleared and junk hauled off" },
     { before: "img/yard-before.jpg", after: "img/yard-after.jpg", caption: "Overgrown fence line trimmed and cleaned up" },
     { after: "img/garage-racks.jpg", caption: "Overhead garage storage racks installed" },
