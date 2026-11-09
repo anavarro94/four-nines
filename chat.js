@@ -100,11 +100,60 @@
   }
 
   // ---------- conversation ----------
-  const menu = [['📷 Quick photo quote','photo'],['Get a free quote','quote'],['Prices','prices'],['Service area','area'],['When can you come?','hours'],['How do I pay?','pay'],['Talk to a person','person']];
+  const menu = [['💬 Ask a question','askq'],['📷 Quick photo quote','photo'],['Get a free quote','quote'],['Prices','prices'],['Service area','area'],['When can you come?','hours'],['How do I pay?','pay'],['Talk to a person','person']];
   async function mainMenu(first) {
     if (!first) await bot('Anything else I can help with?', 400);
     const pick = await opts(menu);
-    ({ photo, quote, prices, area, hours, pay, person })[pick]();
+    ({ askq, photo, quote, prices, area, hours, pay, person })[pick]();
+  }
+  // ---------- free-text questions (keyword matching, no AI) ----------
+  const SYN = {
+    'Drywall repair': /drywall|sheetrock|hole in (the |my )?wall|crack|patch|plaster/,
+    'Ceiling fans': /ceiling fan|\bfans?\b/,
+    'Outlets & switches': /outlet|switch|gfci|usb|plug|receptacle|dimmer/,
+    'TV mounting & shelves': /\btv\b|television|mount|shel(f|ves)|curtain|rod|mirror|picture|art\b|hang/,
+    'Furniture assembly': /assembl|ikea|furniture|dresser|bed frame|desk|crib|wardrobe|bookcase|put together|build/,
+    'Carpet & LVP flooring': /floor|lvp|vinyl|carpet|laminate|plank/,
+    'Small yard work': /yard|lawn|leaves|leaf|hedge|bush|shrub|weed|trim|mulch|landscap/,
+    'Small junk removal': /junk|haul|remov|trash|debris|clean ?out|dump/,
+    'Small cleaning': /clean|move.?out|pressure wash|power wash/,
+    'Honey-do list': /honey|list|few things|bunch of|odd jobs|small jobs/
+  };
+  const svcFor = t => Object.keys(SYN).find(k => SYN[k].test(t) && C.services.some(s => s.name === k));
+  function rangeHtml(name) {
+    const E = (C.estimator || {})[name], s = C.services.find(x => x.name === name);
+    if (!E) return `<b>${esc(name)}</b> is priced per job (${esc(s ? s.price : 'free quote')}). Send a photo and we'll give you an exact number.`;
+    return `<b>${esc(name)}</b> typically runs:<br>` + E.opts.map(o => `• ${esc(o[0])}: <b>$${o[1]}–$${o[2]}</b>`).join('<br>') + '<br><br>Your written quote locks in the exact price.';
+  }
+  async function answer(t) {
+    t = t.toLowerCase();
+    const towns = C.serviceArea.split(/,|&/).map(x => x.trim()).filter(Boolean);
+    const svc = svcFor(t);
+    if (/roof|shingle|gutter/.test(t)) return bot("We don't do roofing or gutters, but we're happy to help with almost anything inside or around the house. Want a quote on something else?");
+    if (/plumb|water heater|leak|toilet|faucet|electric panel|breaker|rewir|hvac|furnace|a\/?c\b/.test(t)) return bot(`That one depends on the details — some plumbing and electrical work needs a licensed specialist. Send a photo and we'll tell you honestly if it's a job for us, or ${reach}.`);
+    if (/remodel|addition|renovat|kitchen remodel|bathroom remodel|build a (deck|room)/.test(t)) return bot("We focus on smaller jobs done really well. For a big remodel we'll be straight with you and point you to the right pro. Send the details and we'll take a look.");
+    if (/insur|licens|bond/.test(t)) return bot(`Good question — ${reach} and we'll answer that directly before any work starts.`);
+    if (/\bchecks?\b/.test(t) && !/check (on|in|out)/.test(t)) return bot("Sorry, we don't take checks. " + esc(C.paymentNote));
+    if (/check|venmo|zelle|apple|cash|pay|card|deposit/.test(t)) return bot(esc(C.paymentNote) + ' No deposit needed for most small jobs.');
+    if (/when|weekend|saturday|sunday|evening|night|tonight|tomorrow|today|available|soon|hour|time|schedule/.test(t)) return bot(`We work <b>${esc(C.hours.toLowerCase())}</b>, so you don't have to take off work. Send your request with the days that work for you and we'll confirm a time.`);
+    const town = towns.find(x => t.includes(x.toLowerCase().replace(/^northeast /, '')));
+    if (town || /area|town|serve|come to|near|far|travel|zip|columbia|irmo|cayce|ridgeway|camden|lugoff|blythewood/.test(t)) return bot(town ? `Yes — we serve <b>${esc(town)}</b>! 👍` : `We serve <b>${esc(C.serviceArea)}</b>. Just outside that? Ask anyway — we can usually make it work.`);
+    if (svc && /cost|price|how much|charge|rate|quote|\$|estimate/.test(t)) return bot(rangeHtml(svc));
+    if (svc) return bot(`Yes, we do that! ` + rangeHtml(svc));
+    if (/cost|price|how much|charge|rate|estimate/.test(t)) return bot('Starting prices:<br>' + C.services.map(s => `<b>${esc(s.name)}</b> — ${esc(s.price)}`).join('<br>'));
+    if (/photo|picture|pic/.test(t)) return bot('Photos are the fastest way to a price — use <b>📷 Quick photo quote</b> and we can usually price small jobs without a visit.');
+    return bot(`I'm not sure about that one, but the owner can help — ${reach}, or start a free quote and add the details.`);
+  }
+  async function askq() {
+    await bot("Sure — type your question. (For example: \"Do you mount TVs?\" or \"How much to fix a hole in drywall?\")", 400);
+    const t = await ask('Type your question…');
+    await answer(t);
+    const svc = svcFor(t.toLowerCase());
+    const n = await opts([...(svc ? [[`Quote my ${svc.toLowerCase()} job`, 'qs']] : [['Get a free quote', 'q']]), ['Ask another question', 'a'], ['Back to menu', 'm']]);
+    if (n === 'a') return askq();
+    if (n === 'q') return quote();
+    if (n === 'qs') return quote(svc);
+    mainMenu();
   }
   async function photo() {
     const fast = document.getElementById('fast');
@@ -115,7 +164,14 @@
   async function prices() {
     await bot('Here are our starting prices:<br><br>' + C.services.map(s => `<b>${esc(s.name)}</b> — ${esc(s.price)}`).join('<br>') +
       '<br><br>Every job gets a written quote before work starts, so you always know the price up front.', 800);
-    const n = await opts([['Get a free quote','q'],['Back to menu','m']]); n === 'q' ? quote() : mainMenu();
+    const n = await opts([['See price ranges for a job','r'],['Get a free quote','q'],['Back to menu','m']]);
+    if (n === 'q') return quote();
+    if (n === 'm') return mainMenu();
+    await bot('Which job?', 300);
+    const s = await opts(C.services.map(x => [x.name]));
+    await bot(rangeHtml(s), 500);
+    const m = await opts([[`Quote my ${s.toLowerCase()} job`, 'qs'], ['Back to menu', 'm']]);
+    m === 'qs' ? quote(s) : mainMenu();
   }
   async function area() {
     await bot(`We're based in Elgin and serve <b>${esc(C.serviceArea)}</b>. Just outside that? Ask anyway — we can usually make it work.`);
@@ -131,10 +187,13 @@
     mainMenu();
   }
 
-  async function quote() {
+  async function quote(pre) {
     const q = {};
-    await bot("Great — I'll get your info to us so we can send a free quote. First, what do you need help with?");
-    q.service = await opts([...C.services.map(s => [s.name]), ['Something else']]);
+    if (pre) { q.service = pre; await bot(`Great — let's get you a free quote for <b>${esc(pre.toLowerCase())}</b>.`); }
+    else {
+      await bot("Great — I'll get your info to us so we can send a free quote. First, what do you need help with?");
+      q.service = await opts([...C.services.map(s => [s.name]), ['Something else']]);
+    }
     await bot('Got it. Describe the job in a sentence or two — the more detail, the better the quote.', 450);
     q.details = await ask('e.g. Hole in hallway drywall, about fist-size');
     await bot('Want to add photos? They help us quote without a visit.', 450);

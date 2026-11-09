@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Handyman in Elgin, SC | Evenings & Weekends | Four Nines Enterprise, LLC</title>
 <meta name="description" content="Elgin handyman for evenings and weekends. Drywall, TV mounting, ceiling fans, furniture assembly, flooring, yard work, junk removal and cleaning. Send a photo for a free quote. Serving Elgin, Lugoff, Camden, Blythewood and Northeast Columbia.">
+<link rel="canonical" href="https://fourninesenterprise.com/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fourninesenterprise.com/">
+<meta property="og:image" content="https://fourninesenterprise.com/img/fire-pit.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2F4B3A">
 <meta property="og:title" content="Four Nines — Elgin's Evening &amp; Weekend Handyman">
 <meta property="og:description" content="Send a photo, get a price. We work evenings and weekends, so you never take off work. Pay when it's done.">
@@ -15,7 +20,8 @@
 <script src="config.js"></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Four Nines Enterprise, LLC","alternateName":"Four Nines",
- "url":"https://fourninesenterprise.com/","email":"a.navarro@fourninesenterprise.com","description":"Evening and weekend handyman in Elgin, SC: drywall, TV mounting, ceiling fans, furniture assembly, flooring, yard work, junk removal and cleaning.",
+ "url":"https://fourninesenterprise.com/","image":"https://fourninesenterprise.com/img/fire-pit.jpg",
+ "knowsAbout":["Drywall repair","TV mounting","Ceiling fan installation","Furniture assembly","LVP flooring","Junk removal","Yard cleanup"],"email":"a.navarro@fourninesenterprise.com","description":"Evening and weekend handyman in Elgin, SC: drywall, TV mounting, ceiling fans, furniture assembly, flooring, yard work, junk removal and cleaning.",
  "address":{"@type":"PostalAddress","addressLocality":"Elgin","addressRegion":"SC","postalCode":"29045","addressCountry":"US"},
  "areaServed":["Elgin, SC","Lugoff, SC","Camden, SC","Blythewood, SC","Columbia, SC"],"priceRange":"$$"}
 </script>
@@ -372,8 +378,8 @@ if (C.gallery && C.gallery.length) {
   $('#work').hidden = false;
   $('#gallery').innerHTML = C.gallery.map(g => `
     <figure class="ba"><div class="pair">
-      ${g.before ? `<div><img src="${esc(g.before)}" alt="Before" loading="lazy"><span>Before</span></div>` : ''}
-      <div${g.before ? '' : ' style="grid-column:1/-1"'}><img src="${esc(g.after)}" alt="After" loading="lazy"><span>After</span></div>
+      ${g.before ? `<div><img src="${esc(g.before)}" alt="${esc(g.caption)} (before)" loading="lazy"><span>Before</span></div>` : ''}
+      <div${g.before ? '' : ' style="grid-column:1/-1"'}><img src="${esc(g.after)}" alt="${esc(g.caption)}${g.before ? ' (after)' : ''}" loading="lazy"><span>After</span></div>
     </div><figcaption>${esc(g.caption)}</figcaption></figure>`).join('');
 }
 
