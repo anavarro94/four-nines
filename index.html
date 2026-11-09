@@ -13,6 +13,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600;700;800&family=Roboto+Condensed:wght@600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <script src="config.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Four Nines Enterprise, LLC","alternateName":"Four Nines",
+ "url":"https://fourninesenterprise.com/","email":"a.navarro@fourninesenterprise.com","description":"Evening and weekend handyman in Elgin, SC: drywall, TV mounting, ceiling fans, furniture assembly, flooring, yard work, junk removal and cleaning.",
+ "address":{"@type":"PostalAddress","addressLocality":"Elgin","addressRegion":"SC","postalCode":"29045","addressCountry":"US"},
+ "areaServed":["Elgin, SC","Lugoff, SC","Camden, SC","Blythewood, SC","Columbia, SC"],"priceRange":"$$"}
+</script>
 </head>
 <body>
 
@@ -23,6 +29,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <a href="#services">Services</a>
+      <a href="#work">Our work</a>
       <a href="#how">How it works</a>
       <a href="#area">Service area</a>
       <a href="#faq">FAQ</a>
@@ -50,6 +57,7 @@
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Evenings &amp; weekends</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Pay when it's done</span>
       </div>
+      <a class="seework" href="#work">See our recent work →</a>
     </div>
   </div>
 </section>
@@ -102,11 +110,19 @@
       <p class="lede" style="max-width:42ch;margin:0">Repairs, installs, assembly, and the chores you keep putting off. Don't see your job? Send a photo. If we can't do it right, we'll tell you.</p>
     </div>
     <div class="svc-grid" id="svcGrid"></div>
+    <div class="also rv"><b>We've also handled:</b> <span>Pool safety covers</span><span>Mailbox &amp; post installs</span><span>Garage storage racks</span><span>Hose reel mounting</span><span>Mirrors &amp; wall decor</span><span>Fire pit areas</span><span>Sink cabinet floors</span><span>Roof vent pipe repair</span></div>
     <p class="note">Starting prices for labor. You get a written quote before any work begins, so there are no surprises.</p>
   </div>
 </section>
 
-<section id="estimate" class="sec alt-est">
+<section id="work" class="sec alt-est" hidden>
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="eyebrow">Recent work</p><h2>Before &amp; <em>after</em></h2></div><p class="lede" style="max-width:42ch;margin:0">Every photo here is a real Four Nines job around the Midlands. No stock photos, no staging.</p></div>
+    <div class="ba-grid" id="gallery"></div>
+  </div>
+</section>
+
+<section id="estimate" class="sec">
   <div class="wrap">
     <div class="sec-head center rv">
       <p class="eyebrow">Price check</p>
@@ -121,6 +137,20 @@
         <div class="chips" id="estOpts"></div>
       </div>
       <div class="est-out" id="estOut" hidden></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec compare-sec">
+  <div class="wrap">
+    <div class="sec-head center rv"><p class="eyebrow">Why we're different</p><h2>Built around <em>your</em> schedule</h2>
+      <p class="lede">Most handyman companies work the same hours you do. We don't.</p></div>
+    <div class="compare rv">
+      <div class="col them"><h3>Typical handyman company</h3><ul>
+        <li>Monday–Friday, 8 to 5</li><li>Closed weekends</li><li>Take a day off to let them in</li><li>Wait for an in-home estimate</li><li>Often a deposit up front</li></ul></div>
+      <div class="col us"><h3>Four Nines</h3><ul>
+        <li>Weeknight evenings</li><li>Saturdays and Sundays</li><li>No time off work needed</li><li>Send a photo, get your price</li><li>Pay only when it's done</li></ul>
+        <a class="btn brass" href="#fast">Get my price</a></div>
     </div>
   </div>
 </section>
@@ -164,12 +194,6 @@
   </div>
 </section>
 
-<section id="work" class="sec" hidden>
-  <div class="wrap">
-    <div class="sec-head rv"><div><p class="eyebrow">Recent work</p><h2>Before &amp; <em>after</em></h2></div></div>
-    <div class="ba-grid" id="gallery"></div>
-  </div>
-</section>
 
 <section id="area" class="sec">
   <div class="wrap">
@@ -247,7 +271,7 @@
         <p style="margin-top:18px;max-width:34ch">Evening and weekend handyman service for Elgin, Lugoff, Camden, Blythewood and Northeast Columbia.</p>
       </div>
       <div><h4>Contact</h4><ul><li><a id="fPhone" href="#"></a></li><li><a id="fEmail" href="#"></a></li><li id="fHours"></li></ul></div>
-      <div><h4>Quick links</h4><ul><li><a href="#services">Services</a></li><li><a href="#how">How it works</a></li><li><a href="#quote">Free quote</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Quick links</h4><ul><li><a href="#services">Services</a></li><li><a href="#work">Our work</a></li><li><a href="#how">How it works</a></li><li><a href="#quote">Free quote</a></li><li><a href="#faq">FAQ</a></li></ul></div>
     </div>
     <p class="legal">© <span id="yr"></span> <span id="fName"></span> · Serving <span id="fArea"></span></p>
   </div>

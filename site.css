@@ -457,3 +457,21 @@ form.card::before{height:6px;background:var(--brass)}
 .ba .pair div[style*="grid-column"] img{aspect-ratio:2/1}
 .ba-grid{align-items:start}
 .ba img[src*="mailbox"]{object-position:center 22%}
+
+/* Proof + comparison */
+.also{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.95rem}
+.also b{color:var(--teal);margin-right:4px}
+.also span{background:var(--paper);border:1.5px solid var(--line);border-radius:4px;padding:6px 10px;font-weight:500;color:var(--ink)}
+.seework{display:inline-block;margin-top:18px;color:var(--brass-lt);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor}
+.compare{display:grid;gap:18px;max-width:900px;margin:0 auto}
+@media(min-width:760px){.compare{grid-template-columns:1fr 1fr}}
+.compare .col{border-radius:var(--r);padding:26px;border:2px solid #1F3328}
+.compare .them{background:var(--paper);color:var(--muted)}
+.compare .them h3{color:var(--muted)}
+.compare .us{background:var(--teal);color:#fff;box-shadow:var(--hard)}
+.compare .us h3{color:#fff}
+.compare ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:10px}
+.compare li{display:flex;gap:10px;align-items:flex-start}
+.compare .them li::before{content:"✕";color:#9a9a9a;font-weight:700}
+.compare .us li::before{content:"✓";color:var(--brass-lt);font-weight:800}
+.compare .us .btn{margin-top:20px}
