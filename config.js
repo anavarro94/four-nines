@@ -61,11 +61,13 @@ window.FN_CONFIG = {
     { before: "img/sink-before.jpg", after: "img/sink-after.jpg", caption: "Water-damaged sink cabinet floor rebuilt and sealed" },
     { before: "img/tv-before.jpg",   after: "img/tv-after.jpg",   caption: "Bedroom TV mounted level and secure" },
     { before: "img/gfci-before.jpg", after: "img/gfci-after.jpg", caption: "Worn kitchen outlet upgraded to GFCI" },
+    { before: "img/pipe-before.jpg", after: "img/pipe-after.jpg", caption: "Damaged roof vent pipe repaired" },
     { before: "img/deck-before.jpg", after: "img/deck-after.jpg", caption: "Cluttered patio cleared and junk hauled off" },
     { before: "img/yard-before.jpg", after: "img/yard-after.jpg", caption: "Overgrown fence line trimmed and cleaned up" },
     { after: "img/garage-racks.jpg", caption: "Overhead garage storage racks installed" },
     { after: "img/fire-pit.jpg",     caption: "Backyard fire pit area with paver border and lights" },
     { after: "img/ceiling-fan.jpg",  caption: "Ceiling fan installed and balanced" },
-    { after: "img/mirror.jpg",       caption: "Large statement mirror hung level" }
+    { after: "img/mirror.jpg",       caption: "Large statement mirror hung level" },
+    { after: "img/mailbox.jpg",      caption: "New mailbox and post installed" }
   ]
 };
