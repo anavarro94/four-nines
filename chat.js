@@ -192,8 +192,7 @@
     await bot('Sending…', 300);
     try {
       const photos = []; for (const f of q.files) photos.push(await shrink(f));
-      const r = await fetch(C.scriptUrl, { method: 'POST', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...req, photos } }) });
-      const j = await r.json(); if (!j.ok) throw new Error(j.error);
+      await fetch(C.scriptUrl, { method: 'POST', mode: 'no-cors', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...req, photos } }) });
       await bot(`All set, ${esc(q.name.split(' ')[0])}! ✅ We got your request and will reach out within one business day with your quote.`, 500);
       try { localStorage.setItem('fnc-sent', '1'); } catch (e) {}
       mainMenu();

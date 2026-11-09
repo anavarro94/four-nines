@@ -441,12 +441,13 @@ prefill();
     btn.disabled = true; btn.textContent = 'Sending…'; msg.className = ''; msg.textContent = '';
     try {
       const photos = []; for (const file of [...inp.files].slice(0, 5)) photos.push(await shrink(file));
-      const r = await fetch(C.scriptUrl, { method: 'POST', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
-      const j = await r.json(); if (!j.ok) throw new Error(j.error);
+      await fetch(C.scriptUrl, { method: 'POST', mode: 'no-cors', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
       f.reset(); th.innerHTML = ''; inp.closest('.drop').classList.remove('has'); prefill();
-      msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll text you a quote soon.`;
+      msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll get back to you soon with your price.`;
     } catch (err) {
-      msg.className = 'msg bad'; msg.innerHTML = `Couldn't send right now — please <a href="${sms}">text us your photos</a>.`;
+      msg.className = 'msg bad'; msg.innerHTML = err && err.name === 'TimeoutError'
+        ? `This is taking longer than usual. Your request may already be in — if you don't hear from us within one business day, ${HAS_PHONE ? `<a href="${sms}">text us your photos</a>` : `email us at <a href="${mail}">${esc(C.email)}</a>`}.`
+        : `Couldn't send right now — please ${HAS_PHONE ? `<a href="${sms}">text us your photos</a>` : `email your photos to <a href="${mail}">${esc(C.email)}</a>`}.`;
     } finally { btn.disabled = false; btn.textContent = 'Send my photos'; }
   });
 })();
@@ -493,9 +494,7 @@ $('#qf').addEventListener('submit', async e => {
   try {
     const photos = [];
     for (const file of [...f.photos.files].slice(0, 5)) photos.push(await shrink(file));
-    const r = await fetch(C.scriptUrl, { method: 'POST', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
-    const j = await r.json();
-    if (!j.ok) throw new Error(j.error);
+    await fetch(C.scriptUrl, { method: 'POST', mode: 'no-cors', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
     remember(data);
     f.reset();
     document.querySelectorAll('#slots .chip.on').forEach(c => c.classList.remove('on'));
@@ -504,7 +503,9 @@ $('#qf').addEventListener('submit', async e => {
     msg.textContent = "Got it! We'll reach out within one business day.";
   } catch (err) {
     msg.className = 'msg bad';
-    msg.innerHTML = `Couldn't send right now — please <a href="${tel}">call</a> or <a href="${sms}">text</a> us.`;
+    msg.innerHTML = err && err.name === 'TimeoutError'
+      ? `This is taking longer than usual. Your request may already be in — if you don't hear from us within one business day, ${HAS_PHONE ? `<a href="${sms}">text us</a>` : `email us at <a href="${mail}">${esc(C.email)}</a>`}.`
+      : `Couldn't send right now — please ${HAS_PHONE ? `<a href="${tel}">call</a> or <a href="${sms}">text</a> us` : `email us at <a href="${mail}">${esc(C.email)}</a>`}.`;
   } finally {
     btn.disabled = false; btn.textContent = 'Send my request';
   }
