@@ -15,43 +15,43 @@
   // ---------- styles ----------
   const css = `
   .fnc-btn{position:fixed;right:18px;bottom:22px;z-index:40;width:62px;height:62px;border-radius:50%;border:0;cursor:pointer;
-    background:#A36F2B;color:#fff;box-shadow:0 10px 28px #14323f66;display:grid;place-items:center;transition:transform .15s}
+    background:#B4532A;color:#fff;box-shadow:0 10px 28px #1F332866;display:grid;place-items:center;transition:transform .15s}
   .fnc-btn:hover{transform:scale(1.06)}
   .fnc-btn svg{width:28px;height:28px}.fnc-btn img{width:52px;height:52px;margin-top:4px}.fnc-av svg{width:22px;height:22px}
   .fnc-btn .dot{position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;background:#2e9d5b;border:2px solid #fff}
-  .fnc-hint{position:fixed;right:90px;bottom:34px;z-index:40;background:#fff;color:#1F4A5C;font:600 .9rem/1.3 Inter,system-ui,sans-serif;
-    padding:10px 14px;border-radius:14px 14px 4px 14px;box-shadow:0 8px 24px #14323f33;max-width:220px;cursor:pointer}
+  .fnc-hint{position:fixed;right:90px;bottom:34px;z-index:40;background:#fff;color:#2F4B3A;font:600 .9rem/1.3 "Work Sans",system-ui,sans-serif;
+    padding:10px 14px;border-radius:14px 14px 4px 14px;box-shadow:0 8px 24px #1F332833;max-width:220px;cursor:pointer}
   @media(max-width:799px){.fnc-btn{bottom:92px;right:14px;width:56px;height:56px}.fnc-hint{bottom:100px;right:80px}}
-  .fnc{position:fixed;right:18px;bottom:22px;z-index:50;width:380px;height:min(640px,calc(100vh - 44px));background:#F6F1E7;border-radius:20px;
-    box-shadow:0 30px 80px #0b1d2577;display:flex;flex-direction:column;overflow:hidden;font-family:Inter,system-ui,sans-serif;
+  .fnc{position:fixed;right:18px;bottom:22px;z-index:50;width:380px;height:min(640px,calc(100vh - 44px));background:#F5F0E5;border-radius:20px;
+    box-shadow:0 30px 80px #121F1877;display:flex;flex-direction:column;overflow:hidden;font-family:"Work Sans",system-ui,sans-serif;
     transform:translateY(16px) scale(.98);opacity:0;pointer-events:none;transition:.2s}
   .fnc.open{transform:none;opacity:1;pointer-events:auto}
   @media(max-width:600px){.fnc{inset:0;width:auto;height:auto;border-radius:0}}
-  .fnc-hd{background:#14323F;color:#E6D8BC;padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:4px solid #A36F2B}
-  .fnc-av{width:42px;height:42px;border-radius:10px;background:#E6D8BC;color:#1F4A5C;display:grid;place-items:center;
-    font:700 1rem "Playfair Display",Georgia,serif;flex:none}
+  .fnc-hd{background:#1F3328;color:#E6DCC6;padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:4px solid #B4532A}
+  .fnc-av{width:42px;height:42px;border-radius:10px;background:#E6DCC6;color:#2F4B3A;display:grid;place-items:center;
+    font:700 1rem "Roboto Slab",Georgia,serif;flex:none}
   .fnc-hd b{display:block;color:#fff;font-size:1rem}
   .fnc-hd small{font-size:.78rem;opacity:.8;display:flex;align-items:center;gap:6px}
   .fnc-hd small::before{content:"";width:8px;height:8px;border-radius:50%;background:#2e9d5b}
   .fnc-x{margin-left:auto;background:#ffffff14;border:0;color:#fff;width:36px;height:36px;border-radius:10px;font-size:1.3rem;cursor:pointer}
   .fnc-log{flex:1;overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:10px}
   .fnc-m{max-width:85%;padding:11px 14px;border-radius:16px;font-size:.95rem;line-height:1.45;animation:fncIn .2s ease}
-  .fnc-m.bot{background:#fff;color:#1B2A31;border-bottom-left-radius:4px;box-shadow:0 1px 2px #14323f14}
-  .fnc-m.me{align-self:flex-end;background:#1F4A5C;color:#fff;border-bottom-right-radius:4px}
-  .fnc-m a{color:#A36F2B;font-weight:700}
-  .fnc-m.me a{color:#E6D8BC}
+  .fnc-m.bot{background:#fff;color:#1D2A22;border-bottom-left-radius:4px;box-shadow:0 1px 2px #1F332814}
+  .fnc-m.me{align-self:flex-end;background:#2F4B3A;color:#fff;border-bottom-right-radius:4px}
+  .fnc-m a{color:#B4532A;font-weight:700}
+  .fnc-m.me a{color:#E6DCC6}
   .fnc-typing{display:inline-flex;gap:4px}.fnc-typing i{width:7px;height:7px;border-radius:50%;background:#9aa7ac;animation:fncDot 1s infinite}
   .fnc-typing i:nth-child(2){animation-delay:.15s}.fnc-typing i:nth-child(3){animation-delay:.3s}
   @keyframes fncDot{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
   @keyframes fncIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .fnc-opts{display:flex;flex-wrap:wrap;gap:8px;padding:2px 0 4px}
-  .fnc-opts button{border:1.5px solid #A36F2B;background:#fff;color:#7d5420;border-radius:20px;padding:9px 14px;
-    font:600 .88rem Inter,system-ui,sans-serif;cursor:pointer}
-  .fnc-opts button:hover{background:#A36F2B;color:#fff}
-  .fnc-in{display:flex;gap:8px;padding:12px;background:#fff;border-top:1px solid #E3D7BF}
-  .fnc-in input{flex:1;min-width:0;border:1.5px solid #E3D7BF;border-radius:12px;padding:12px 14px;font:inherit;font-size:16px;color:#1B2A31}
-  .fnc-in input:focus{outline:2px solid #1F4A5C;border-color:transparent}
-  .fnc-in button{border:0;border-radius:12px;background:#1F4A5C;color:#fff;width:48px;cursor:pointer;display:grid;place-items:center}
+  .fnc-opts button{border:1.5px solid #B4532A;background:#fff;color:#8F3F1E;border-radius:20px;padding:9px 14px;
+    font:600 .88rem "Work Sans",system-ui,sans-serif;cursor:pointer}
+  .fnc-opts button:hover{background:#B4532A;color:#fff}
+  .fnc-in{display:flex;gap:8px;padding:12px;background:#fff;border-top:1px solid #E0D5BE}
+  .fnc-in input{flex:1;min-width:0;border:1.5px solid #E0D5BE;border-radius:12px;padding:12px 14px;font:inherit;font-size:16px;color:#1D2A22}
+  .fnc-in input:focus{outline:2px solid #2F4B3A;border-color:transparent}
+  .fnc-in button{border:0;border-radius:12px;background:#2F4B3A;color:#fff;width:48px;cursor:pointer;display:grid;place-items:center}
   .fnc-in button svg{width:20px;height:20px}
   .fnc-in[hidden]{display:none}
   .fnc-file{display:none}`;
