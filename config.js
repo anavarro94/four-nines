@@ -24,7 +24,7 @@ window.FN_CONFIG = {
 
   services: [
     { name: "Drywall repair",        price: "From $95", desc: "Holes, cracks and water spots patched, textured and painted so you can't find them.", img: "https://images.unsplash.com/photo-1768839725085-829e6ac7ac26?w=900&q=70&auto=format&fit=crop" },
-    { name: "Ceiling fans",          price: "From $80", desc: "Old fan out, new fan in, or swap a light for a fan. Assembled, balanced, no wobble.", img: "img/ceiling-fan.jpg" },
+    { name: "Ceiling fans",          price: "From $80", desc: "Old fan out, new fan in, or swap a light for a fan. We can assemble it from the box, balanced with no wobble.", img: "img/ceiling-fan.jpg" },
     { name: "Outlets & switches",    price: "From $45", desc: "Swap worn or outdated outlets and switches, add USB or GFCI outlets, fresh cover plates.", img: "img/gfci-after.jpg" },
     { name: "TV mounting & shelves", price: "From $75",  desc: "Any size TV mounted level and secure, wires hidden. Shelves, mirrors and curtain rods too.", img: "img/tv-after.jpg" },
     { name: "Furniture assembly",    price: "From $50", desc: "Beds, dressers, desks, patio sets. Built solid, boxes hauled off.", img: "img/garage-racks.jpg" },
@@ -40,7 +40,7 @@ window.FN_CONFIG = {
   // Services not listed here show "send photos for a custom quote".
   estimator: {
     "Drywall repair":        { q: "How big is the damage?", opts: [["Nail holes or small cracks",95,140],["Fist-size hole",140,200],["Bigger than a basketball",200,350]] },
-    "Ceiling fans":          { q: "What's the job?", opts: [["Swap an existing fan",80,110],["Replace a light with a fan",110,160],["Two fans",150,200]] },
+    "Ceiling fans":          { q: "What's the job?", opts: [["Hang a fan that's already put together",80,100],["New fan from the box (we assemble it)",100,130],["Replace a light with a fan",120,170],["Two new fans",180,240]] },
     "Outlets & switches":    { q: "How many?", opts: [["1–2 outlets or switches",45,75],["3–5 outlets or switches",75,125],["Add USB or GFCI outlets",60,95]] },
     "TV mounting & shelves": { q: "What are we mounting?", opts: [["TV up to 55\"",75,100],["TV 65\" or bigger",100,140],["TV + hide the wires",150,225],["Shelf, mirror or rod (each)",40,65]] },
     "Furniture assembly":    { q: "What are we building?", opts: [["Small item (nightstand, chair)",50,75],["Dresser, desk or bookcase",75,120],["Bed frame or wardrobe",90,150],["Large unit or patio set",150,275]] },
