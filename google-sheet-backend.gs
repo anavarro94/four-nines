@@ -19,6 +19,8 @@ const SECRET = 'CHANGE-ME';                                   // ← your office
 const NOTIFY_EMAIL = 'a.navarro@fourninesenterprise.com';     // ← where quote requests are emailed
 const PHOTO_FOLDER = 'Four Nines Quote Photos';
 const TABLES = ['Requests', 'Customers', 'Jobs', 'Docs', 'Expenses'];
+const BUSINESS_NAME = 'Four Nines Enterprise, LLC';
+const DIGEST_HOUR = 20;                                        // ← daily to-do email time (24h clock, 20 = 8 PM)
 
 // ---------- one-time setup ----------
 function setup() {
@@ -32,6 +34,9 @@ function setup() {
   photoFolder_();
   // Touch MailApp so the permission prompt includes email.
   MailApp.getRemainingDailyQuota();
+  // Daily to-do email (replaces any earlier one).
+  ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'dailyDigest').forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('dailyDigest').timeBased().everyDays(1).atHour(DIGEST_HOUR).create();
   Logger.log('Setup done. Now: Deploy → New deployment → Web app.');
 }
 
@@ -48,6 +53,8 @@ function doPost(e) {
     if (p.action === 'list')   return json_({ ok: true, data: listAll_() });
     if (p.action === 'save')   { checkTable_(p.table); upsert_(p.table, p.row || {}); return json_({ ok: true }); }
     if (p.action === 'delete') { checkTable_(p.table); remove_(p.table, p.id); return json_({ ok: true }); }
+    if (p.action === 'sendDoc') { sendDoc_(p); return json_({ ok: true }); }
+    if (p.action === 'digest')  { dailyDigest(); return json_({ ok: true }); }
     return json_({ ok: false, error: 'Unknown action' });
   } catch (err) {
     return json_({ ok: false, error: String(err && err.message || err) });
@@ -105,6 +112,65 @@ function quote_(r) {
     MailApp.sendEmail(NOTIFY_EMAIL, `New quote request: ${req.service || 'Job'} — ${req.name}`, lines, opts);
   }
   return { ok: true };
+}
+
+// ---------- email a quote/invoice as a PDF ----------
+function sendDoc_(p) {
+  if (!p.to || !/@/.test(p.to)) throw new Error('Customer has no email address');
+  const name = String(p.filename || 'Four Nines').replace(/[\\/:*?"<>|]/g, '');
+  const pdf = Utilities.newBlob(String(p.html || ''), MimeType.HTML, name + '.html').getAs(MimeType.PDF).setName(name + '.pdf');
+  MailApp.sendEmail({ to: p.to, subject: String(p.subject || name), body: String(p.body || ''), attachments: [pdf],
+    name: BUSINESS_NAME, replyTo: NOTIFY_EMAIL, bcc: NOTIFY_EMAIL });
+}
+
+// ---------- daily to-do email ----------
+function dailyDigest() {
+  if (!NOTIFY_EMAIL) return;
+  const db = listAll_(), tz = Session.getScriptTimeZone();
+  const day = n => Utilities.formatDate(new Date(Date.now() + n * 864e5), tz, 'yyyy-MM-dd');
+  const today = day(0), tomorrow = day(1), week = day(7);
+  const cust = id => (db.Customers.find(c => c.id === id) || {});
+  const money = n => '$' + (Math.round((+n || 0) * 100) / 100).toFixed(2);
+  const total = d => { let it = d.items; if (typeof it === 'string') { try { it = JSON.parse(it); } catch (e) { it = []; } }
+    const sub = (it || []).reduce((a, i) => a + (+i.qty || 0) * (+i.rate || 0), 0); return sub * (1 + (+d.taxRate || 0) / 100); };
+  const ageDays = s => s ? Math.floor((Date.now() - new Date(String(s).slice(0, 10) + 'T12:00:00').getTime()) / 864e5) : 0;
+  const when = s => { const d = new Date(s); return isNaN(d) ? s : Utilities.formatDate(d, tz, String(s).length > 10 ? 'EEE M/d h:mm a' : 'EEE M/d'); };
+  const esc = s => String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const open = j => ['Done', 'Paid'].indexOf(j.status) < 0;
+
+  const sched = db.Jobs.filter(j => j.scheduled && open(j)).sort((a, b) => String(a.scheduled).localeCompare(String(b.scheduled)));
+  const tmr = sched.filter(j => String(j.scheduled).slice(0, 10) === tomorrow);
+  const later = sched.filter(j => { const k = String(j.scheduled).slice(0, 10); return k > tomorrow && k <= week; });
+  const newReq = db.Requests.filter(r => !r.status || r.status === 'New');
+  const todo = [];
+  db.Jobs.forEach(j => {
+    const docs = db.Docs.filter(d => d.jobId === j.id && d.status !== 'Void'), c = cust(j.customerId).name || 'customer';
+    if (j.status === 'Lead' && !docs.some(d => d.type === 'quote')) todo.push(`Send a quote to ${c} (${j.title})`);
+    if (j.status === 'Done' && !docs.some(d => d.type === 'invoice')) todo.push(`Invoice ${c} (${j.title})`);
+    if (j.scheduled && open(j) && String(j.scheduled).slice(0, 10) < today) todo.push(`Update ${c}'s job — it was scheduled ${when(j.scheduled)}`);
+  });
+  db.Docs.forEach(d => {
+    const c = cust(d.customerId).name || 'customer', a = ageDays(d.date);
+    if (d.type === 'quote' && d.status === 'Sent' && a >= 3) todo.push(`Follow up with ${c} on quote ${d.number} (${money(total(d))}, ${a} days)`);
+    if (d.type === 'invoice' && d.status === 'Sent' && a >= 7) todo.push(`Collect ${money(total(d))} from ${c} (${d.number}, ${a} days)`);
+  });
+  const owed = db.Docs.filter(d => d.type === 'invoice' && ['Paid', 'Void', 'Draft'].indexOf(d.status) < 0).reduce((a, d) => a + total(d), 0);
+
+  if (!tmr.length && !later.length && !newReq.length && !todo.length && !owed) return; // nothing to report
+
+  const jobLine = j => { const c = cust(j.customerId); return `<li><b>${esc(when(j.scheduled))}</b> — ${esc(j.title)} for ${esc(c.name || '')}${(j.address || c.address) ? ' · ' + esc(j.address || c.address) : ''}${c.phone ? ' · ' + esc(c.phone) : ''}</li>`; };
+  const sec = (title, inner) => `<h3 style="font-family:Arial;color:#1F4A5C;border-bottom:2px solid #A36F2B;padding-bottom:4px;margin:22px 0 8px">${title}</h3>${inner}`;
+  const list = a => `<ul style="padding-left:18px;margin:0;line-height:1.6">${a.join('')}</ul>`;
+  let html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1B2A31;max-width:600px">`
+    + `<div style="background:#14323F;color:#E6D8BC;padding:16px 18px;border-left:6px solid #A36F2B"><b style="font-size:20px;color:#fff">FOUR NINES · TOMORROW</b><br>${tmr.length} job${tmr.length === 1 ? '' : 's'} tomorrow · ${newReq.length} new request${newReq.length === 1 ? '' : 's'}${owed ? ' · ' + money(owed) + ' owed' : ''}</div>`;
+  html += sec('Tomorrow', tmr.length ? list(tmr.map(jobLine)) : '<p style="margin:0;color:#5D6B71">Nothing scheduled.</p>');
+  if (newReq.length) html += sec('New requests — reply to these', list(newReq.map(r => `<li><b>${esc(r.name)}</b> — ${esc(r.service)} · ${esc(r.address || '')}${r.photos ? ' · 📷' : ''}</li>`)));
+  if (todo.length) html += sec('To do', list(todo.map(t => `<li>${esc(t)}</li>`)));
+  if (later.length) html += sec('Later this week', list(later.map(jobLine)));
+  html += `<p style="margin-top:24px"><a href="https://fourninesenterprise.com/admin.html" style="background:#A36F2B;color:#fff;padding:10px 16px;text-decoration:none;font-weight:bold">Open the office app</a></p></div>`;
+  const text = html.replace(/<li>/g, '\n• ').replace(/<h3[^>]*>/g, '\n\n').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&');
+  MailApp.sendEmail({ to: NOTIFY_EMAIL, subject: `Four Nines — tomorrow: ${tmr.length} job${tmr.length === 1 ? '' : 's'}, ${newReq.length} new request${newReq.length === 1 ? '' : 's'}${todo.length ? ', ' + todo.length + ' to-do' : ''}`,
+    body: text, htmlBody: html, name: 'Four Nines Office' });
 }
 
 function photoFolder_() {

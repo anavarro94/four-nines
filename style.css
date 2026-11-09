@@ -143,3 +143,71 @@ dialog h2{font-size:1.2rem}
   #print .pbar{display:none}
   .doc{padding:0}
 }
+
+/* =========================================================
+   OFFICE APP — matches the website (teal / sand / brass)
+   ========================================================= */
+:root{
+  --ink:#14323F;--ink2:#1F4A5C;--accent:#1F4A5C;--accent2:#14323F;
+  --brass:#A36F2B;--brass-lt:#D2A766;
+  --sand:#E6D8BC;--sand2:#F6F1E7;--bg:#F6F1E7;--card:#FFFDF8;--line:#E3D7BF;--muted:#5D6B71;
+  --serif:"Oswald","Arial Narrow",Impact,sans-serif;
+  --caps:"Barlow Condensed","Arial Narrow",sans-serif;
+  --r:6px;
+}
+body.app{font-family:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16.5px}
+.app h1,.app h2{font-family:var(--serif);text-transform:uppercase;letter-spacing:.02em;font-weight:600}
+.app h3{font-family:var(--caps);font-weight:700;font-size:1.12rem;letter-spacing:.02em;color:var(--ink)}
+.btn{border-radius:var(--r);font-family:var(--caps);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.btn.brass{background:var(--brass)} .btn.brass:hover{background:#8c5f24}
+.btn.ghost{border-color:#c9b998;color:var(--ink)}
+.app header{background:var(--ink);border-bottom:4px solid var(--brass)}
+.app header h1{font-size:1.2rem;gap:12px}
+.app header .wm{display:flex;flex-direction:column;line-height:1;padding-right:12px;margin-right:2px;border-right:1px solid #ffffff2a}
+.app header .wm b{font-family:var(--serif);font-weight:700;font-size:1rem;letter-spacing:.08em;color:var(--sand)}
+.app header .wm small{font-family:var(--caps);font-size:.52rem;letter-spacing:.28em;color:#e6d8bc99;margin-top:3px}
+.app header #hTitle{font-family:var(--caps);font-weight:700;font-size:1.15rem;letter-spacing:.06em;color:#fff}
+.hbtn{background:#ffffff14;border:0;color:#fff;width:40px;height:40px;border-radius:var(--r);display:grid;place-items:center;cursor:pointer}
+.hbtn svg{width:20px;height:20px}
+.tabs{grid-template-columns:repeat(6,1fr);background:var(--card);border-top:2px solid var(--line)}
+.tabs button{font-family:var(--caps);font-size:.78rem;letter-spacing:.03em;text-transform:uppercase;padding:9px 0 8px}
+.tabs button svg{width:22px;height:22px}
+.tabs button.on{color:var(--brass)}
+.tabs button.on::before{content:"";position:absolute;top:-2px;left:22%;right:22%;height:3px;background:var(--brass);border-radius:0 0 3px 3px}
+.stat{border-radius:var(--r);background:var(--card)}
+.stat b{font-family:var(--serif);font-weight:600;color:var(--ink)}
+.stat span{font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem}
+.item{border-radius:var(--r);background:var(--card);box-shadow:0 1px 2px #14323f10}
+.chip{border-radius:var(--r);font-family:var(--caps);text-transform:uppercase;letter-spacing:.04em}
+.chip.on{background:var(--ink);border-color:var(--ink)}
+.pill{border-radius:4px;font-family:var(--caps);letter-spacing:.04em;text-transform:uppercase;font-size:.7rem}
+.pill.New,.pill.Lead,.pill.Draft{background:#f3e3c4;color:#7d5420}
+.pill.Paid{background:#2e7d4f}
+input,select,textarea{border-radius:var(--r);border-color:#d9cba9}
+label{font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;font-size:.82rem;color:var(--ink2)}
+dialog{border-radius:10px}
+dialog h2{color:var(--ink)}
+.login .lwm{font-family:var(--serif);font-size:2rem;letter-spacing:.08em;color:var(--ink);line-height:1}
+.login .lwm small{display:block;font-family:var(--caps);font-size:.7rem;letter-spacing:.3em;color:var(--muted);margin-top:6px}
+
+/* Today screen */
+.sect{margin:22px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sect h2{font-size:1.05rem;margin:0;color:var(--ink);display:flex;align-items:center;gap:8px}
+.sect h2 .n{background:var(--brass);color:#fff;border-radius:4px;font-family:var(--caps);font-size:.8rem;padding:1px 7px}
+.sect a,.sect button.link{font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--brass);background:none;border:0;cursor:pointer;text-decoration:none}
+.hello{background:var(--ink);color:var(--sand);border-radius:var(--r);padding:16px 18px;margin-top:4px;border-left:6px solid var(--brass)}
+.hello b{display:block;font-family:var(--serif);font-size:1.4rem;color:#fff;letter-spacing:.03em;text-transform:uppercase}
+.hello span{font-size:.95rem;color:#e6d8bccc}
+.when{display:inline-block;font-family:var(--caps);font-weight:700;letter-spacing:.04em;color:var(--brass);text-transform:uppercase;font-size:.85rem}
+.todo{display:flex;gap:12px;align-items:flex-start}
+.todo .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--brass);margin-top:7px}
+.todo.warn .dot{background:#b3392b}
+.allclear{background:var(--card);border:1px dashed #c9b998;border-radius:var(--r);padding:14px;color:var(--muted);text-align:center;font-size:.95rem}
+.thumbs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.thumbs a{font-family:var(--caps);font-size:.85rem;background:var(--sand2);border:1px solid var(--line);border-radius:4px;padding:5px 9px;text-decoration:none;color:var(--ink)}
+.tpl{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.tpl .chip{font-size:.85rem}
+.msgbox{min-height:150px;font-size:16px;line-height:1.45}
+.sendrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
+.sendrow .btn{padding:12px 6px}
+.nextbtn{background:var(--brass)!important}

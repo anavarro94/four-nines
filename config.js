@@ -5,6 +5,7 @@
 window.FN_CONFIG = {
   businessName: "Four Nines",
   legalName: "Four Nines Enterprise, LLC",   // shown in footer and on quotes/invoices
+  ownerName: "",                 // your first name, used to sign messages (optional)
   tagline: "Your to-do list, done right.",
   subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Upfront prices. Pay when it's done.",
   phone: "",                      // <-- business number, digits only (blank = email only)

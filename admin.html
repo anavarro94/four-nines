@@ -4,30 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#1b4457">
+<meta name="theme-color" content="#14323F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Four Nines — Office</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="config.js"></script>
 </head>
 <body class="app">
 
 <header><div class="wrap bar">
-  <h1><span class="mark">9999</span><span id="hTitle">Jobs</span></h1>
-  <div class="row"><button class="btn sm ghost" style="color:#fff;border-color:#ffffff44" onclick="refresh()">↻</button>
-  <button class="btn sm ghost" style="color:#fff;border-color:#ffffff44" onclick="openSettings()">⚙</button></div>
+  <h1><span class="wm"><b>FOUR NINES</b><small>OFFICE</small></span><span id="hTitle">Today</span></h1>
+  <div class="row"><button class="hbtn" aria-label="Refresh" onclick="refresh()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
+  <button class="hbtn" aria-label="Settings" onclick="openSettings()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
 </div></header>
 
 <main class="wrap" id="view"></main>
 
 <nav class="tabs" id="tabs">
-  <button data-t="Jobs"><span class="i">🔨</span>Jobs</button>
-  <button data-t="Requests"><span class="i">📥</span>Requests<span class="badge" id="reqBadge" hidden></span></button>
-  <button data-t="Customers"><span class="i">👥</span>Customers</button>
-  <button data-t="Billing"><span class="i">🧾</span>Quotes/Inv</button>
-  <button data-t="Expenses"><span class="i">💵</span>Expenses</button>
+  <button data-t="Today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Today</button>
+  <button data-t="Requests"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg>Requests<span class="badge" id="reqBadge" hidden></span></button>
+  <button data-t="Jobs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>Jobs</button>
+  <button data-t="Billing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Billing</button>
+  <button data-t="Customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Clients</button>
+  <button data-t="Expenses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/><path d="M6 10v.01M18 15v.01"/></svg>Spent</button>
 </nav>
 
 <dialog id="dlg"></dialog>
@@ -45,7 +46,7 @@ const REMOTE = !!C.scriptUrl;
 const LS = { get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}, del:k=>{try{localStorage.removeItem(k)}catch(e){}} };
 let KEY = LS.get('fn_key') || '';
 let DB = {}; TABLES.forEach(t => DB[t] = []);
-const S = { tab: 'Jobs', jobFilter: 'Open', q: '', billFilter: 'All' };
+const S = { tab: 'Today', jobFilter: 'Open', q: '', billFilter: 'All' };
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -97,10 +98,10 @@ async function refresh() { try { await load(); render(); toast('Up to date'); } 
 // ================= rendering =================
 function render() {
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === S.tab));
-  $('#hTitle').textContent = { Jobs:'Jobs', Requests:'Quote requests', Customers:'Customers', Billing:'Quotes & invoices', Expenses:'Expenses' }[S.tab];
+  $('#hTitle').textContent = { Today:'Today', Jobs:'Jobs', Requests:'Requests', Customers:'Clients', Billing:'Billing', Expenses:'Expenses' }[S.tab];
   const n = DB.Requests.filter(r => !r.status || r.status === 'New').length;
   $('#reqBadge').hidden = !n; $('#reqBadge').textContent = n;
-  $('#view').innerHTML = ({ Jobs: vJobs, Requests: vRequests, Customers: vCustomers, Billing: vBilling, Expenses: vExpenses })[S.tab]();
+  $('#view').innerHTML = ({ Today: vToday, Jobs: vJobs, Requests: vRequests, Customers: vCustomers, Billing: vBilling, Expenses: vExpenses })[S.tab]();
 }
 document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => { S.tab = b.dataset.t; S.q = ''; render(); scrollTo(0, 0); });
 const go = (tab, k, v) => { S.tab = tab; if (k) S[k] = v; render(); };
@@ -136,7 +137,7 @@ function jobCard(j) {
     <div><h3>${esc(j.title || 'Untitled job')}</h3>
     <div class="meta">${esc(c.name || 'No customer')}${j.scheduled ? ' · ' + esc(fmtWhen(j.scheduled)) : ''}${+j.price ? ' · ' + money(j.price) : ''}</div>
     ${docs.length ? `<div class="meta">${docs.map(d => esc(d.number) + ' ' + d.status).join(' · ')}</div>` : ''}</div>${pill(j.status || 'Lead')}</div>
-    <div class="acts">${callBtns(c.phone)}${addr ? `<a class="btn ghost" target="_blank" href="${mapUrl(addr)}">Map</a>` : ''}
+    <div class="acts">${nextBtn(j)}<button class="btn ghost" onclick="msgJob('${j.id}')">Message</button>${callBtns(c.phone)}${addr ? `<a class="btn ghost" target="_blank" href="${mapUrl(addr)}">Map</a>` : ''}
     <button class="btn ghost" onclick="newDoc('quote','${j.id}')">Quote</button>
     <button class="btn ghost" onclick="newDoc('invoice','${j.id}')">Invoice</button>
     <button class="btn ghost" onclick="openForm('Expenses',{date:today(),jobId:'${j.id}',category:'Materials'})">+ Expense</button></div></div>`;
@@ -144,7 +145,7 @@ function jobCard(j) {
 
 // ---- Requests
 function vRequests() {
-  const order = { New: 0, '': 0, Converted: 1, Archived: 2 };
+  const order = { New: 0, '': 0, Replied: 1, Converted: 2, Archived: 3 };
   const L = [...DB.Requests].sort((a, b) => (order[a.status || ''] - order[b.status || '']) || String(b.created).localeCompare(String(a.created)));
   const note = REMOTE ? '' : `<div class="card small" style="margin-bottom:12px">Website quote requests show up here once the Google Sheet is connected (see README). Until then they arrive as text messages.</div>`;
   return note + (L.length ? `<div class="list">${L.map(r => {
@@ -153,21 +154,25 @@ function vRequests() {
       <div class="meta">${esc(fmtDate(r.created))} · ${esc(fmtPhone(r.phone))}${r.email ? ' · ' + esc(r.email) : ''}</div></div>${pill(r.status || 'New')}</div>
       <p style="margin:8px 0 4px">${esc(r.details)}</p>
       <div class="meta">${esc(r.address)}${r.preferredTime ? ' · Best: ' + esc(r.preferredTime) : ''}</div>
-      ${ph.length ? `<div class="photos">${ph.map((u, i) => `<a target="_blank" href="${esc(u)}">📷 Photo ${i + 1}</a>`).join('')}</div>` : ''}
-      <div class="acts">${callBtns(r.phone)}
-      ${r.status === 'Converted' ? '' : `<button class="btn" onclick="convert('${r.id}')">Make job</button>`}
+      ${ph.length ? `<div class="thumbs">${ph.map((u, i) => `<a target="_blank" href="${esc(u)}">📷 Photo ${i + 1}</a>`).join('')}</div>` : ''}
+      <div class="acts"><button class="btn brass" onclick="replyReq('${r.id}')">Reply</button>
+      ${r.status === 'Converted' ? '' : `<button class="btn" onclick="quoteFromReq('${r.id}')">Quote it</button>`}
+      ${contactBtns(r)}
+      ${r.status === 'Converted' ? '' : `<button class="btn ghost" onclick="convert('${r.id}')">Make job</button>`}
       ${r.status === 'Archived' ? '' : `<button class="btn ghost" onclick="setReq('${r.id}','Archived')">Archive</button>`}</div></div>`;
   }).join('')}</div>` : `<div class="empty">No quote requests yet.</div>`);
 }
 function setReq(id, status) { const r = DB.Requests.find(x => x.id === id); save('Requests', { ...r, status }); }
-async function convert(id) {
+async function convert(id, quiet) {
   const r = DB.Requests.find(x => x.id === id);
-  let c = DB.Customers.find(x => digits(x.phone) && digits(x.phone) === digits(r.phone));
+  let c = DB.Customers.find(x => (digits(x.phone) && digits(x.phone) === digits(r.phone)) || (x.email && r.email && x.email.toLowerCase() === r.email.toLowerCase()));
   if (!c) c = await save('Customers', { name: r.name, phone: r.phone, email: r.email, address: r.address, notes: '' }, true);
   const j = await save('Jobs', { title: r.service, customerId: c.id, address: r.address, status: 'Lead', scheduled: '', price: '',
     notes: r.details + (r.preferredTime ? `\nBest time: ${r.preferredTime}` : '') }, true);
   await save('Requests', { ...r, status: 'Converted' }, true);
+  if (quiet) return j;
   S.tab = 'Jobs'; S.jobFilter = 'Open'; render(); toast('Job created'); openForm('Jobs', job(j.id));
+  return j;
 }
 
 // ---- Customers
@@ -234,6 +239,195 @@ function vExpenses() {
       <div class="list">${L.map(e => `<div class="item"><div class="hd" onclick="openForm('Expenses',DB.Expenses.find(x=>x.id==='${e.id}'))"><div>
         <h3>${money(e.amount)} · ${esc(e.vendor || e.category)}</h3><div class="meta">${esc(fmtDate(e.date))} · ${esc(e.category)}${e.description ? ' · ' + esc(e.description) : ''}${e.jobId && job(e.jobId) ? ' · ' + esc(job(e.jobId).title) : ''}</div></div></div></div>`).join('')}</div>`;
     }).join('') : `<div class="empty">No expenses logged yet.</div>`);
+}
+
+
+// ================= today =================
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const plusDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return ymd(d); };
+const daysSince = s => s ? Math.floor((Date.now() - new Date(String(s).length === 10 ? s + 'T12:00' : s)) / 864e5) : 0;
+const first = n => String(n || '').trim().split(/\s+/)[0] || 'there';
+const timeOf = s => { const d = new Date(s); return isNaN(d) || String(s).length <= 10 ? '' : d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }); };
+function dayLabel(s) {
+  const k = String(s || '').slice(0, 10);
+  if (k === today()) return new Date().getHours() >= 15 ? 'Tonight' : 'Today';
+  if (k === plusDays(1)) return 'Tomorrow';
+  const d = new Date(k + 'T12:00'); return isNaN(d) ? '' : d.toLocaleDateString(undefined, { weekday: 'short', month: 'numeric', day: 'numeric' });
+}
+const docsFor = (jobId, type) => DB.Docs.filter(d => d.jobId === jobId && (!type || d.type === type) && d.status !== 'Void');
+function todos() {
+  const L = [];
+  DB.Jobs.forEach(j => {
+    const c = custName(j.customerId), q = docsFor(j.id, 'quote'), inv = docsFor(j.id, 'invoice');
+    if (j.status === 'Lead' && !q.length) L.push({ t: `Send a quote to ${c}`, s: j.title, a: `newDoc('quote','${j.id}')`, b: 'Quote' });
+    if (j.status === 'Quoted' && q.some(d => d.status === 'Accepted') && !j.scheduled) L.push({ t: `Schedule ${c}`, s: `${j.title} — quote accepted`, a: `openForm('Jobs',job('${j.id}'))`, b: 'Schedule' });
+    if (['Scheduled', 'In progress'].includes(j.status) && j.scheduled && j.scheduled.slice(0, 10) < today()) L.push({ t: `Update ${c}'s job`, s: `${j.title} was scheduled ${fmtDate(j.scheduled.slice(0, 10))}`, a: `openForm('Jobs',job('${j.id}'))`, b: 'Update', warn: 1 });
+    if (j.status === 'Done' && !inv.length) L.push({ t: `Invoice ${c}`, s: j.title + (+j.price ? ' · ' + money(j.price) : ''), a: `newDoc('invoice','${j.id}')`, b: 'Invoice', warn: 1 });
+  });
+  DB.Docs.forEach(d => {
+    const c = custName(d.customerId), age = daysSince(d.date);
+    if (d.type === 'quote' && d.status === 'Sent' && age >= 3) L.push({ t: `Follow up with ${c}`, s: `Quote ${d.number} · ${money(totals(d).total)} · sent ${age} days ago`, a: `followUp('${d.id}')`, b: 'Follow up' });
+    if (d.type === 'invoice' && d.status === 'Sent' && age >= 7) L.push({ t: `Collect from ${c}`, s: `${d.number} · ${money(totals(d).total)} · ${age} days`, a: `followUp('${d.id}')`, b: 'Remind', warn: 1 });
+  });
+  return L;
+}
+function vToday() {
+  const hr = new Date().getHours(), greet = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  const wk = plusDays(7);
+  const up = DB.Jobs.filter(j => j.scheduled && !['Done', 'Paid'].includes(j.status) && j.scheduled.slice(0, 10) >= today() && j.scheduled.slice(0, 10) <= wk)
+    .sort((a, b) => a.scheduled.localeCompare(b.scheduled));
+  const reqs = DB.Requests.filter(r => !r.status || r.status === 'New');
+  const T = todos();
+  const owed = DB.Docs.filter(d => d.type === 'invoice' && !['Paid', 'Void', 'Draft'].includes(d.status)).reduce((a, d) => a + totals(d).total, 0);
+  const bits = [`${up.length} job${up.length === 1 ? '' : 's'} this week`, `${reqs.length} new request${reqs.length === 1 ? '' : 's'}`];
+  if (owed) bits.push(`${money(owed)} owed`);
+  const upCard = j => { const c = cust(j.customerId) || {}, addr = j.address || c.address;
+    return `<div class="item"><div class="hd" onclick="openForm('Jobs',job('${j.id}'))"><div><span class="when">${esc(dayLabel(j.scheduled))}${timeOf(j.scheduled) ? ' · ' + esc(timeOf(j.scheduled)) : ''}</span>
+      <h3>${esc(j.title || 'Job')}</h3><div class="meta">${esc(c.name || '')}${addr ? ' · ' + esc(addr) : ''}${+j.price ? ' · ' + money(j.price) : ''}</div></div>${pill(j.status)}</div>
+      <div class="acts">${nextBtn(j)}<button class="btn ghost" onclick="msgJob('${j.id}')">Message</button>${addr ? `<a class="btn ghost" target="_blank" href="${mapUrl(addr)}">Map</a>` : ''}${callBtns(c.phone)}</div></div>`; };
+  const reqCard = r => `<div class="item"><div class="hd" onclick="go('Requests')"><div><span class="when">${esc(fmtDate(r.created))}</span><h3>${esc(r.name)} — ${esc(r.service)}</h3>
+      <div class="meta">${esc(r.address || '')}${r.photos ? ' · 📷' : ''}</div></div>${pill('New')}</div>
+      <div class="acts"><button class="btn brass" onclick="replyReq('${r.id}')">Reply</button><button class="btn" onclick="quoteFromReq('${r.id}')">Quote it</button></div></div>`;
+  return `<div class="hello"><b>${greet}</b><span>${bits.join(' · ')}</span></div>
+    <div class="sect"><h2>New requests ${reqs.length ? `<span class="n">${reqs.length}</span>` : ''}</h2><button class="link" onclick="go('Requests')">All requests</button></div>
+    ${reqs.length ? `<div class="list">${reqs.slice(0, 5).map(reqCard).join('')}</div>` : `<div class="allclear">No new requests. You're caught up.</div>`}
+    <div class="sect"><h2>Coming up</h2><button class="link" onclick="openForm('Jobs',{status:'Scheduled'})">+ Job</button></div>
+    ${up.length ? `<div class="list">${up.map(upCard).join('')}</div>` : `<div class="allclear">Nothing scheduled in the next 7 days.</div>`}
+    <div class="sect"><h2>To do ${T.length ? `<span class="n">${T.length}</span>` : ''}</h2></div>
+    ${T.length ? `<div class="list">${T.map(x => `<div class="item"><div class="todo ${x.warn ? 'warn' : ''}"><span class="dot"></span><div style="flex:1"><h3>${esc(x.t)}</h3><div class="meta">${esc(x.s)}</div></div>
+      <button class="btn sm" onclick="${x.a}">${esc(x.b)}</button></div></div>`).join('')}</div>` : `<div class="allclear">Nothing to chase. Nice work.</div>`}
+    <div class="sect"><h2>This month</h2><button class="link" onclick="go('Billing')">Billing</button></div>${stats()}`;
+}
+
+// ---- next step on a job
+function nextBtn(j) {
+  const inv = docsFor(j.id, 'invoice'), unpaid = inv.find(d => d.status !== 'Paid');
+  const b = (label, fn) => `<button class="btn nextbtn" onclick="${fn}">${label}</button>`;
+  switch (j.status || 'Lead') {
+    case 'Lead': return b('Send quote', `newDoc('quote','${j.id}')`);
+    case 'Quoted': return b('Schedule', `openForm('Jobs',job('${j.id}'))`);
+    case 'Scheduled': return b('Start job', `setJob('${j.id}','In progress')`);
+    case 'In progress': return b('Mark done', `setJob('${j.id}','Done')`);
+    case 'Done': return unpaid ? b('Mark paid', `markPaid('${unpaid.id}')`) : b('Invoice', `newDoc('invoice','${j.id}')`);
+    default: return '';
+  }
+}
+async function setJob(id, status) {
+  await save('Jobs', { ...job(id), status });
+  if (status === 'Done') { toast('Nice! Now send the invoice.'); }
+}
+
+// ---- quote straight from a request (prices from config.js)
+function svcLine(name) {
+  const s = (C.services || []).find(x => x.name === name), m = s && String(s.price).match(/\$\s*([\d,.]+)/);
+  const rate = m ? m[1].replace(/,/g, '') : '';
+  return { desc: name + (s && /\/hr/i.test(s.price) ? ' — labor (hours)' : ''), qty: 1, rate };
+}
+async function quoteFromReq(id) {
+  const r = DB.Requests.find(x => x.id === id);
+  const j = await convert(id, true);
+  const d = { type: 'quote', number: nextNum('quote'), date: today(), status: 'Draft', customerId: j.customerId, jobId: j.id,
+    items: [svcLine(r.service)], taxRate: C.taxRate || 0, notes: 'Price includes labor. Materials listed separately if needed. Quote valid for 30 days.' };
+  S.tab = 'Billing'; render(); openDoc(null, d);
+}
+
+// ---- messages: one tap to email or text
+const sig = () => `\n\n— ${C.ownerName ? C.ownerName + ', ' : ''}${C.legalName || C.businessName}${digits(C.phone) ? '\n' + fmtPhone(C.phone) : ''}\n${C.email}`;
+const TPL = {
+  got:     { label: 'Got it',          for: 'req', f: x => `Hi ${x.f}, thanks for reaching out to Four Nines! I got your request for ${x.svc.toLowerCase()} and will send you a price within one business day.` },
+  price:   { label: 'Send price',      for: 'req', f: x => `Hi ${x.f}, thanks for the details${x.photos ? ' and photos' : ''}. For ${x.svc.toLowerCase()}, your price is ${x.price ? '$' + x.price : '$[price]'} for labor${x.materials ? `, plus about $${x.materials} in materials` : ''}. I can do it ${x.when || '[day/time]'}. Want me to put you on the schedule? Nothing is due until the job is done.` },
+  visit:   { label: 'Need a look',     for: 'req', f: x => `Hi ${x.f}, thanks for the details. I'd like to take a quick look in person before giving you an exact price, and there's no charge for the visit. Would ${x.when || '[day/time]'} work for you?` },
+  decline: { label: "Can't take it",   for: 'req', f: x => `Hi ${x.f}, thanks for thinking of Four Nines. Unfortunately ${x.svc.toLowerCase()} isn't something we can take on right now. I'm sorry I can't help with this one, and I hope you'll keep us in mind for future projects.` },
+  confirm: { label: 'Confirm visit',   for: 'job', f: x => `Hi ${x.f}, this is Four Nines confirming your appointment for ${x.svc.toLowerCase()} ${x.when || '[day/time]'}. Reply here if anything changes. See you then!` },
+  omw:     { label: 'On my way',       for: 'job', f: x => `Hi ${x.f}, Four Nines here. I'm on my way and should be there in about ${x.eta || '20'} minutes.` },
+  late:    { label: 'Running late',    for: 'job', f: x => `Hi ${x.f}, I'm running about ${x.eta || '15'} minutes behind. Sorry about that, I'll be there shortly.` },
+  done:    { label: 'Job done',        for: 'job', f: x => `Hi ${x.f}, all finished with your ${x.svc.toLowerCase()}. Thanks for choosing Four Nines! Your invoice is on the way. If you were happy with the work, a quick review would mean a lot to a small local business.` },
+  fuquote: { label: 'Quote follow-up', for: 'doc', f: x => `Hi ${x.f}, just checking in on the quote I sent for ${x.svc.toLowerCase()} (${x.total}). Any questions? I have openings ${x.when || 'this week'} if you'd like to get it on the schedule.` },
+  fuinv:   { label: 'Payment reminder',for: 'doc', f: x => `Hi ${x.f}, friendly reminder that invoice ${x.num} for ${x.total} is still open. You can pay by ${String(C.paymentNote || '').replace(/^.*?by\s+/i, '').replace(/\.$/, '') || 'cash, check, Zelle or Venmo'}. Thanks again for your business!` },
+};
+let MSG = null;
+function whenText(s) { if (!s) return ''; return `${dayLabel(s).toLowerCase() === 'tonight' ? 'tonight' : dayLabel(s).match(/^(today|tomorrow)$/i) ? dayLabel(s).toLowerCase() : 'on ' + dayLabel(s)}${timeOf(s) ? ' at ' + timeOf(s) : ''}`; }
+function openMsg(ctx, kinds, start) {
+  MSG = { ...ctx, kind: start || kinds[0] };
+  const dlg = $('#dlg');
+  const showPrice = kinds.includes('price'), showEta = kinds.includes('omw');
+  dlg.innerHTML = `<form><h2>Message ${esc(ctx.name || '')}</h2>
+    <div class="tpl">${kinds.map(k => `<button type="button" class="chip ${k === MSG.kind ? 'on' : ''}" data-k="${k}">${TPL[k].label}</button>`).join('')}</div>
+    ${showPrice ? `<div class="two"><div><label>Labor price $</label><input id="mPrice" inputmode="decimal" value="${esc(ctx.price || '')}"></div><div><label>Materials $ (optional)</label><input id="mMat" inputmode="decimal"></div></div>` : ''}
+    ${showPrice || kinds.includes('confirm') || kinds.includes('fuquote') ? `<label>When</label><input id="mWhen" placeholder="e.g. Saturday at 10am" value="${esc(ctx.when || '')}">` : ''}
+    ${showEta ? `<label>Minutes away</label><input id="mEta" inputmode="numeric" value="20">` : ''}
+    <label>Message</label><textarea id="mText" class="msgbox"></textarea>
+    <div class="sendrow">
+      <a class="btn ${ctx.email ? 'brass' : 'ghost'}" id="mEmail" ${ctx.email ? '' : 'aria-disabled="true" style="opacity:.45;pointer-events:none"'}>Email</a>
+      <a class="btn ${digits(ctx.phone) ? '' : 'ghost'}" id="mSms" ${digits(ctx.phone) ? '' : 'aria-disabled="true" style="opacity:.45;pointer-events:none"'}>Text</a>
+      <button type="button" class="btn ghost" id="mCopy">Copy</button></div>
+    <div class="dlgacts"><button type="button" class="btn ghost" onclick="$('#dlg').close()">Close</button></div></form>`;
+  const fill = () => {
+    const v = id => (dlg.querySelector(id) || {}).value || '';
+    const x = { ...MSG, price: v('#mPrice') || MSG.price, materials: v('#mMat'), when: v('#mWhen') || MSG.when, eta: v('#mEta') };
+    $('#mText').value = TPL[MSG.kind].f(x) + sig();
+    links();
+  };
+  const links = () => {
+    const body = $('#mText').value, subj = `${C.businessName}: ${MSG.svc || 'your request'}`;
+    if (MSG.email) $('#mEmail').href = `mailto:${MSG.email}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+    if (digits(MSG.phone)) $('#mSms').href = `sms:${digits(MSG.phone)}?&body=${encodeURIComponent(body)}`;
+  };
+  dlg.querySelectorAll('.tpl .chip').forEach(b => b.onclick = () => { MSG.kind = b.dataset.k; dlg.querySelectorAll('.tpl .chip').forEach(c => c.classList.toggle('on', c === b)); fill(); });
+  dlg.querySelectorAll('#mPrice,#mMat,#mWhen,#mEta').forEach(i => i.oninput = fill);
+  $('#mText').oninput = links;
+  $('#mCopy').onclick = async () => { try { await navigator.clipboard.writeText($('#mText').value); toast('Copied'); } catch (e) { $('#mText').select(); } };
+  const after = () => { if (MSG.onSend) MSG.onSend(); };
+  $('#mEmail').addEventListener('click', after); $('#mSms').addEventListener('click', after);
+  fill(); dlg.showModal();
+}
+function replyReq(id) {
+  const r = DB.Requests.find(x => x.id === id);
+  const line = svcLine(r.service);
+  openMsg({ name: r.name, f: first(r.name), phone: r.phone, email: r.email, svc: r.service || 'your project', photos: !!r.photos, price: line.rate,
+    when: '', onSend: () => { if (!r.status || r.status === 'New') save('Requests', { ...r, status: 'Replied' }, true); } },
+    ['got', 'price', 'visit', 'decline'], 'got');
+}
+function msgJob(id) {
+  const j = job(id), c = cust(j.customerId) || {};
+  const start = j.status === 'Done' ? 'done' : j.status === 'In progress' ? 'omw' : 'confirm';
+  openMsg({ name: c.name, f: first(c.name), phone: c.phone, email: c.email, svc: j.title || 'your job', when: whenText(j.scheduled) },
+    ['confirm', 'omw', 'late', 'done'], start);
+}
+function followUp(docId) {
+  const d = DB.Docs.find(x => x.id === docId), c = cust(d.customerId) || {}, j = job(d.jobId);
+  openMsg({ name: c.name, f: first(c.name), phone: c.phone, email: c.email, svc: (j && j.title) || items(d)[0]?.desc || 'your project', total: money(totals(d).total), num: d.number },
+    d.type === 'quote' ? ['fuquote'] : ['fuinv']);
+}
+const contactBtns = r => (digits(r.phone) ? `<a class="btn ghost" href="tel:${digits(r.phone)}">Call</a>` : '') + (r.email ? `<a class="btn ghost" href="mailto:${esc(r.email)}">Email</a>` : '');
+
+// ---- email the quote/invoice as a PDF from your business email
+const DOC_CSS = `body{font-family:Arial,Helvetica,sans-serif;color:#111;margin:0}
+.doc{max-width:720px;margin:0 auto;padding:28px 24px}
+.dh{display:flex;justify-content:space-between;border-bottom:3px solid #1F4A5C;padding-bottom:14px;margin-bottom:18px}
+h1{font-size:22px;margin:0 0 6px;color:#1F4A5C;text-transform:uppercase;letter-spacing:1px}
+table{width:100%;border-collapse:collapse;margin:18px 0}
+th,td{padding:8px 6px;border-bottom:1px solid #ddd;text-align:left;font-size:14px}
+th:not(:first-child),td:not(:first-child){text-align:right}
+th{background:#F6F1E7;color:#1F4A5C}
+.sum{margin-left:auto;width:260px}.sum div{display:flex;justify-content:space-between;padding:4px 0}
+.big{font-size:18px;font-weight:800;border-top:2px solid #111;margin-top:4px;padding-top:8px}`;
+async function emailDoc(id) {
+  const d = DB.Docs.find(x => x.id === id), c = cust(d.customerId) || {}, t = totals(d), j = job(d.jobId);
+  const btn = $('#emailPdf'); if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  const kind = d.type === 'quote' ? 'quote' : 'invoice';
+  const body = `Hi ${first(c.name)},\n\nAttached is your ${kind} ${d.number} from ${C.legalName || C.businessName}${j ? ' for ' + j.title.toLowerCase() : ''}.\n\n${kind === 'quote' ? 'Estimated total' : d.status === 'Paid' ? 'Total paid' : 'Amount due'}: ${money(t.total)}\n\n${kind === 'quote' ? 'Just reply to this email to get on the schedule. Nothing is due until the job is done.' : (d.status === 'Paid' ? 'Thank you for your payment!' : C.paymentNote)}${sig()}`;
+  try {
+    await api({ action: 'sendDoc', to: c.email, subject: `${C.businessName} ${kind} ${d.number}`, body,
+      html: `<html><head><meta charset="utf-8"><style>${DOC_CSS}</style></head><body>${docHtml(d)}</body></html>`, filename: `${C.businessName} ${d.number}` });
+    toast(`Emailed to ${c.email}`);
+    if (d.status === 'Draft') saveDoc({ ...d, status: 'Sent' });
+    if (btn) btn.textContent = 'Sent ✓';
+  } catch (e) {
+    toast('Email failed: ' + e.message, true);
+    if (btn) { btn.disabled = false; btn.textContent = 'Try again'; }
+  }
 }
 
 // ================= forms =================
@@ -326,8 +520,8 @@ function drawTot() {
 function docHtml(d) {
   const c = cust(d.customerId) || {}, t = totals(d), j = job(d.jobId);
   const label = d.type === 'quote' ? 'QUOTE' : 'INVOICE';
-  return `<div class="doc"><div class="dh"><div><h1 style="font-family:var(--serif)">9999 · ${esc(C.legalName || C.businessName)}</h1>
-    <div>${esc(fmtPhone(C.phone))}<br>${esc(C.email)}<br>${esc(C.serviceArea)}</div></div>
+  return `<div class="doc"><div class="dh"><div><h1 style="font-family:var(--serif)">${esc(C.legalName || C.businessName)}</h1>
+    <div>${digits(C.phone) ? esc(fmtPhone(C.phone)) + '<br>' : ''}${esc(C.email)}<br>${esc(C.serviceArea)}</div></div>
     <div style="text-align:right"><h1 style="color:var(--accent2)">${label}</h1><div><b>${esc(d.number)}</b><br>Date: ${esc(fmtDate(d.date))}
     ${d.status === 'Paid' ? `<br><b style="color:var(--ok)">PAID ${esc(fmtDate(d.paidDate))}</b>` : ''}</div></div></div>
     <div><b>${d.type === 'quote' ? 'Prepared for' : 'Bill to'}:</b><br>${esc(c.name || '')}<br>${esc((j && j.address) || c.address || '')}<br>${esc(fmtPhone(c.phone))} ${c.email ? '· ' + esc(c.email) : ''}</div>
@@ -343,11 +537,12 @@ function docHtml(d) {
 function printDoc(id) {
   const d = DB.Docs.find(x => x.id === id), c = cust(d.customerId) || {}, t = totals(d);
   const p = $('#print');
-  const summary = `${C.businessName} ${d.type === 'quote' ? 'quote' : 'invoice'} ${d.number}: ${money(t.total)}${d.type === 'invoice' && d.status !== 'Paid' ? ' due' : ''}. ${items(d).map(i => i.desc).filter(Boolean).join(', ')}. Questions? Call ${fmtPhone(C.phone)}.`;
+  const summary = `${C.businessName} ${d.type === 'quote' ? 'quote' : 'invoice'} ${d.number}: ${money(t.total)}${d.type === 'invoice' && d.status !== 'Paid' ? ' due' : ''}. ${items(d).map(i => i.desc).filter(Boolean).join(', ')}. ${digits(C.phone) ? 'Questions? Call ' + fmtPhone(C.phone) + '.' : 'Questions? Just reply to this email.'}`;
   p.innerHTML = `<div class="pbar"><button class="btn ghost" style="color:#fff;border-color:#fff5" onclick="closePrint()">← Back</button>
     <button class="btn" onclick="window.print()">Save PDF / Print</button>
     ${digits(c.phone) ? `<a class="btn alt" href="sms:${digits(c.phone)}?&body=${encodeURIComponent(summary)}">Text</a>` : ''}
-    ${c.email ? `<a class="btn alt" href="mailto:${esc(c.email)}?subject=${encodeURIComponent(C.businessName + ' ' + d.number)}&body=${encodeURIComponent(summary + '\n\nPDF attached.')}">Email</a>` : ''}</div>${docHtml(d)}`;
+    ${c.email && REMOTE ? `<button class="btn brass" id="emailPdf" onclick="emailDoc('${d.id}')">Email PDF to ${esc(first(c.name))}</button>` : ''}
+    ${c.email && !REMOTE ? `<a class="btn alt" href="mailto:${esc(c.email)}?subject=${encodeURIComponent(C.businessName + ' ' + d.number)}&body=${encodeURIComponent(summary + '\n\nPDF attached.')}">Email</a>` : ''}</div>${docHtml(d)}`;
   p.classList.add('open'); document.body.classList.add('printing');
   if (d.status === 'Draft') saveDoc({ ...d, status: 'Sent' });
 }
@@ -376,7 +571,7 @@ async function importData(file) {
 }
 function loginScreen(err) {
   $('#tabs').hidden = true;
-  $('#view').innerHTML = `<form class="card login" id="lf"><span class="mark" style="font-size:1.4rem">.9999</span><h2 style="margin-top:12px">${esc(C.businessName)} office</h2>
+  $('#view').innerHTML = `<form class="card login" id="lf"><div class="lwm">FOUR NINES<small>OFFICE · ENTERPRISE, LLC</small></div>
     <label>Passcode</label><input type="password" name="k" autocomplete="current-password" required>
     ${err ? `<div class="msg bad">${esc(err)}</div>` : ''}<button class="btn" style="width:100%;margin-top:14px">Unlock</button></form>`;
   $('#lf').onsubmit = async e => { e.preventDefault(); KEY = e.target.k.value; try { await load(); LS.set('fn_key', KEY); start(); } catch (x) { loginScreen(x.message); } };
