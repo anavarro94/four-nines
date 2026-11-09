@@ -133,7 +133,7 @@
     if (/remodel|addition|renovat|kitchen remodel|bathroom remodel|build a (deck|room)/.test(t)) return bot("We focus on smaller jobs done really well. For a big remodel we'll be straight with you and point you to the right pro. Send the details and we'll take a look.");
     if (/insur|licens|bond/.test(t)) return bot(`Good question — ${reach} and we'll answer that directly before any work starts.`);
     if (/\bchecks?\b/.test(t) && !/check (on|in|out)/.test(t)) return bot("Sorry, we don't take checks. " + esc(C.paymentNote));
-    if (/check|venmo|zelle|apple|cash|pay|card|deposit/.test(t)) return bot(esc(C.paymentNote) + ' No deposit needed for most small jobs.');
+    if (/check|venmo|zelle|apple|cash|pay|card|deposit/.test(t)) return bot(esc(C.paymentNote));
     if (/when|weekend|saturday|sunday|evening|night|tonight|tomorrow|today|available|soon|hour|time|schedule/.test(t)) return bot(`We work <b>${esc(C.hours.toLowerCase())}</b>, so you don't have to take off work. Send your request with the days that work for you and we'll confirm a time.`);
     const town = towns.find(x => t.includes(x.toLowerCase().replace(/^northeast /, '')));
     if (town || /area|town|serve|come to|near|far|travel|zip|columbia|irmo|cayce|ridgeway|camden|lugoff|blythewood/.test(t)) return bot(town ? `Yes — we serve <b>${esc(town)}</b>! 👍` : `We serve <b>${esc(C.serviceArea)}</b>. Just outside that? Ask anyway — we can usually make it work.`);
@@ -179,7 +179,7 @@
     await bot(`We work <b>${esc(C.hours.toLowerCase())}</b>. Tell us your best days and times when you request a quote, and we'll find a slot that works for you.`);
     mainMenu();
   }
-  async function pay() { await bot(esc(C.paymentNote) + ' No deposit needed for most small jobs.'); mainMenu(); }
+  async function pay() { await bot(esc(C.paymentNote)); mainMenu(); }
   async function person() {
     await bot(`Sure! The quickest way is to ${reach}. If we're on a job, we'll get right back to you.`);
     mainMenu();

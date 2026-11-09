@@ -7,7 +7,7 @@ window.FN_CONFIG = {
   legalName: "Four Nines Enterprise, LLC",   // shown in footer and on quotes/invoices
   ownerName: "",                 // your first name, used to sign messages (optional)
   tagline: "Your to-do list, done right.",
-  subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Upfront prices. Pay when it's done.",
+  subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Clear written quotes before any work starts.",
   phone: "",                      // <-- business number, digits only (blank = email only)
   email: "office@fourninesenterprise.com",
   serviceArea: "Elgin, Lugoff, Camden, Blythewood & Northeast Columbia",
@@ -20,7 +20,7 @@ window.FN_CONFIG = {
 
   // Default tax rate for quotes/invoices (percent). 0 = no tax line.
   taxRate: 0,
-  paymentNote: "Nothing up front. You pay when the job is done, by cash, Zelle, Venmo or Apple Pay.",
+  paymentNote: "We accept cash, Zelle, Venmo or Apple Pay.",
 
   services: [
     { name: "Drywall repair",        price: "From $95", desc: "Holes, cracks and water spots patched, textured and painted so you can't find them.", img: "https://images.unsplash.com/photo-1768839725085-829e6ac7ac26?w=900&q=70&auto=format&fit=crop" },

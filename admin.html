@@ -336,7 +336,7 @@ async function quoteFromReq(id) {
 const sig = () => `\n\n— ${C.ownerName ? C.ownerName + ', ' : ''}${C.legalName || C.businessName}${digits(C.phone) ? '\n' + fmtPhone(C.phone) : ''}\n${C.email}`;
 const TPL = {
   got:     { label: 'Got it',          for: 'req', f: x => `Hi ${x.f}, thanks for reaching out to Four Nines! I got your request for ${x.svc.toLowerCase()} and will send you a price within one business day.` },
-  price:   { label: 'Send price',      for: 'req', f: x => `Hi ${x.f}, thanks for the details${x.photos ? ' and photos' : ''}. For ${x.svc.toLowerCase()}, your price is ${x.price ? '$' + x.price : '$[price]'} for labor${x.materials ? `, plus about $${x.materials} in materials` : ''}. I can do it ${x.when || '[day/time]'}. Want me to put you on the schedule? Nothing is due until the job is done.` },
+  price:   { label: 'Send price',      for: 'req', f: x => `Hi ${x.f}, thanks for the details${x.photos ? ' and photos' : ''}. For ${x.svc.toLowerCase()}, your price is ${x.price ? '$' + x.price : '$[price]'} for labor${x.materials ? `, plus about $${x.materials} in materials` : ''}. I can do it ${x.when || '[day/time]'}. Want me to put you on the schedule?` },
   visit:   { label: 'Need a look',     for: 'req', f: x => `Hi ${x.f}, thanks for the details. I'd like to take a quick look in person before giving you an exact price, and there's no charge for the visit. Would ${x.when || '[day/time]'} work for you?` },
   decline: { label: "Can't take it",   for: 'req', f: x => `Hi ${x.f}, thanks for thinking of Four Nines. Unfortunately ${x.svc.toLowerCase()} isn't something we can take on right now. I'm sorry I can't help with this one, and I hope you'll keep us in mind for future projects.` },
   confirm: { label: 'Confirm visit',   for: 'job', f: x => `Hi ${x.f}, this is Four Nines confirming your appointment for ${x.svc.toLowerCase()} ${x.when || '[day/time]'}. Reply here if anything changes. See you then!` },
@@ -417,7 +417,7 @@ async function emailDoc(id) {
   const d = DB.Docs.find(x => x.id === id), c = cust(d.customerId) || {}, t = totals(d), j = job(d.jobId);
   const btn = $('#emailPdf'); if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
   const kind = d.type === 'quote' ? 'quote' : 'invoice';
-  const body = `Hi ${first(c.name)},\n\nAttached is your ${kind} ${d.number} from ${C.legalName || C.businessName}${j ? ' for ' + j.title.toLowerCase() : ''}.\n\n${kind === 'quote' ? 'Estimated total' : d.status === 'Paid' ? 'Total paid' : 'Amount due'}: ${money(t.total)}\n\n${kind === 'quote' ? 'Just reply to this email to get on the schedule. Nothing is due until the job is done.' : (d.status === 'Paid' ? 'Thank you for your payment!' : C.paymentNote)}${sig()}`;
+  const body = `Hi ${first(c.name)},\n\nAttached is your ${kind} ${d.number} from ${C.legalName || C.businessName}${j ? ' for ' + j.title.toLowerCase() : ''}.\n\n${kind === 'quote' ? 'Estimated total' : d.status === 'Paid' ? 'Total paid' : 'Amount due'}: ${money(t.total)}\n\n${kind === 'quote' ? 'Just reply to this email to get on the schedule.' : (d.status === 'Paid' ? 'Thank you for your payment!' : C.paymentNote)}${sig()}`;
   try {
     await api({ action: 'sendDoc', to: c.email, subject: `${C.businessName} ${kind} ${d.number}`, body,
       html: `<html><head><meta charset="utf-8"><style>${DOC_CSS}</style></head><body>${docHtml(d)}</body></html>`, filename: `${C.businessName} ${d.number}` });
