@@ -128,25 +128,6 @@
   </div>
 </section>
 
-<section id="estimate" class="sec">
-  <div class="wrap">
-    <div class="sec-head center rv">
-      <p class="eyebrow">Price check</p>
-      <h2>See a price in <em>10 seconds</em></h2>
-      <p class="lede">Tap your job to see what it typically costs. Your written quote locks in the exact price.</p>
-    </div>
-    <div class="est rv">
-      <div class="est-step"><span class="est-n">1</span><b>Choose a job</b></div>
-      <div class="chips" id="estSvc"></div>
-      <div id="estQ" hidden>
-        <div class="est-step"><span class="est-n">2</span><b id="estQText"></b></div>
-        <div class="chips" id="estOpts"></div>
-      </div>
-      <div class="est-out" id="estOut" hidden></div>
-    </div>
-  </div>
-</section>
-
 <section class="sec compare-sec">
   <div class="wrap">
     <div class="sec-head center rv"><p class="eyebrow">Why we're different</p><h2>Built around <em>your</em> schedule</h2>
@@ -428,35 +409,6 @@ prefill();
   });
 })();
 
-// Instant ballpark estimator (ranges live in config.js)
-(function () {
-  const E = C.estimator || {};
-  let cur = null;
-  $('#estSvc').innerHTML = C.services.map(s => `<button type="button" class="chip" data-s="${esc(s.name)}">${esc(s.name)}</button>`).join('');
-  $('#estSvc').addEventListener('click', e => {
-    const b = e.target.closest('.chip'); if (!b) return;
-    $('#estSvc').querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === b));
-    cur = b.dataset.s; const q = E[cur]; $('#estOut').hidden = true;
-    if (!q) { $('#estQ').hidden = true; showOut(null); return; }
-    $('#estQ').hidden = false; $('#estQText').textContent = q.q;
-    $('#estOpts').innerHTML = q.opts.map((o, i) => `<button type="button" class="chip" data-i="${i}">${esc(o[0])}</button>`).join('');
-  });
-  $('#estOpts').addEventListener('click', e => {
-    const b = e.target.closest('.chip'); if (!b) return;
-    $('#estOpts').querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === b));
-    showOut(E[cur].opts[+b.dataset.i]);
-  });
-  function showOut(o) {
-    const el = $('#estOut'); el.hidden = false;
-    el.innerHTML = o
-      ? `<div><span class="lbl">Typical range</span><div class="rng">$${o[1]}<i>–</i>$${o[2]}</div><small>Labor for: ${esc(cur)} · ${esc(o[0])}. Materials are extra. Your written quote is the final price.</small></div>
-         <a class="btn brass" href="#fast" id="estGo">Lock in an exact quote →</a>`
-      : `<div><span class="lbl">Custom job</span><div class="rng" style="font-size:1.8rem">Every one is different</div><small>Send a few photos and we'll price it for you — usually the same day.</small></div>
-         <a class="btn brass" href="#fast" id="estGo">Send photos for a quote →</a>`;
-    $('#estGo').onclick = () => { $('#fWhat').value = cur + (o ? ' — ' + o[0] : ''); };
-    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-})();
 
 // Photo quote fast lane
 (function () {
