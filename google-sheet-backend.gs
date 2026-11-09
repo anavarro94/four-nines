@@ -16,7 +16,7 @@
  */
 
 const SECRET = 'CHANGE-ME';                                   // ← your office-app passcode
-const NOTIFY_EMAIL = 'a.navarro@fourninesenterprise.com';     // ← where quote requests are emailed
+const NOTIFY_EMAIL = 'office@fourninesenterprise.com';     // ← where quote requests are emailed
 const PHOTO_FOLDER = 'Four Nines Quote Photos';
 const TABLES = ['Requests', 'Customers', 'Jobs', 'Docs', 'Expenses'];
 const BUSINESS_NAME = 'Four Nines Enterprise, LLC';

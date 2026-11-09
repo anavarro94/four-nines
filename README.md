@@ -25,7 +25,7 @@ The site works right away: the quote form opens a text to your phone, and the of
 Easiest on a computer, ~10 minutes, one time.
 1. Go to sheets.new — name it **Four Nines**.
 2. **Extensions → Apps Script**. Delete what's there, paste all of `google-sheet-backend.gs`.
-3. Change `SECRET` to your own passcode. `NOTIFY_EMAIL` is already set to a.navarro@fourninesenterprise.com — every quote request (with photos) is emailed there.
+3. Change `SECRET` to your own passcode. `NOTIFY_EMAIL` is already set to office@fourninesenterprise.com — every quote request (with photos) is emailed there.
 4. Pick `setup` in the function menu → **Run** → allow permissions (it's your own script; click *Advanced → Go to project*).
 5. **Deploy → New deployment** → gear → *Web app*. Execute as: **Me**. Who has access: **Anyone**. Deploy → copy the URL.
 6. On GitHub, edit `config.js` → paste the URL into `scriptUrl: ""` → Commit.
