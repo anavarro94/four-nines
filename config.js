@@ -30,7 +30,7 @@ window.FN_CONFIG = {
     { name: "Furniture assembly",    price: "From $50", desc: "Beds, dressers, desks, patio sets. Built solid, boxes hauled off.", img: "img/garage-racks.jpg" },
     { name: "Carpet & LVP flooring", price: "Quoted", desc: "LVP and carpet installed room by room, with clean trim and transitions.", img: "https://images.unsplash.com/photo-1598718544285-7180f670198b?w=900&q=70&auto=format&fit=crop" },
     { name: "Small yard work",       price: "From $60", desc: "Trimming, edging, leaf cleanup and hedge shaping to get your yard back in shape.", img: "img/fire-pit.jpg" },
-    { name: "Small junk removal",    price: "From $75", desc: "Old furniture, boxes and clutter hauled away. We do the lifting.", img: "img/deck-before.jpg" },
+    { name: "Small junk removal",    price: "From $75", desc: "Old furniture, boxes and clutter hauled away. We do the lifting.", img: "https://images.unsplash.com/photo-1757837593538-b4a8654132f1?w=900&q=70&auto=format&fit=crop" },
     { name: "Small cleaning",        price: "From $70", desc: "Move-out touch-ups, garages, and the spots that never get cleaned.", img: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=900&q=70&auto=format&fit=crop" },
     { name: "Honey-do list",         price: "From $55/hr", desc: "Send the whole list. One visit, everything checked off.", img: "https://images.unsplash.com/photo-1599619585752-c3edb42a414c?w=900&q=70&auto=format&fit=crop" }
   ],
@@ -65,7 +65,6 @@ window.FN_CONFIG = {
     { before: "img/pool-before.jpg", after: "img/pool-after.jpg", caption: "Pool safety cover installed and anchored tight" },
     { before: "img/hose-before.jpg", after: "img/hose-after.jpg", caption: "Wall-mount hose reel installed on a new post" },
     { before: "img/mailbox-before.jpg", after: "img/mailbox.jpg",      caption: "New mailbox and post installed" },
-    { before: "img/deck-before.jpg", after: "img/deck-after.jpg", caption: "Cluttered patio cleared and junk hauled off" },
     { before: "img/yard-before.jpg", after: "img/yard-after.jpg", caption: "Overgrown fence line trimmed and cleaned up" },
     { after: "img/garage-racks.jpg", caption: "Overhead garage storage racks installed" },
     { after: "img/fire-pit.jpg",     caption: "Backyard fire pit area with paver border and lights" },

@@ -117,7 +117,7 @@
     </div>
     <div class="svc-grid" id="svcGrid"></div>
     <div class="also rv"><b>We've also handled:</b> <span>Pool safety covers</span><span>Mailbox &amp; post installs</span><span>Garage storage racks</span><span>Hose reel mounting</span><span>Mirrors &amp; wall decor</span><span>Fire pit areas</span><span>Sink cabinet floors</span><span>Roof vent pipe repair</span></div>
-    <p class="note">Starting prices for labor. You get a written quote before any work begins, so there are no surprises.</p>
+    <p class="note">Every job is different, so every job gets a free written quote before any work begins. No surprises.</p>
   </div>
 </section>
 
@@ -363,9 +363,8 @@ const svg = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 $('#svcGrid').innerHTML = C.services.map(s => {
   const quoted = /quoted/i.test(s.price);
-  const price = quoted ? 'Free quote' : `<small>from</small>${esc(s.price.replace(/^From\s*/i,''))}`;
   return `<div class="svc rv">
-    <div class="ph"${s.img ? ` style="background-image:url('${esc(s.img)}')"` : ''}><span class="tag">${price}</span><span class="ico">${svg(pick(s.name))}</span></div>
+    <div class="ph"${s.img ? ` style="background-image:url('${esc(s.img)}')"` : ''}><span class="ico">${svg(pick(s.name))}</span></div>
     <div class="bd"><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p>
     <a class="go" href="#quote" data-svc="${esc(s.name)}">Get a quote ${ARROW}</a></div></div>`; }).join('');
 document.addEventListener('click', e => { const a = e.target.closest('[data-svc]'); if (a) $('#service').value = a.dataset.svc; });
@@ -379,7 +378,7 @@ if (C.gallery && C.gallery.length) {
   $('#gallery').innerHTML = C.gallery.map(g => `
     <figure class="ba"><div class="pair">
       ${g.before ? `<div><img src="${esc(g.before)}" alt="${esc(g.caption)} (before)" loading="lazy"><span>Before</span></div>` : ''}
-      <div${g.before ? '' : ' style="grid-column:1/-1"'}><img src="${esc(g.after)}" alt="${esc(g.caption)}${g.before ? ' (after)' : ''}" loading="lazy"><span>After</span></div>
+      <div${g.before ? '' : ' style="grid-column:1/-1"'}><img src="${esc(g.after)}" alt="${esc(g.caption)}${g.before ? ' (after)' : ''}" loading="lazy">${g.before ? '<span>After</span>' : ''}</div>
     </div><figcaption>${esc(g.caption)}</figcaption></figure>`).join('');
 }
 

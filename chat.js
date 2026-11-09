@@ -122,7 +122,7 @@
   const svcFor = t => Object.keys(SYN).find(k => SYN[k].test(t) && C.services.some(s => s.name === k));
   function rangeHtml(name) {
     const E = (C.estimator || {})[name], s = C.services.find(x => x.name === name);
-    if (!E) return `<b>${esc(name)}</b> is priced per job (${esc(s ? s.price : 'free quote')}). Send a photo and we'll give you an exact number.`;
+    if (!E) return `<b>${esc(name)}</b> is priced per job. Send a photo and we'll give you an exact number.`;
     return `<b>${esc(name)}</b> typically runs:<br>` + E.opts.map(o => `• ${esc(o[0])}: <b>$${o[1]}–$${o[2]}</b>`).join('<br>') + '<br><br>Your written quote locks in the exact price.';
   }
   async function answer(t) {
@@ -140,7 +140,7 @@
     if (town || /area|town|serve|come to|near|far|travel|zip|columbia|irmo|cayce|ridgeway|camden|lugoff|blythewood/.test(t)) return bot(town ? `Yes — we serve <b>${esc(town)}</b>! 👍` : `We serve <b>${esc(C.serviceArea)}</b>. Just outside that? Ask anyway — we can usually make it work.`);
     if (svc && /cost|price|how much|charge|rate|quote|\$|estimate/.test(t)) return bot(rangeHtml(svc));
     if (svc) return bot(`Yes, we do that! ` + rangeHtml(svc));
-    if (/cost|price|how much|charge|rate|estimate/.test(t)) return bot('Starting prices:<br>' + C.services.map(s => `<b>${esc(s.name)}</b> — ${esc(s.price)}`).join('<br>'));
+    if (/cost|price|how much|charge|rate|estimate/.test(t)) return bot("Every job is priced on its own, and quotes are always free. Tell me what you need (like \"TV mount\" or \"drywall hole\") and I'll show you typical ranges, or send a photo for an exact price.");
     if (/photo|picture|pic/.test(t)) return bot('Photos are the fastest way to a price — use <b>📷 Quick photo quote</b> and we can usually price small jobs without a visit.');
     return bot(`I'm not sure about that one, but the owner can help — ${reach}, or start a free quote and add the details.`);
   }
@@ -162,8 +162,7 @@
     await wait(700); box.classList.remove('open'); fast.scrollIntoView({ behavior: 'smooth' });
   }
   async function prices() {
-    await bot('Here are our starting prices:<br><br>' + C.services.map(s => `<b>${esc(s.name)}</b> — ${esc(s.price)}`).join('<br>') +
-      '<br><br>Every job gets a written quote before work starts, so you always know the price up front.', 800);
+    await bot("Every job is a little different, so we give each one a free written quote. You'll know the exact price before any work starts.", 600);
     const n = await opts([['See price ranges for a job','r'],['Get a free quote','q'],['Back to menu','m']]);
     if (n === 'q') return quote();
     if (n === 'm') return mainMenu();
