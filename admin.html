@@ -213,7 +213,7 @@ function nextNum(type) {
 function newDoc(type, jobId) {
   const j = jobId ? job(jobId) : null;
   openDoc(null, { type, number: nextNum(type), date: today(), status: 'Draft', customerId: j?.customerId || '', jobId: jobId || '',
-    items: [{ desc: j?.title || '', qty: 1, rate: j?.price || '' }], taxRate: C.taxRate || 0, notes: type === 'invoice' ? C.paymentNote : 'Quote valid for 30 days.' });
+    items: [{ desc: j?.title || '', qty: 1, rate: j?.price || '' }], taxRate: C.taxRate || 0, notes: type === 'invoice' ? C.paymentNote : (C.quoteTerms || 'Quote valid for 30 days.') });
 }
 async function markPaid(id) {
   const d = DB.Docs.find(x => x.id === id);
@@ -328,7 +328,7 @@ async function quoteFromReq(id) {
   const r = DB.Requests.find(x => x.id === id);
   const j = await convert(id, true);
   const d = { type: 'quote', number: nextNum('quote'), date: today(), status: 'Draft', customerId: j.customerId, jobId: j.id,
-    items: [svcLine(r.service)], taxRate: C.taxRate || 0, notes: 'Price includes labor. Materials listed separately if needed. Quote valid for 30 days.' };
+    items: [svcLine(r.service)], taxRate: C.taxRate || 0, notes: C.quoteTerms || 'Quote valid for 30 days.' };
   S.tab = 'Billing'; render(); openDoc(null, d);
 }
 
@@ -336,7 +336,7 @@ async function quoteFromReq(id) {
 const sig = () => `\n\n— ${C.ownerName ? C.ownerName + ', ' : ''}${C.legalName || C.businessName}${digits(C.phone) ? '\n' + fmtPhone(C.phone) : ''}\n${C.email}`;
 const TPL = {
   got:     { label: 'Got it',          for: 'req', f: x => `Hi ${x.f}, thanks for reaching out to Four Nines! I got your request for ${x.svc.toLowerCase()} and will send you a price within one business day.` },
-  price:   { label: 'Send price',      for: 'req', f: x => `Hi ${x.f}, thanks for the details${x.photos ? ' and photos' : ''}. For ${x.svc.toLowerCase()}, your price is ${x.price ? '$' + x.price : '$[price]'} for labor${x.materials ? `, plus about $${x.materials} in materials` : ''}. I can do it ${x.when || '[day/time]'}. Want me to put you on the schedule?` },
+  price:   { label: 'Send price',      for: 'req', f: x => `Hi ${x.f}, thanks for the details${x.photos ? ' and photos' : ''}. For ${x.svc.toLowerCase()}, your price is ${x.price ? '$' + x.price : '$[price]'} for labor${x.materials ? `, plus about $${x.materials} in materials, which is due before I pick them up` : ''}. I can do it ${x.when || '[day/time]'}. Want me to put you on the schedule?` },
   visit:   { label: 'Need a look',     for: 'req', f: x => `Hi ${x.f}, thanks for the details. I'd like to take a quick look in person before giving you an exact price, and there's no charge for the visit. Would ${x.when || '[day/time]'} work for you?` },
   decline: { label: "Can't take it",   for: 'req', f: x => `Hi ${x.f}, thanks for thinking of Four Nines. Unfortunately ${x.svc.toLowerCase()} isn't something we can take on right now. I'm sorry I can't help with this one, and I hope you'll keep us in mind for future projects.` },
   confirm: { label: 'Confirm visit',   for: 'job', f: x => `Hi ${x.f}, this is Four Nines confirming your appointment for ${x.svc.toLowerCase()} ${x.when || '[day/time]'}. Reply here if anything changes. See you then!` },
