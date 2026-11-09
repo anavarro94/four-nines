@@ -344,7 +344,7 @@ const TPL = {
   late:    { label: 'Running late',    for: 'job', f: x => `Hi ${x.f}, I'm running about ${x.eta || '15'} minutes behind. Sorry about that, I'll be there shortly.` },
   done:    { label: 'Job done',        for: 'job', f: x => `Hi ${x.f}, all finished with your ${x.svc.toLowerCase()}. Thanks for choosing Four Nines! Your invoice is on the way. If you were happy with the work, a quick review would mean a lot to a small local business.` },
   fuquote: { label: 'Quote follow-up', for: 'doc', f: x => `Hi ${x.f}, just checking in on the quote I sent for ${x.svc.toLowerCase()} (${x.total}). Any questions? I have openings ${x.when || 'this week'} if you'd like to get it on the schedule.` },
-  fuinv:   { label: 'Payment reminder',for: 'doc', f: x => `Hi ${x.f}, friendly reminder that invoice ${x.num} for ${x.total} is still open. You can pay by ${String(C.paymentNote || '').replace(/^.*?by\s+/i, '').replace(/\.$/, '') || 'cash, check, Zelle or Venmo'}. Thanks again for your business!` },
+  fuinv:   { label: 'Payment reminder',for: 'doc', f: x => `Hi ${x.f}, friendly reminder that invoice ${x.num} for ${x.total} is still open. You can pay by ${String(C.paymentNote || '').replace(/^.*?by\s+/i, '').replace(/\.$/, '') || 'cash, Zelle, Venmo or Apple Pay'}. Thanks again for your business!` },
 };
 let MSG = null;
 function whenText(s) { if (!s) return ''; return `${dayLabel(s).toLowerCase() === 'tonight' ? 'tonight' : dayLabel(s).match(/^(today|tomorrow)$/i) ? dayLabel(s).toLowerCase() : 'on ' + dayLabel(s)}${timeOf(s) ? ' at ' + timeOf(s) : ''}`; }
