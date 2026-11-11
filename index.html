@@ -462,6 +462,19 @@ prefill();
 const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' }) : null;
 document.querySelectorAll('.rv').forEach(el => io ? io.observe(el) : el.classList.add('in'));
 
+
+// Service cards tilt toward the mouse (desktop only)
+if (matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.svc').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      card.classList.add('tilt');
+      card.style.transform = `perspective(900px) rotateX(${(-y * 7).toFixed(2)}deg) rotateY(${(x * 9).toFixed(2)}deg) translateY(-4px)`;
+    });
+    card.addEventListener('pointerleave', () => { card.classList.remove('tilt'); card.style.transform = ''; });
+  });
+}
+
 // Shrink photos on the phone before sending (keeps uploads fast)
 async function shrink(file, max = 1280) {
   const url = URL.createObjectURL(file);
@@ -512,5 +525,6 @@ $('#qf').addEventListener('submit', async e => {
 });
 </script>
 <script src="chat.js"></script>
+<script type="module" src="fx3d.js"></script>
 </body>
 </html>
