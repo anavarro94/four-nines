@@ -581,3 +581,9 @@ form.card::before{height:6px;background:var(--brass)}
 .town-faq summary{font-weight:700;cursor:pointer;color:var(--teal)}
 .town-faq p{margin:10px 0 0;color:var(--muted)}
 @media(max-width:600px){.town-svcs ul{columns:1}}
+
+/* Header phone number: only when there's room, never wrapping */
+.nav a,.top .call{white-space:nowrap}
+@media(max-width:1359px){.top .call{display:none!important}}
+.brand .wm b,.brand .wm small{white-space:nowrap}.top .bar>*{flex-shrink:0}
+@media(min-width:980px) and (max-width:1119px){.nav{gap:20px!important}.nav a{font-size:.88rem!important;letter-spacing:.06em!important}}

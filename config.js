@@ -8,7 +8,7 @@ window.FN_CONFIG = {
   ownerName: "",                 // your first name, used to sign messages (optional)
   tagline: "Your to-do list, done right.",
   subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Clear written quotes before any work starts.",
-  phone: "",                      // <-- business number, digits only (blank = email only)
+  phone: "8036732971",            // <-- business number, digits only (blank = email only)
   email: "office@fourninesenterprise.com",
   goatcounter: "",                // <-- free visitor counts: your GoatCounter code (e.g. "fournines"); blank = off
   serviceArea: "Elgin, Lugoff, Camden, Blythewood & Northeast Columbia",
