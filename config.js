@@ -30,7 +30,7 @@ window.FN_CONFIG = {
     { name: "Outlets & switches",    price: "From $45", desc: "Swap worn or outdated outlets and switches, add USB or GFCI outlets, fresh cover plates.", img: "img/gfci-after.jpg" },
     { name: "TV mounting & shelves", price: "From $75",  desc: "Any size TV mounted level and secure, wires hidden. Shelves, mirrors and curtain rods too.", img: "img/tv-after.jpg" },
     { name: "Furniture assembly",    price: "From $50", desc: "Beds, dressers, desks, patio sets. Built solid, boxes hauled off.", img: "img/garage-racks.jpg" },
-    { name: "Carpet & LVP flooring", price: "Quoted", desc: "LVP and carpet installed room by room, with clean trim and transitions.", img: "https://images.unsplash.com/photo-1598718544285-7180f670198b?w=900&q=70&auto=format&fit=crop" },
+    { name: "Carpet & LVP flooring", price: "Quoted", desc: "LVP and carpet installed room by room, with clean trim and transitions.", img: "img/carpet-after.jpg" },
     { name: "Small yard work",       price: "From $60", desc: "Trimming, edging, leaf cleanup and hedge shaping to get your yard back in shape.", img: "img/fire-pit.jpg" },
     { name: "Small junk removal",    price: "From $75", desc: "Old furniture, boxes and clutter hauled away. We do the lifting.", img: "https://images.unsplash.com/photo-1757837593538-b4a8654132f1?w=900&q=70&auto=format&fit=crop" },
     { name: "Small cleaning",        price: "From $70", desc: "Move-out touch-ups, garages, and the spots that never get cleaned.", img: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=900&q=70&auto=format&fit=crop" },
@@ -60,6 +60,7 @@ window.FN_CONFIG = {
   // Before/after photos. Upload images to the /img folder on GitHub,
   // then list them here. Leave the list empty to hide the section.
   gallery: [
+    { before: "img/carpet-before.jpg", after: "img/carpet-after.jpg", caption: "Bedroom carpet installed over new pad and tack strip" },
     { before: "img/sink-before.jpg", after: "img/sink-after.jpg", caption: "Water-damaged sink cabinet floor rebuilt and sealed" },
     { before: "img/tv-before.jpg",   after: "img/tv-after.jpg",   caption: "Bedroom TV mounted level and secure" },
     { before: "img/gfci-before.jpg", after: "img/gfci-after.jpg", caption: "Worn kitchen outlet upgraded to GFCI" },
