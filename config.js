@@ -10,6 +10,7 @@ window.FN_CONFIG = {
   subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Clear written quotes before any work starts.",
   phone: "",                      // <-- business number, digits only (blank = email only)
   email: "office@fourninesenterprise.com",
+  goatcounter: "",                // <-- free visitor counts: your GoatCounter code (e.g. "fournines"); blank = off
   serviceArea: "Elgin, Lugoff, Camden, Blythewood & Northeast Columbia",
   hours: "Evenings & weekends",
 

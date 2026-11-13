@@ -4,8 +4,16 @@
 // Loads only on devices that can handle it, and never for people who turn off motion.
 (async function () {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // Skip on data-saver / very slow connections and very low-memory phones
+  const conn = navigator.connection || {};
+  if (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '') || (navigator.deviceMemory && navigator.deviceMemory < 2)) return;
   const test = document.createElement('canvas');
   if (!(test.getContext('webgl2') || test.getContext('webgl'))) return;
+
+  // Wait until the page (text, photos, buttons) has fully loaded and the phone is idle,
+  // so the 3-D never slows down what customers came for.
+  if (document.readyState !== 'complete') await new Promise(r => addEventListener('load', r, { once: true }));
+  await new Promise(r => ('requestIdleCallback' in window) ? requestIdleCallback(r, { timeout: 1200 }) : setTimeout(r, 200));
 
   let THREE;
   try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'); }

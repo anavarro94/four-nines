@@ -304,7 +304,8 @@ if (!HAS_PHONE) {   // No business phone yet: everything goes to email
   $('#qCall').href = mail; $('#qCall').querySelector('b').textContent = 'Email us'; $('#qCallNum').textContent = C.email;
   $('#qText').style.display = 'none';
 }
-$('#towns').innerHTML = C.serviceArea.split(/,|&/).map(t => t.trim()).filter(Boolean).map(t => `<span>${esc(t)}</span>`).join('');
+const TOWN_PAGES = { 'Lugoff': '/handyman-lugoff-sc/', 'Camden': '/handyman-camden-sc/', 'Blythewood': '/handyman-blythewood-sc/', 'Northeast Columbia': '/handyman-northeast-columbia-sc/' };
+$('#towns').innerHTML = C.serviceArea.split(/,|&/).map(t => t.trim()).filter(Boolean).map(t => TOWN_PAGES[t] ? `<a href="${TOWN_PAGES[t]}">${esc(t)}</a>` : `<span>${esc(t)}</span>`).join('');
 
 // Service icons, matched by keyword in the service name
 const I = {
@@ -441,7 +442,7 @@ prefill();
       const photos = []; for (const file of [...inp.files].slice(0, 5)) photos.push(await shrink(file));
       await fetch(C.scriptUrl, { method: 'POST', mode: 'no-cors', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
       f.reset(); th.innerHTML = ''; inp.closest('.drop').classList.remove('has'); prefill();
-      msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll get back to you soon with your price.`;
+      msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll get back to you soon with your price.`; window.fnTrack && fnTrack('quote-sent-photo');
     } catch (err) {
       msg.className = 'msg bad'; msg.innerHTML = err && err.name === 'TimeoutError'
         ? `This is taking longer than usual. Your request may already be in — if you don't hear from us within one business day, ${HAS_PHONE ? `<a href="${sms}">text us your photos</a>` : `email us at <a href="${mail}">${esc(C.email)}</a>`}.`
@@ -514,6 +515,7 @@ $('#qf').addEventListener('submit', async e => {
     prefill();
     msg.className = 'msg ok';
     msg.textContent = "Got it! We'll reach out within one business day.";
+    window.fnTrack && fnTrack('quote-sent-form');
   } catch (err) {
     msg.className = 'msg bad';
     msg.innerHTML = err && err.name === 'TimeoutError'
@@ -526,6 +528,7 @@ $('#qf').addEventListener('submit', async e => {
 </script>
 <script src="chat.js"></script>
 <script src="fx-ui.js"></script>
+<script src="track.js"></script>
 <script type="module" src="fx3d.js"></script>
 </body>
 </html>
