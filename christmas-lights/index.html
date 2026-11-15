@@ -45,20 +45,12 @@
 .scene-wrap.static .lit.cur{opacity:1;-webkit-mask-image:none;mask-image:none}
 @keyframes pull{from{transform:scale(1.18)}to{transform:scale(1)}}
 @keyframes sweep{from{-webkit-mask-position:56% 0;mask-position:56% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
-.santa{position:absolute;width:20%;left:-24%;top:18%;z-index:1;opacity:0;pointer-events:none}
-.santa svg{display:block;width:100%;height:auto;filter:drop-shadow(0 0 3px #9fb6ff55)}
-.go .santa{animation:santa 3.6s .3s cubic-bezier(.35,.1,.65,.9) forwards}
-.go .santa svg{animation:bob .5s ease-in-out infinite alternate}
-@keyframes santa{0%{left:-24%;top:20%;opacity:1}100%{left:108%;top:-3%;opacity:1}}
-@keyframes bob{to{transform:translateY(-6%) rotate(-2deg)}}
 .gal-ui{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;gap:5px;align-items:center;padding:24px 8px 8px;background:linear-gradient(transparent,#000a);opacity:0;transform:translateY(8px);transition:.5s;overflow-x:auto;scrollbar-width:none}
 .gal-ui::-webkit-scrollbar{display:none}
 .scene-wrap.gal .gal-ui{opacity:1;transform:none}
 .gal-ui button{flex:none;font:600 .68rem 'Roboto Condensed',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:#0000004d;border:1px solid #ffffff40;border-radius:20px;padding:5px 9px;cursor:pointer;white-space:nowrap}
 .gal-ui button[aria-pressed=true]{background:#D9AE45;border-color:#D9AE45;color:#0B1422}
-.gal-ui .rp{margin-left:auto;background:#0008}
-@media(prefers-reduced-motion:reduce){.santa{display:none}}
-.xl-hero .crumbs,.xl-hero .crumbs a{color:#B9C3D3}
+@media(prefers-reduced-motion:reduce){.xl-hero .crumbs,.xl-hero .crumbs a{color:#B9C3D3}
 .xl-hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
 .cd{display:flex;gap:10px;margin:0 0 26px;flex-wrap:wrap;align-items:center}
 .cd-lab{font-family:'Roboto Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:#D9AE45;width:100%}
@@ -85,7 +77,7 @@
 </header>
 <main id="top">
 <section class="xl-hero">
-  <div class="scene-wrap" id="scene" role="img" aria-label="A two-story house at night. Santa's sleigh flies past the moon, Christmas lights sweep on from left to right along the roof, porch, garage and the tree, then the display cycles through light color options">
+  <div class="scene-wrap" id="scene" role="img" aria-label="A two-story house at night. Christmas lights sweep on from left to right along the roof, porch, garage and the tree, then the display cycles through light color options">
     <img src="/img/xmas-night.jpg" alt="" width="1600" height="1039" fetchpriority="high">
     <img class="lit cur" src="/img/xmas-multi.jpg" alt="" width="1600" height="1039">
     <img class="lit" data-src="/img/xmas-warm.jpg" alt="" width="1600" height="1039">
@@ -93,8 +85,7 @@
     <img class="lit" data-src="/img/xmas-redwhite.jpg" alt="" width="1600" height="1039">
     <img class="lit" data-src="/img/xmas-redgreen.jpg" alt="" width="1600" height="1039">
     <img class="lit" data-src="/img/xmas-bluewhite.jpg" alt="" width="1600" height="1039">
-    <div class="santa" aria-hidden="true"><svg viewBox="-66 -4 248 50" fill="#08101f"><g id="rd"><path d="M6 20c3-5 13-6 21-4l4-6 3-4 4 1-1 4-3 2-1 5c0 3-3 5-5 5l-2 6 3 5h-2l-4-5-1-4h-9l-5 5-4 2-1-1 4-4v-3z"/><path d="M34 6l-2-6m0 3l-3-1m6 4l3-6m-1 3l3-1M27 21l6 4 4-1" stroke="#08101f" stroke-width="1.6" fill="none" stroke-linecap="round"/></g><use href="#rd" x="44" y="-3"/><use href="#rd" x="88" y="-6"/><use href="#rd" x="132" y="-9"/><path d="M-60 34c4-8 10-12 20-12h26l4-6 3 1-1 9c0 6-4 10-10 10h-34z"/><circle cx="-36" cy="15" r="5"/><path d="M-41 14l4-9 9 5-4 2z"/><path d="M-50 20c-2-7 3-12 8-11l-1 12z"/><path d="M-62 40h44c5 0 7-3 6-6" stroke="#08101f" stroke-width="2" fill="none"/><path d="M-12 30L30 24M30 24L74 21M74 21L118 18M118 18L160 15" stroke="#08101f" stroke-width=".9"/></svg></div>
-    <div class="gal-ui" id="galui"><button type="button" data-i="0" aria-pressed="true">Multicolor</button><button type="button" data-i="1" aria-pressed="false">Warm white</button><button type="button" data-i="2" aria-pressed="false">Cool white</button><button type="button" data-i="3" aria-pressed="false">Red &amp; white</button><button type="button" data-i="4" aria-pressed="false">Red &amp; green</button><button type="button" data-i="5" aria-pressed="false">Blue &amp; white</button><button type="button" class="rp" id="replay" aria-label="Replay">&#8635;</button></div>
+    <div class="gal-ui" id="galui"><button type="button" data-i="0" aria-pressed="true">Multicolor</button><button type="button" data-i="1" aria-pressed="false">Warm white</button><button type="button" data-i="2" aria-pressed="false">Cool white</button><button type="button" data-i="3" aria-pressed="false">Red &amp; white</button><button type="button" data-i="4" aria-pressed="false">Red &amp; green</button><button type="button" data-i="5" aria-pressed="false">Blue &amp; white</button></div>
   </div>
   <div class="wrap hero-copy">
     <p class="crumbs"><a href="/">Home</a> / Christmas lights</p>
@@ -199,7 +190,6 @@
     timers = [setTimeout(() => wrap.classList.add('on'), 3600), setTimeout(gallery, 7600)];
   }
   chips.forEach(c => c.addEventListener('click', () => { clearInterval(cycle); show(+c.dataset.i); }));
-  document.getElementById('replay').addEventListener('click', play);
   const first = lits[0]; first.complete ? play() : first.addEventListener('load', play, { once: true });
 })();
 </script>
