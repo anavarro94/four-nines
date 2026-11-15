@@ -90,7 +90,7 @@
         <p class="eyebrow">Fastest way to a price</p>
         <h2>Send a photo. <em>Get a price.</em></h2>
         <p class="lede">No appointment, no waiting around for an estimate. Snap the problem, tell us your town, and we'll send you a price. Most small jobs don't need a visit.</p>
-        <ol class="mini-steps"><li><b>1</b>Take or pick photos</li><li><b>2</b>Tell us your town</li><li><b>3</b>Get your price, fast</li></ol>
+        <ol class="mini-steps"><li><b>1</b>Take a photo</li><li><b>2</b>Tell us your town</li><li><b>3</b>Get your price, fast</li></ol>
       </div>
       <form id="ff" class="fast-form" autocomplete="on">
         <label class="drop" for="fPhotos">
@@ -131,20 +131,7 @@
   <div class="wrap">
     <div class="sec-head rv"><div><p class="eyebrow">Recent work</p><h2>Before &amp; <em>after</em></h2></div><p class="lede" style="max-width:42ch;margin:0">Every photo here is a real Four Nines job around the Midlands. No stock photos, no staging.</p></div>
     <div class="ba-grid" id="gallery"></div>
-  </div>
-</section>
-
-<section class="sec compare-sec">
-  <div class="wrap">
-    <div class="sec-head center rv"><p class="eyebrow">Why we're different</p><h2>Built around <em>your</em> schedule</h2>
-      <p class="lede">Most handyman companies work the same hours you do. We don't.</p></div>
-    <div class="compare rv">
-      <div class="col them"><h3>Typical handyman company</h3><ul>
-        <li>Monday–Friday, 8 to 5</li><li>Closed weekends</li><li>Take a day off to let them in</li><li>Wait for an in-home estimate</li></ul></div>
-      <div class="col us"><h3>Four Nines</h3><ul>
-        <li>Weeknight evenings</li><li>Saturdays and Sundays</li><li>No time off work needed</li><li>Send a photo, get your price</li></ul>
-        <a class="btn brass" href="#fast">Get my price</a></div>
-    </div>
+    <p class="more-wrap"><button type="button" class="btn more-btn" id="moreWork">See all our work</button><span class="swipe-hint">Swipe for more &rarr;</span></p>
   </div>
 </section>
 
@@ -529,5 +516,7 @@ $('#qf').addEventListener('submit', async e => {
 <script src="track.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module" src="fx3d.js"></script>
+<script>(function(){var g=document.getElementById('gallery'),b=document.getElementById('moreWork');if(!g||!b)return;
+var n=g.children.length;if(n>6){g.classList.add('collapsed');b.textContent='See all '+n+' jobs';b.onclick=function(){g.classList.remove('collapsed');b.parentNode.classList.add('done')}}else b.parentNode.classList.add('done')})()</script>
 </body>
 </html>
