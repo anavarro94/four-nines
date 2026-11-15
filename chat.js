@@ -129,7 +129,7 @@
     t = t.toLowerCase();
     const towns = C.serviceArea.split(/,|&/).map(x => x.trim()).filter(Boolean);
     const svc = svcFor(t);
-    if (svc !== 'Christmas lights' && /roof|shingle|gutter/.test(t)) return bot("We don't do roofing or gutters, but we're happy to help with almost anything inside or around the house. Want a quote on something else?");
+    if (svc !== 'Christmas lights' && /roof|shingle|gutter/.test(t)) return bot("We don't do roofing or gutter work. The only time we're up on a roof is to hang Christmas lights. We're happy to help with almost anything inside or around the house, though. Want a quote on something else?");
     if (/plumb|water heater|leak|toilet|faucet|electric panel|breaker|rewir|hvac|furnace|a\/?c\b/.test(t)) return bot(`That one depends on the details — some plumbing and electrical work needs a licensed specialist. Send a photo and we'll tell you honestly if it's a job for us, or ${reach}.`);
     if (/remodel|addition|renovat|kitchen remodel|bathroom remodel|build a (deck|room)/.test(t)) return bot("We focus on smaller jobs done really well. For a big remodel we'll be straight with you and point you to the right pro. Send the details and we'll take a look.");
     if (/insur|licens|bond/.test(t)) return bot(`Good question — ${reach} and we'll answer that directly before any work starts.`);
