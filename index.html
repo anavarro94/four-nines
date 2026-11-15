@@ -140,23 +140,6 @@
   </div>
 </section>
 
-<section class="sec">
-  <div class="wrap about">
-    <div class="pic rv"><div id="aboutPic"></div><div class="chip"><b>99.99%</b><span>THE FOUR NINES STANDARD</span></div></div>
-    <div class="rv">
-      <p class="eyebrow">Why Four Nines</p>
-      <h2>Shows up when we say. <em>Done right</em> the first time.</h2>
-      <p class="lede">"Four nines" means 99.99% reliable, the kind of service you never have to think about. That's the standard we hold every job to.</p>
-      <ul class="checks">
-        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div><b>Upfront pricing</b><span>Your written quote is your price.</span></div></li>
-        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div><b>On your schedule</b><span>Evenings and weekends.</span></div></li>
-        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div><b>Done right the first time</b><span>And we clean up after.</span></div></li>
-        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div><b>Local and accountable</b><span>A registered Elgin LLC.</span></div></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
 <section class="band">
   <div class="wrap">
     <div><h2>Saving up a list of little things?</h2><p>Send the whole list for one quote.</p></div>
@@ -332,7 +315,7 @@ $('#svcGrid').innerHTML = C.services.map(s => {
     <a class="go" href="#quote" data-svc="${esc(s.name)}">Get a quote ${ARROW}</a></div></div>`; }).join('');
 document.addEventListener('click', e => { const a = e.target.closest('[data-svc]'); if (a) $('#service').value = a.dataset.svc; });
 if (C.heroImage) $('#hero').style.backgroundImage = `url('${C.heroImage}')`;
-if (C.aboutImage) $('#aboutPic').style.backgroundImage = `url('${C.aboutImage}')`;
+if (C.aboutImage && $('#aboutPic')) $('#aboutPic').style.backgroundImage = `url('${C.aboutImage}')`;
 $('#service').innerHTML = '<option value="">Choose one…</option>' +
   C.services.map(s => `<option>${esc(s.name)}</option>`).join('') + '<option>Something else</option>';
 
