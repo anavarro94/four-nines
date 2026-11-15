@@ -199,3 +199,4 @@ footer .nn9{font-size:1.2rem!important}
 
 /* tap targets: at least 44px tall */
 .chip,.btn.sm{min-height:44px}
+.town-svcs li a{color:inherit;text-decoration:underline;text-decoration-color:#C59A2E66;text-underline-offset:3px}
