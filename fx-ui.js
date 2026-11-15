@@ -72,3 +72,16 @@
   const upd = () => { const h = document.documentElement.scrollHeight - innerHeight; bar.style.transform = `scaleX(${h > 0 ? scrollY / h : 0})`; };
   addEventListener('scroll', upd, { passive: true }); upd();
 })();
+
+/* Phone fields: show the format and fill in the dashes as people type */
+(function () {
+  const fmt = v => { const d = v.replace(/\D/g, '').replace(/^1(?=\d{10})/, '').slice(0, 10);
+    if (d.length < 4) return d; if (d.length < 7) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+    return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`; };
+  document.querySelectorAll('input[type=tel]').forEach(el => {
+    if (!el.placeholder) el.placeholder = '(803) 555-0123';
+    el.setAttribute('maxlength', '14');
+    el.addEventListener('input', () => { const end = el.selectionEnd === el.value.length; el.value = fmt(el.value); if (end) el.setSelectionRange(el.value.length, el.value.length); });
+    if (el.value) el.value = fmt(el.value);
+  });
+})();

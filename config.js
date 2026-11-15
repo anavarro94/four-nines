@@ -26,7 +26,7 @@ window.FN_CONFIG = {
   quoteTerms: "Price includes labor. If materials are needed, the materials cost is due before we purchase them. The remaining balance is due when the job is complete. We accept cash, Zelle, Venmo or Apple Pay. Quote valid for 30 days.",
 
   services: [
-    { name: "Christmas lights",      price: "Quoted",   desc: "We bring the lights, hang them, then take them down and store them for next year. Send a photo of your house for a quote." },
+    { name: "Christmas lights",      price: "Quoted",   desc: "We bring the lights, hang them, then take them down and store them for next year. Send a photo of your house for a quote.", img: "/img/xmas-warm.jpg" },
     { name: "Drywall repair",        price: "From $95", desc: "Holes, cracks and water spots patched, textured and painted so you can't find them.", img: "https://images.unsplash.com/photo-1768839725085-829e6ac7ac26?w=900&q=70&auto=format&fit=crop" },
     { name: "Ceiling fans",          price: "From $80", desc: "Old fan out, new fan in, or swap a light for a fan. We can assemble it from the box, balanced with no wobble.", img: "img/ceiling-fan.jpg" },
     { name: "Outlets & switches",    price: "From $45", desc: "Swap worn or outdated outlets and switches, add USB or GFCI outlets, fresh cover plates.", img: "img/gfci-after.jpg" },

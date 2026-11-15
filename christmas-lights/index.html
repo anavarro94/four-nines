@@ -258,7 +258,7 @@
       await fetch(C.scriptUrl, { method: 'POST', mode: 'no-cors', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
       f.reset(); th.innerHTML = ''; inp.closest('.drop').classList.remove('has');
       document.querySelectorAll('#xParts .chip.on').forEach(c => c.classList.remove('on'));
-      msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll get back to you soon with your quote.`;
+      msg.className = 'msg ok'; msg.innerHTML = `<b>Got it, ${esc(data.name.split(' ')[0])}!</b> Your house photo is in. We'll text your lights quote to <span style="white-space:nowrap">${esc(data.phone)}</span>, usually within one day.`;
       window.fnTrack && fnTrack('quote-sent-lights');
     } catch (err) {
       msg.className = 'msg bad';

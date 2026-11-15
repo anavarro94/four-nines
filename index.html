@@ -260,6 +260,7 @@ const I = {
   fence: '<path d="M5 21V7l2-3 2 3v14M15 21V7l2-3 2 3v14M3 11h18M3 17h18"/>',
   list:  '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
   fan:   '<circle cx="12" cy="12" r="2"/><path d="M12 10c0-4 1-7 4-7 2 0 2 3-1 5M14 12c4 0 7 1 7 4 0 2-3 2-5-1M12 14c0 4-1 7-4 7-2 0-2-3 1-5M10 12c-4 0-7-1-7-4 0-2 3-2 5 1"/>',
+  bulb:  '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
   plug:  '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M10 8v2M14 8v2M10 15h4"/>',
   box:   '<path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/>',
   floor: '<path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v6M15 9v6M9 15v6"/>',
@@ -269,6 +270,7 @@ const I = {
   tool:  '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>'
 };
 const pick = n => { n = n.toLowerCase();
+  if (/christmas/.test(n)) return I.bulb;
   if (/drywall|wall|paint/.test(n)) return I.wall;
   if (/fan/.test(n)) return I.fan;
   if (/outlet|switch|light/.test(n)) return I.plug;
@@ -276,7 +278,7 @@ const pick = n => { n = n.toLowerCase();
   if (/floor|carpet|lvp/.test(n)) return I.floor;
   if (/yard|lawn/.test(n)) return I.leaf;
   if (/junk|haul/.test(n)) return I.truck;
-  if (/clean|light|christmas/.test(n)) return I.spark;
+  if (/clean/.test(n)) return I.spark;
   if (/honey|list/.test(n)) return I.list;
   if (/door|trim/.test(n)) return I.door;
   if (/tv|mount|shel/.test(n)) return I.tv;
@@ -377,7 +379,7 @@ prefill();
       const photos = []; for (const file of [...inp.files].slice(0, 5)) photos.push(await shrink(file));
       await fetch(C.scriptUrl, { method: 'POST', mode: 'no-cors', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
       f.reset(); th.innerHTML = ''; inp.closest('.drop').classList.remove('has'); prefill();
-      msg.className = 'msg ok'; msg.textContent = `Got it, ${data.name.split(' ')[0]}! We'll get back to you soon with your price.`; window.fnTrack && fnTrack('quote-sent-photo');
+      msg.className = 'msg ok'; msg.innerHTML = `<b>Got it, ${esc(data.name.split(' ')[0])}!</b> Your photos are in. We'll text your price to <span style="white-space:nowrap">${esc(data.phone)}</span>, usually within one day.`; window.fnTrack && fnTrack('quote-sent-photo');
     } catch (err) {
       msg.className = 'msg bad'; msg.innerHTML = err && err.name === 'TimeoutError'
         ? `This is taking longer than usual. Your request may already be in — if you don't hear from us within one business day, ${HAS_PHONE ? `<a href="${sms}">text us your photos</a>` : `email us at <a href="${mail}">${esc(C.email)}</a>`}.`
@@ -449,7 +451,7 @@ $('#qf').addEventListener('submit', async e => {
     document.querySelectorAll('#slots .chip.on').forEach(c => c.classList.remove('on'));
     prefill();
     msg.className = 'msg ok';
-    msg.textContent = "Got it! We'll reach out within one business day.";
+    msg.innerHTML = `<b>Request sent!</b> We'll text you at <span style="white-space:nowrap">${esc(data.phone)}</span> within one business day to set a time.`;
     window.fnTrack && fnTrack('quote-sent-form');
   } catch (err) {
     msg.className = 'msg bad';
