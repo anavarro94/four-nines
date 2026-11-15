@@ -37,8 +37,8 @@
   .scene-wrap{width:auto;max-height:none;margin:36px max(24px,calc((100vw - 1180px)/2 + 24px)) 42px 0;border-radius:16px;box-shadow:0 24px 60px #0008,0 0 0 1px #ffffff14}
 }
 .scene-wrap .lit{opacity:0;-webkit-mask-image:linear-gradient(90deg,#000 33%,transparent 37%);mask-image:linear-gradient(90deg,#000 33%,transparent 37%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:56% 0;mask-position:56% 0}
-.scene-wrap.go img{animation:pull 3.4s cubic-bezier(.3,0,.2,1) both}
-.scene-wrap.on .lit.cur{opacity:1;animation:pull 3.4s -3.4s both,sweep 2s cubic-bezier(.4,0,.6,1) forwards}
+.scene-wrap.go img{animation:pull 1.8s cubic-bezier(.3,0,.2,1) both}
+.scene-wrap.on .lit.cur{opacity:1;animation:pull 1.8s -.6s cubic-bezier(.3,0,.2,1) both,sweep 1.6s cubic-bezier(.4,0,.6,1) forwards}
 .scene-wrap.gal .lit{-webkit-mask-image:none;mask-image:none;animation:none;transform:none;opacity:0;transition:opacity .9s ease}
 .scene-wrap.gal .lit.cur{opacity:1}
 .scene-wrap.static img{animation:none!important;transform:none}
@@ -49,6 +49,7 @@
 .gal-ui::-webkit-scrollbar{display:none}
 .scene-wrap.gal .gal-ui{opacity:1;transform:none}
 .gal-ui button{flex:none;font:600 .68rem 'Roboto Condensed',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:#0000004d;border:1px solid #ffffff40;border-radius:20px;padding:5px 9px;cursor:pointer;white-space:nowrap}
+.gal-ui button{display:inline-flex;align-items:center;gap:6px}.gal-ui .sw{display:inline-flex;gap:2px}.gal-ui .sw i{width:6px;height:6px;border-radius:50%;box-shadow:0 0 4px currentColor}
 .gal-ui button[aria-pressed=true]{background:#D9AE45;border-color:#D9AE45;color:#0B1422}
 .xl-hero .crumbs,.xl-hero .crumbs a{color:#B9C3D3}
 .xl-hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
@@ -85,7 +86,7 @@
     <img class="lit" data-src="/img/xmas-redwhite.jpg" alt="" width="1600" height="1039">
     <img class="lit" data-src="/img/xmas-redgreen.jpg" alt="" width="1600" height="1039">
     <img class="lit" data-src="/img/xmas-bluewhite.jpg" alt="" width="1600" height="1039">
-    <div class="gal-ui" id="galui"><button type="button" data-i="0" aria-pressed="true">Multicolor</button><button type="button" data-i="1" aria-pressed="false">Warm white</button><button type="button" data-i="2" aria-pressed="false">Cool white</button><button type="button" data-i="3" aria-pressed="false">Red &amp; white</button><button type="button" data-i="4" aria-pressed="false">Red &amp; green</button><button type="button" data-i="5" aria-pressed="false">Blue &amp; white</button></div>
+    <div class="gal-ui" id="galui"><button type="button" data-i="0" aria-pressed="true" title="Multicolor" aria-label="Santa's Workshop (multicolor)"><span class="sw"><i style="background:#e53935"></i><i style="background:#43a047"></i><i style="background:#1e88e5"></i><i style="background:#fdd835"></i></span>Santa's Workshop</button><button type="button" data-i="1" aria-pressed="false" title="Warm white" aria-label="Silent Night (warm white)"><span class="sw"><i style="background:#ffd9a0"></i><i style="background:#ffd9a0"></i></span>Silent Night</button><button type="button" data-i="2" aria-pressed="false" title="Cool white" aria-label="Winter Frost (cool white)"><span class="sw"><i style="background:#eef6ff"></i><i style="background:#eef6ff"></i></span>Winter Frost</button><button type="button" data-i="3" aria-pressed="false" title="Red and white" aria-label="Candy Cane (red and white)"><span class="sw"><i style="background:#e53935"></i><i style="background:#ffffff"></i><i style="background:#e53935"></i><i style="background:#ffffff"></i></span>Candy Cane</button><button type="button" data-i="4" aria-pressed="false" title="Red and green" aria-label="Holly Berry (red and green)"><span class="sw"><i style="background:#e53935"></i><i style="background:#43a047"></i><i style="background:#e53935"></i><i style="background:#43a047"></i></span>Holly Berry</button><button type="button" data-i="5" aria-pressed="false" title="Blue and white" aria-label="Winter Wonderland (blue and white)"><span class="sw"><i style="background:#1e88e5"></i><i style="background:#ffffff"></i><i style="background:#1e88e5"></i><i style="background:#ffffff"></i></span>Winter Wonderland</button></div>
   </div>
   <div class="wrap hero-copy">
     <p class="crumbs"><a href="/">Home</a> / Christmas lights</p>
@@ -124,7 +125,7 @@
         <label>What do you want lit?</label>
         <div class="parts" id="xParts"></div>
         <label for="xNote">Anything else? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-        <input id="xNote" placeholder="e.g. Warm white, ready by Dec 1">
+        <input id="xNote" placeholder="e.g. Candy Cane, ready by Dec 1">
         <div class="two">
           <div><label for="xName">Name</label><input id="xName" required autocomplete="name"></div>
           <div><label for="xTel">Phone</label><input id="xTel" type="tel" required autocomplete="tel" inputmode="tel"></div>
@@ -175,6 +176,7 @@
   function show(i) {
     cur = i; lits.forEach((im, k) => im.classList.toggle('cur', k === i));
     chips.forEach((c, k) => c.setAttribute('aria-pressed', k === i));
+    const ui = chips[i].parentNode; ui.scrollTo({ left: chips[i].offsetLeft - (ui.clientWidth - chips[i].offsetWidth) / 2, behavior: 'smooth' });
     const next = lits[(i + 1) % lits.length]; if (next.dataset.src && !next.src) next.src = next.dataset.src;
   }
   function gallery() {
@@ -187,7 +189,7 @@
     wrap.classList.remove('go', 'on', 'gal', 'static'); void wrap.offsetWidth;
     if (reduce) { wrap.classList.add('static'); gallery(); return; }
     wrap.classList.add('go');
-    timers = [setTimeout(() => wrap.classList.add('on'), 3600), setTimeout(gallery, 7600)];
+    timers = [setTimeout(() => wrap.classList.add('on'), 600), setTimeout(gallery, 3400)];
   }
   chips.forEach(c => c.addEventListener('click', () => { clearInterval(cycle); show(+c.dataset.i); }));
   const first = lits[0]; first.complete ? play() : first.addEventListener('load', play, { once: true });
