@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add("js")</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Handyman in Elgin, SC | Evenings & Weekends | Four Nines Enterprise, LLC</title>
@@ -162,8 +163,8 @@
     <div class="pic rv"><div id="aboutPic"></div><div class="chip"><b>99.99%</b><span>THE FOUR NINES STANDARD</span></div></div>
     <div class="rv">
       <p class="eyebrow">Why Four Nines</p>
-      <h2>Built on <em>99.99%</em> reliability</h2>
-      <p class="lede">"Four nines" is the term for systems that are up 99.99% of the time, the ones you never have to think about. That's the standard we hold every job to.</p>
+      <h2>Shows up when we say. <em>Done right</em> the first time.</h2>
+      <p class="lede">"Four nines" means 99.99% reliable, the kind of service you never have to think about. That's the standard we hold every job to.</p>
       <ul class="checks">
         <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div><b>Upfront pricing</b><span>Your written quote is your price. No add-ons when the bill comes.</span></div></li>
         <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div><b>On your schedule</b><span>Evenings and weekends, so you never burn a vacation day waiting on a repair.</span></div></li>
@@ -222,7 +223,7 @@
       <select id="service" name="service" required></select>
       <label for="details">Details</label>
       <textarea id="details" name="details" placeholder="e.g. Fist-size hole in hallway drywall, needs patch and paint" required></textarea>
-      <label>Pick times that work <span class="opt">(tap all that fit)</span></label>
+      <label>When works best? <span class="opt">(tap all that fit, we'll confirm a time)</span></label>
       <div class="chips slots" id="slots"></div>
       <input type="hidden" id="preferredTime" name="preferredTime">
       <label for="photos">Photos <span class="opt">(up to 5, optional)</span></label>
@@ -391,17 +392,9 @@ function prefill() {
 }
 prefill();
 
-// Time-slot picker: next two weeks of evenings and weekends
+// Time picker: simple preferences, we confirm the exact slot
 (function () {
-  const out = [], d = new Date(); d.setHours(0,0,0,0);
-  const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  for (let i = 1; i <= 14 && out.length < 12; i++) {
-    const x = new Date(d); x.setDate(d.getDate() + i);
-    const lab = `${wd[x.getDay()]} ${x.getMonth()+1}/${x.getDate()}`;
-    if (x.getDay() === 0 || x.getDay() === 6) { out.push(lab + ' · Morning', lab + ' · Afternoon'); }
-    else out.push(lab + ' · Evening');
-  }
-  out.push("I'm flexible");
+  const out = ['Weekday evenings', 'Saturdays', 'Sundays', "I'm flexible"];
   $('#slots').innerHTML = out.map(t => `<button type="button" class="chip">${esc(t)}</button>`).join('');
   $('#slots').addEventListener('click', e => {
     const b = e.target.closest('.chip'); if (!b) return;

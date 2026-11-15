@@ -225,9 +225,9 @@ footer .legal{border-top:1px solid #E6DCC622;margin-top:44px;padding-top:22px;fo
 @media(min-width:800px){.dock{display:none}}
 
 /* Reveal on scroll */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
-.rv.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+.js .rv{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+.js .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
 
 /* Photo quote fast lane */
 .fast{padding-top:72px;padding-bottom:24px}

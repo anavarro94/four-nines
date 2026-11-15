@@ -271,6 +271,12 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') box.classList.remove('open'); });
   // Small nudge after a few seconds, once per visit
   let seen = false; try { seen = sessionStorage.getItem('fnc-hint') === '1'; } catch (e) {}
-  if (!seen) setTimeout(() => { if (!box.classList.contains('open')) { hint.hidden = false; try { sessionStorage.setItem('fnc-hint', '1'); } catch (e) {} } }, 6000);
+  // On phones, wait until they've scrolled past the hero so it never covers the headline; auto-hide after 10s
+  const showHint = () => { if (box.classList.contains('open')) return; hint.hidden = false; try { sessionStorage.setItem('fnc-hint', '1'); } catch (e) {} setTimeout(() => { hint.hidden = true; }, 10000); };
+  if (!seen) setTimeout(() => {
+    if (innerWidth >= 800) return showHint();
+    const go = () => { if (scrollY > innerHeight * 0.9) { removeEventListener('scroll', go); showHint(); } };
+    addEventListener('scroll', go, { passive: true }); go();
+  }, 6000);
   window.FN_CHAT_OPEN = open;
 })();
