@@ -211,3 +211,18 @@ dialog h2{color:var(--ink)}
 .sendrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
 .sendrow .btn{padding:12px 6px}
 .nextbtn{background:var(--brass)!important}
+
+/* Home Screen app: safe areas (notch, Dynamic Island, rounded corners, folded/unfolded) */
+.app header{padding-top:env(safe-area-inset-top)}
+.app header .bar,.app main.wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.app main{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+.tabs{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+#toast{bottom:calc(90px + env(safe-area-inset-bottom))}
+html,body.app{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+.app button,.app a{-webkit-tap-highlight-color:transparent}
+/* Wide screens (unfolded / landscape / iPad): two-column lists, centered tab bar */
+@media(min-width:760px){
+  .app .list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tabs{grid-template-columns:repeat(6,minmax(0,110px));justify-content:center}
+}
+@media(min-width:1200px){.app .list{grid-template-columns:repeat(3,minmax(0,1fr))}}
