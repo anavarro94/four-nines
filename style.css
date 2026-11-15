@@ -226,3 +226,11 @@ html,body.app{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
   .tabs{grid-template-columns:repeat(6,minmax(0,110px));justify-content:center}
 }
 @media(min-width:1200px){.app .list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* tap targets + press feedback */
+.btn,.chip,.hbtn,#tabs button{transition:transform .12s ease,filter .12s ease,background .15s}
+.btn:active,.chip:active,.hbtn:active,#tabs button:active{transform:scale(.95);filter:brightness(.9);transition-duration:.05s}
+.chip{min-height:40px;padding:8px 14px}
+.item .acts .btn{min-height:40px;padding:9px 12px}
+.hbtn.spin svg{animation:hspin .8s linear infinite}
+@keyframes hspin{to{transform:rotate(360deg)}}

@@ -43,7 +43,9 @@ input[type=file]{background:var(--bg-2)!important}
 /* Buttons: flat, crisp */
 .btn,.btn.brass,.btn.sm{box-shadow:none!important}
 .btn:hover{transform:none!important;filter:brightness(.93)}
-.btn:active{transform:none!important}
+.btn:active{transform:scale(.96)!important;filter:brightness(.85);transition-duration:.06s}
+.btn,.chip,.svc .go,.dock a{transition:transform .14s ease,filter .14s ease,background .14s ease,box-shadow .14s ease}
+.chip:active,.svc .go:active,.dock a:active{transform:scale(.95)}
 .hero .btn.line{box-shadow:inset 0 0 0 1.5px #ffffffcc!important}
 
 /* Quote side links on light background */
@@ -194,3 +196,6 @@ footer .nn9{font-size:1.2rem!important}
 #gallery{align-items:flex-start}
 #gallery .ba .pair div[style*="grid-column"] img{aspect-ratio:8/5}
 @media(min-width:760px){#gallery .ba .pair div[style*="grid-column"] img{aspect-ratio:2/1}}
+
+/* tap targets: at least 44px tall */
+.chip,.btn.sm{min-height:44px}

@@ -111,7 +111,7 @@ async function del(t, id) {
   DB[t] = DB[t].filter(r => r.id !== id); persist(); render();
   if (REMOTE) { try { await api({ action: 'delete', table: t, id }); } catch (e) { toast('Delete failed: ' + e.message, true); } }
 }
-async function refresh() { try { await load(); render(); toast('Up to date'); } catch (e) { toast(e.message, true); } }
+async function refresh() { const b = document.querySelector('.hbtn[aria-label=Refresh]'); b && b.classList.add('spin'); try { await load(); render(); toast('Up to date'); } catch (e) { toast(e.message, true); } finally { b && b.classList.remove('spin'); } }
 
 // ================= rendering =================
 function render() {
