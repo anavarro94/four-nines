@@ -17,6 +17,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600;700;800&family=Roboto+Condensed:wght@600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+.sk{position:relative;overflow:hidden;background:#E6E9EE;border-radius:6px}
+.sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,#ffffff99,transparent);animation:skm 1.3s infinite}
+@keyframes skm{to{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.sk::after{animation:none}}
+.skl{height:12px;margin:8px 0}
+.sk-item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.sk-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sk-btns{display:flex;gap:8px;margin-top:14px}
+</style>
+
 <script src="config.js"></script>
 </head>
 <body class="app">
@@ -592,13 +603,18 @@ function loginScreen(err) {
   $('#view').innerHTML = `<form class="card login" id="lf"><div class="lwm">FOUR NINES<small>OFFICE · ENTERPRISE, LLC</small></div>
     <label>Passcode</label><input type="password" name="k" autocomplete="current-password" required>
     ${err ? `<div class="msg bad">${esc(err)}</div>` : ''}<button class="btn" style="width:100%;margin-top:14px">Unlock</button></form>`;
-  $('#lf').onsubmit = async e => { e.preventDefault(); KEY = e.target.k.value; try { await load(); LS.set('fn_key', KEY); start(); } catch (x) { loginScreen(x.message); } };
+  $('#lf').onsubmit = async e => { e.preventDefault(); KEY = e.target.k.value; skeleton(); try { await load(); LS.set('fn_key', KEY); start(); } catch (x) { loginScreen(x.message); } };
+}
+function skeleton() {
+  const item = w => `<div class="sk-item"><div class="sk-row"><div style="flex:1"><div class="sk skl" style="height:16px;width:${w}%"></div><div class="sk skl" style="width:${w - 20}%"></div></div><div class="sk" style="width:58px;height:22px;border-radius:20px"></div></div><div class="sk-btns"><div class="sk" style="width:70px;height:32px"></div><div class="sk" style="width:70px;height:32px"></div><div class="sk" style="width:52px;height:32px"></div></div></div>`;
+  $('#view').innerHTML = `<div aria-busy="true" aria-label="Loading your jobs"><div class="stats">${'<div class="stat"><div class="sk" style="height:22px;width:60%"></div><div class="sk skl" style="width:75%;height:10px"></div></div>'.repeat(4)}</div><div class="sk" style="width:110px;height:38px;margin-bottom:14px"></div>${[72, 60, 80, 66].map(item).join('')}</div>`;
 }
 function start() { $('#tabs').hidden = false; render(); }
 
 (async () => {
   if (!REMOTE) { await load(); start(); return; }
   if (!KEY) return loginScreen();
+  skeleton();
   try { await load(); start(); } catch (e) { loginScreen(e.message); }
 })();
 </script>
