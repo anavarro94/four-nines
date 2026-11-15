@@ -1,6 +1,6 @@
 // Four Nines — 3-D scenes (three.js r160)
-//  1) Hero: tools fly in, lock into place, light rays burst behind them, then they float and follow the mouse.
-//  2) Honey-do band: a 3-D toolbox that opens when you scroll to it and lifts its tools out.
+//  Honey-do band: a red 3-D toolbox that opens when you scroll to it, lifts its tools out with a gold
+//  light burst and sparkles, then lets them float. Tap to replay. (Hero 3-D removed Nov 14, 2026.)
 // Loads only on devices that can handle it, and never for people who turn off motion.
 (async function () {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -16,21 +16,23 @@
   await new Promise(r => ('requestIdleCallback' in window) ? requestIdleCallback(r, { timeout: 1200 }) : setTimeout(r, 200));
 
   let THREE;
+  let RoomEnvironment = null;
   try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'); }
   catch (e) { return; } // no 3-D? the site works exactly the same without it
+  try { ({ RoomEnvironment } = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js')); } catch (e) {}
 
-  // ---------- Brand palette (brand.md) ----------
-  const COL = { forest: 0x2F4B3A, deep: 0x1F3328, rust: 0xB4532A, rustLt: 0xE08458, cream: 0xF5F0E5, tan: 0xE6DCC6 };
+  // ---------- Brand palette (brand.md, "Clean Pro") ----------
+  const COL = { navy: 0x23344F, charcoal: 0x1F2328, red: 0xC42B2B, gold: 0xC59A2E, goldLt: 0xD9AE45, white: 0xFFFFFF, gray: 0xC9CED6 };
   const mat = {
-    steel: new THREE.MeshStandardMaterial({ color: 0xD9D3C4, metalness: 0.75, roughness: 0.32 }),
-    rust:  new THREE.MeshStandardMaterial({ color: COL.rust, roughness: 0.55 }),
-    rustLt:new THREE.MeshStandardMaterial({ color: COL.rustLt, roughness: 0.5 }),
-    forest:new THREE.MeshStandardMaterial({ color: COL.forest, roughness: 0.6 }),
-    deep:  new THREE.MeshStandardMaterial({ color: COL.deep, roughness: 0.7 }),
-    tan:   new THREE.MeshStandardMaterial({ color: COL.tan, roughness: 0.7 }),
-    cream: new THREE.MeshStandardMaterial({ color: COL.cream, roughness: 0.6 }),
-    brass: new THREE.MeshStandardMaterial({ color: 0xC9A26B, metalness: 0.7, roughness: 0.35 }),
-    glass: new THREE.MeshStandardMaterial({ color: 0xBFD9A8, roughness: 0.15, transparent: true, opacity: 0.85 })
+    steel: new THREE.MeshStandardMaterial({ color: 0xDCE0E6, metalness: 0.85, roughness: 0.28 }),
+    red:   new THREE.MeshStandardMaterial({ color: COL.red, roughness: 0.38, metalness: 0.15 }),
+    navy:  new THREE.MeshStandardMaterial({ color: COL.navy, roughness: 0.5 }),
+    char:  new THREE.MeshStandardMaterial({ color: COL.charcoal, roughness: 0.6 }),
+    grip:  new THREE.MeshStandardMaterial({ color: 0x2A2E33, roughness: 0.9 }),
+    gray:  new THREE.MeshStandardMaterial({ color: COL.gray, roughness: 0.5, metalness: 0.3 }),
+    white: new THREE.MeshStandardMaterial({ color: COL.white, roughness: 0.6 }),
+    gold:  new THREE.MeshStandardMaterial({ color: 0xE8C25A, metalness: 0.55, roughness: 0.3 }),
+    glass: new THREE.MeshStandardMaterial({ color: 0xE8D27A, roughness: 0.15, transparent: true, opacity: 0.85 })
   };
   const M = (geo, m) => new THREE.Mesh(geo, m);
   const clamp01 = x => Math.max(0, Math.min(1, x));
@@ -40,8 +42,8 @@
   // ---------- Tools built from simple shapes ----------
   function hammer() {
     const g = new THREE.Group();
-    const handle = M(new THREE.CylinderGeometry(0.11, 0.14, 2.3, 20), mat.rust); handle.position.y = -0.35; g.add(handle);
-    const grip = M(new THREE.CylinderGeometry(0.15, 0.15, 0.7, 20), mat.forest); grip.position.y = -1.15; g.add(grip);
+    const handle = M(new THREE.CylinderGeometry(0.11, 0.14, 2.3, 20), mat.red); handle.position.y = -0.35; g.add(handle);
+    const grip = M(new THREE.CylinderGeometry(0.15, 0.15, 0.7, 20), mat.grip); grip.position.y = -1.15; g.add(grip);
     const head = M(new THREE.BoxGeometry(1.25, 0.34, 0.34), mat.steel); head.position.set(0.12, 0.88, 0); g.add(head);
     const face = M(new THREE.CylinderGeometry(0.21, 0.21, 0.18, 20), mat.steel); face.rotation.z = Math.PI / 2; face.position.set(-0.55, 0.88, 0); g.add(face);
     const claw = M(new THREE.BoxGeometry(0.5, 0.22, 0.12), mat.steel); claw.position.set(0.86, 0.78, 0); claw.rotation.z = -0.45; g.add(claw);
@@ -49,9 +51,9 @@
   }
   function screwdriver() {
     const g = new THREE.Group();
-    const handle = M(new THREE.CylinderGeometry(0.2, 0.24, 0.95, 8), mat.rustLt); handle.position.y = -0.7; g.add(handle);
-    const cap = M(new THREE.SphereGeometry(0.21, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2), mat.rustLt); cap.rotation.x = Math.PI; cap.position.y = -1.17; g.add(cap);
-    const ferrule = M(new THREE.CylinderGeometry(0.12, 0.2, 0.18, 16), mat.forest); ferrule.position.y = -0.14; g.add(ferrule);
+    const handle = M(new THREE.CylinderGeometry(0.2, 0.24, 0.95, 8), mat.red); handle.position.y = -0.7; g.add(handle);
+    const cap = M(new THREE.SphereGeometry(0.21, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2), mat.red); cap.rotation.x = Math.PI; cap.position.y = -1.17; g.add(cap);
+    const ferrule = M(new THREE.CylinderGeometry(0.12, 0.2, 0.18, 16), mat.grip); ferrule.position.y = -0.14; g.add(ferrule);
     const shaft = M(new THREE.CylinderGeometry(0.05, 0.05, 1.3, 12), mat.steel); shaft.position.y = 0.6; g.add(shaft);
     const tip = M(new THREE.BoxGeometry(0.16, 0.16, 0.03), mat.steel); tip.position.y = 1.3; g.add(tip);
     return g;
@@ -64,7 +66,7 @@
     const ring = M(new THREE.TorusGeometry(0.28, 0.12, 10, 24), mat.steel); ring.position.y = -1.18; g.add(ring);
     return g;
   }
-  function hexNut(m = mat.brass) {
+  function hexNut(m = mat.gold) {
     const s = new THREE.Shape();
     for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; i ? s.lineTo(Math.cos(a) * 0.5, Math.sin(a) * 0.5) : s.moveTo(0.5, 0); }
     const hole = new THREE.Path(); hole.absarc(0, 0, 0.22, 0, Math.PI * 2, true); s.holes.push(hole);
@@ -81,40 +83,71 @@
   }
   function level() {
     const g = new THREE.Group();
-    g.add(M(new THREE.BoxGeometry(2.6, 0.4, 0.22), mat.forest));
-    const edge = M(new THREE.BoxGeometry(2.62, 0.06, 0.24), mat.tan); edge.position.y = 0.2; g.add(edge);
+    g.add(M(new THREE.BoxGeometry(2.6, 0.4, 0.22), mat.grip));
+    const edge = M(new THREE.BoxGeometry(2.62, 0.06, 0.24), mat.gray); edge.position.y = 0.2; g.add(edge);
     const edge2 = edge.clone(); edge2.position.y = -0.2; g.add(edge2);
     const vial = M(new THREE.CylinderGeometry(0.09, 0.09, 0.42, 16), mat.glass); vial.rotation.z = Math.PI / 2; vial.position.z = 0.1; g.add(vial);
-    const bub = M(new THREE.SphereGeometry(0.06, 12, 8), mat.cream); bub.position.set(0.04, 0, 0.17); g.add(bub);
+    const bub = M(new THREE.SphereGeometry(0.06, 12, 8), mat.white); bub.position.set(0.04, 0, 0.17); g.add(bub);
     return g;
   }
   function tape() {
     const g = new THREE.Group();
-    const body = M(new THREE.CylinderGeometry(0.62, 0.62, 0.4, 32), mat.rust); body.rotation.x = Math.PI / 2; g.add(body);
-    const face = M(new THREE.CylinderGeometry(0.34, 0.34, 0.42, 32), mat.cream); face.rotation.x = Math.PI / 2; g.add(face);
-    const blade = M(new THREE.BoxGeometry(0.9, 0.05, 0.3), mat.tan); blade.position.set(0.95, -0.52, 0); g.add(blade);
+    const body = M(new THREE.CylinderGeometry(0.62, 0.62, 0.4, 32), mat.red); body.rotation.x = Math.PI / 2; g.add(body);
+    const face = M(new THREE.CylinderGeometry(0.34, 0.34, 0.42, 32), mat.white); face.rotation.x = Math.PI / 2; g.add(face);
+    const blade = M(new THREE.BoxGeometry(0.9, 0.05, 0.3), mat.gray); blade.position.set(0.95, -0.52, 0); g.add(blade);
     const hook = M(new THREE.BoxGeometry(0.05, 0.16, 0.3), mat.steel); hook.position.set(1.4, -0.47, 0); g.add(hook);
     return g;
   }
   function toolbox() {
     const g = new THREE.Group();
-    const body = M(new THREE.BoxGeometry(3.4, 1.5, 1.7), mat.forest); body.position.y = 0.75; g.add(body);
-    const stripe = M(new THREE.BoxGeometry(3.42, 0.16, 1.72), mat.rust); stripe.position.y = 1.15; g.add(stripe);
-    const base = M(new THREE.BoxGeometry(3.5, 0.12, 1.8), mat.deep); base.position.y = 0.06; g.add(base);
+    const body = M(new THREE.BoxGeometry(3.4, 1.5, 1.7), mat.red); body.position.y = 0.8; g.add(body);
+    const base = M(new THREE.BoxGeometry(3.52, 0.14, 1.82), mat.char); base.position.y = 0.07; g.add(base);
+    const band = M(new THREE.BoxGeometry(3.42, 0.08, 1.72), mat.char); band.position.y = 1.5; g.add(band);
+    // front badge: navy plate with a gold rule
+    const plate = M(new THREE.BoxGeometry(1.3, 0.42, 0.04), mat.navy); plate.position.set(0, 0.85, 0.87); g.add(plate);
+    const rule = M(new THREE.BoxGeometry(1.0, 0.05, 0.02), mat.gold); rule.position.set(0, 0.85, 0.9); g.add(rule);
     // the lid hinges on the back edge
-    const lid = new THREE.Group(); lid.position.set(0, 1.5, -0.85); g.add(lid);
-    const top = M(new THREE.BoxGeometry(3.46, 0.32, 1.76), mat.forest); top.position.set(0, 0.16, 0.88); lid.add(top);
-    const trim = M(new THREE.BoxGeometry(3.4, 0.06, 1.7), mat.deep); trim.position.set(0, 0.02, 0.88); lid.add(trim);
-    const handle = M(new THREE.TorusGeometry(0.55, 0.07, 10, 24, Math.PI), mat.tan); handle.position.set(0, 0.32, 0.88); lid.add(handle);
-    for (const x of [-1.2, 1.2]) { const l = M(new THREE.BoxGeometry(0.3, 0.42, 0.08), mat.brass); l.position.set(x, 1.35, 0.88); g.add(l); }
-    // tray inside (dark) so you see depth when the lid opens
-    const inside = M(new THREE.BoxGeometry(3.2, 0.05, 1.5), mat.deep); inside.position.y = 1.44; g.add(inside);
+    const lid = new THREE.Group(); lid.position.set(0, 1.55, -0.85); g.add(lid);
+    const top = M(new THREE.BoxGeometry(3.46, 0.34, 1.76), mat.red); top.position.set(0, 0.17, 0.88); lid.add(top);
+    const trim = M(new THREE.BoxGeometry(3.48, 0.06, 1.78), mat.char); trim.position.set(0, 0.02, 0.88); lid.add(trim);
+    const handle = M(new THREE.TorusGeometry(0.55, 0.075, 12, 28, Math.PI), mat.steel); handle.position.set(0, 0.34, 0.88); lid.add(handle);
+    for (const x of [-0.55, 0.55]) { const f = M(new THREE.BoxGeometry(0.16, 0.08, 0.3), mat.char); f.position.set(x, 0.36, 0.88); lid.add(f); }
+    for (const x of [-1.2, 1.2]) { const l = M(new THREE.BoxGeometry(0.3, 0.42, 0.08), mat.gold); l.position.set(x, 1.42, 0.88); g.add(l); }
+    const inside = M(new THREE.BoxGeometry(3.2, 0.05, 1.5), mat.char); inside.position.y = 1.5; g.add(inside);
     g.userData.lid = lid;
     return g;
   }
 
+  // Soft round shadow under the toolbox
+  function shadow() {
+    const c = document.createElement('canvas'); c.width = c.height = 128;
+    const x = c.getContext('2d'); const gr = x.createRadialGradient(64, 64, 4, 64, 64, 62);
+    gr.addColorStop(0, 'rgba(0,0,0,.55)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gr; x.fillRect(0, 0, 128, 128);
+    const m = new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false });
+    const p = M(new THREE.PlaneGeometry(5.6, 2.6), m); p.rotation.x = -Math.PI / 2; p.position.y = 0.005; return p;
+  }
+
+  // Gold sparkles that drift up out of the box
+  function sparkles(n = 70) {
+    const geo = new THREE.BufferGeometry(); const pos = new Float32Array(n * 3); const seed = new Float32Array(n);
+    for (let i = 0; i < n; i++) { pos[i*3] = (Math.random() - .5) * 3; pos[i*3+1] = 1.5; pos[i*3+2] = (Math.random() - .5) * 1.2; seed[i] = Math.random(); }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('seed', new THREE.BufferAttribute(seed, 1));
+    const m = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      uniforms: { uT: { value: 0 }, uAmp: { value: 0 }, uCol: { value: new THREE.Color(COL.goldLt) }, uPx: { value: Math.min(devicePixelRatio || 1, 1.75) } },
+      vertexShader: `attribute float seed; uniform float uT; uniform float uPx; varying float vA;
+        void main(){ float life = fract(uT * (0.18 + seed * 0.2) + seed);
+          vec3 p = position; p.y += life * 3.6; p.x += sin(uT * 1.3 + seed * 20.0) * 0.25 * life;
+          vA = sin(life * 3.1416);
+          vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv;
+          gl_PointSize = (2.0 + seed * 4.0) * uPx * (10.0 / -mv.z); }`,
+      fragmentShader: `uniform vec3 uCol; uniform float uAmp; varying float vA;
+        void main(){ float d = length(gl_PointCoord - 0.5); float a = smoothstep(0.5, 0.0, d);
+          gl_FragColor = vec4(uCol, a * vA * uAmp); }` });
+    return new THREE.Points(geo, m);
+  }
+
   // Light rays like a reveal flash (additive shader, brand colors)
-  function rays(color = COL.rustLt) {
+  function rays(color = COL.goldLt) {
     const m = new THREE.ShaderMaterial({
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
       uniforms: { uT: { value: 0 }, uAmp: { value: 0 }, uCol: { value: new THREE.Color(color) } },
@@ -138,9 +171,11 @@
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(fov, 1, 0.1, 100);
-    scene.add(new THREE.HemisphereLight(0xFFF4E0, 0x1F3328, 1.25));
-    const key = new THREE.DirectionalLight(0xFFE7CC, 2.2); key.position.set(-4, 6, 8); scene.add(key);
-    const rim = new THREE.DirectionalLight(COL.rustLt, 1.6); rim.position.set(6, -2, -4); scene.add(rim);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    if (RoomEnvironment) { const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; }
+    scene.add(new THREE.HemisphereLight(0xFFFFFF, 0x1F2328, RoomEnvironment ? 0.5 : 1.25));
+    const key = new THREE.DirectionalLight(0xFFFFFF, RoomEnvironment ? 1.6 : 2.2); key.position.set(-4, 6, 8); scene.add(key);
+    const rim = new THREE.DirectionalLight(0xA9C0E6, 1.1); rim.position.set(6, -2, -4); scene.add(rim);
     let running = false, raf = 0, last = 0, visible = false, onFrame = () => {};
     const loop = now => { const dt = Math.min(0.05, (now - last) / 1000); last = now; onFrame(dt); renderer.render(scene, camera); if (running) raf = requestAnimationFrame(loop); };
     const play = on => {
@@ -160,85 +195,6 @@
   }, { passive: true });
 
   // =====================================================================
-  // 1) HERO — tools fly in, lock into place, rays flash, then float
-  // =====================================================================
-  const hero = document.getElementById('hero');
-  if (hero) {
-    const canvas = document.createElement('canvas');
-    canvas.className = 'hero-3d'; canvas.setAttribute('aria-hidden', 'true');
-    hero.prepend(canvas);
-    const S = stage(hero, canvas);
-    S.camera.position.set(0, 0, 14);
-
-    const LAYOUT = [ // [maker, x, y, z, scale]
-      [hammer,      -1.4,  1.2,  0.5, 1.15],
-      [wrench,       1.9,  1.6, -1.0, 1.0],
-      [level,        0.6, -0.4,  1.2, 1.0],
-      [screwdriver, -2.6, -1.6, -0.6, 1.0],
-      [tape,         2.6, -1.9,  0.2, 0.95],
-      [bolt,         0.2,  2.9, -2.0, 0.9],
-      [() => hexNut(),          -3.2,  2.6, -2.4, 0.8],
-      [() => hexNut(mat.steel),  3.6,  0.2, -2.6, 0.7],
-      [() => hexNut(),          -0.6, -2.9, -1.4, 0.75],
-      [() => hexNut(mat.steel), -3.6,  0.1, -1.6, 0.55]
-    ];
-    const cluster = new THREE.Group(); S.scene.add(cluster);
-    const glow = rays(); glow.scale.setScalar(13); glow.position.z = -4; cluster.add(glow);
-    const items = LAYOUT.map(([make, x, y, z, s], i) => {
-      const o = make(); o.scale.setScalar(s); cluster.add(o);
-      const ang = (i / LAYOUT.length) * Math.PI * 2 + 0.6;
-      return {
-        o, x, y, z, ph: i * 1.7, delay: 0.15 + i * 0.07,
-        from: new THREE.Vector3(Math.cos(ang) * 16, Math.sin(ang) * 11, 6 + (i % 3) * 2),
-        rot0: new THREE.Euler(Math.random() * 6, Math.random() * 6, Math.random() * 6),
-        spin: new THREE.Vector3((Math.random() - .5) * .35, (Math.random() - .5) * .45, (Math.random() - .5) * .25)
-      };
-    });
-
-    let wide = false;
-    function resize() {
-      const w = hero.clientWidth, h = hero.clientHeight;
-      S.renderer.setSize(w, h, false);
-      S.camera.aspect = w / h; S.camera.updateProjectionMatrix();
-      wide = w >= 900;
-      const visW = 2 * Math.tan(THREE.MathUtils.degToRad(S.camera.fov / 2)) * S.camera.position.z * S.camera.aspect;
-      if (wide) { cluster.position.set(visW * 0.27, 0, 0); cluster.scale.setScalar(Math.min(1.1, visW / 26)); }
-      else { const visH = visW / S.camera.aspect; cluster.position.set(visW * 0.3, -visH * 0.25, 0); cluster.scale.setScalar(visW / 13); }
-      canvas.classList.toggle('soft', !wide);
-    }
-    new ResizeObserver(resize).observe(hero); resize();
-
-    let spinKick = 0;
-    hero.addEventListener('pointerdown', e => { if (!e.target.closest('a,button,input,select,textarea,label')) { spinKick = 1; flash = Math.max(flash, 0.7); } });
-
-    const cur = { x: 0, y: 0 };
-    let t = 0, flash = 0;
-    const LAND = 1.45; // seconds until the last tool locks in
-    S.frame = dt => {
-      t += dt; spinKick *= Math.pow(0.08, dt);
-      if (t > LAND && t - dt <= LAND) flash = 1;      // the reveal flash
-      flash *= Math.pow(0.12, dt);
-      glow.material.uniforms.uT.value = t;
-      glow.material.uniforms.uAmp.value = (wide ? 0.22 : 0.12) * clamp01(t / LAND) + flash * 0.7;
-      glow.scale.setScalar(13 + flash * 5);
-      cur.x += (aim.x - cur.x) * 0.05; cur.y += (aim.y - cur.y) * 0.05;
-      const scrollK = Math.min(1, scrollY / Math.max(1, hero.clientHeight));
-      cluster.rotation.y = cur.x * 0.6 + Math.sin(t * 0.15) * 0.12;
-      cluster.rotation.x = cur.y * 0.35;
-      items.forEach(it => {
-        const p = clamp01((t - it.delay) / 1.15), e = easeOutBack(p);
-        const fx = it.x + Math.cos(t * 0.6 + it.ph) * 0.1;
-        const fy = it.y + Math.sin(t * 0.8 + it.ph) * 0.18 + scrollK * (1.5 + it.z * 0.4);
-        it.o.position.set(it.from.x + (fx - it.from.x) * e, it.from.y + (fy - it.from.y) * e, it.from.z + (it.z - it.from.z) * e);
-        const k = 1 + spinKick * 9 + (1 - easeOutCubic(p)) * 14;
-        it.o.rotation.x += it.spin.x * dt * k; it.o.rotation.y += it.spin.y * dt * k; it.o.rotation.z += it.spin.z * dt * k;
-        if (p === 0) it.o.rotation.copy(it.rot0);
-      });
-    };
-    requestAnimationFrame(() => canvas.classList.add('on'));
-  }
-
-  // =====================================================================
   // 2) HONEY-DO BAND — toolbox opens when it scrolls into view
   // =====================================================================
   const band = document.querySelector('.band');
@@ -249,10 +205,12 @@
     band.querySelector('.wrap').appendChild(holder);
     band.classList.add('has3d');
     const S = stage(holder, canvas, 32);
-    S.camera.position.set(0, 2.6, 11); S.camera.lookAt(0, 1.6, 0);
+    S.camera.position.set(0, 3.0, 12); S.camera.lookAt(0, 2.1, 0);
 
     const rig = new THREE.Group(); S.scene.add(rig);
-    const glow = rays(COL.cream); glow.scale.setScalar(11); glow.position.set(0, 2.2, -2.5); rig.add(glow);
+    const glow = rays(COL.goldLt); glow.scale.setScalar(11); glow.position.set(0, 2.2, -2.5); rig.add(glow);
+    rig.add(shadow());
+    const spark = sparkles(); rig.add(spark);
     const box = toolbox(); rig.add(box);
     const lid = box.userData.lid;
     const pop = [
@@ -260,9 +218,11 @@
       { o: screwdriver(), to: new THREE.Vector3(0.05, 4.1, 0.2), rz: -0.1 },
       { o: wrench(),      to: new THREE.Vector3(1.15, 3.6, 0.0), rz: -0.5 },
       { o: hexNut(),      to: new THREE.Vector3(-1.9, 2.6, 0.6), rz: 0 },
-      { o: hexNut(mat.steel), to: new THREE.Vector3(1.95, 2.7, 0.5), rz: 0 }
+      { o: hexNut(mat.steel), to: new THREE.Vector3(1.95, 2.7, 0.5), rz: 0 },
+      { o: tape(),        to: new THREE.Vector3(-2.3, 3.5, -0.4), rz: 0.2 },
+      { o: level(),       to: new THREE.Vector3(2.35, 3.85, -0.5), rz: -0.25 }
     ];
-    pop.forEach((p, i) => { p.o.scale.setScalar(i < 3 ? 0.62 : 0.45); p.o.position.set(p.to.x * 0.5, 0.9, 0); rig.add(p.o); p.ph = i * 1.3; });
+    pop.forEach((p, i) => { p.o.scale.setScalar(i < 3 ? 0.62 : i < 5 ? 0.45 : 0.5); p.o.position.set(p.to.x * 0.5, 0.9, 0); rig.add(p.o); p.ph = i * 1.3; });
 
     function resize() {
       const w = holder.clientWidth, h = holder.clientHeight;
@@ -287,7 +247,8 @@
       if (k > 0.45 && k - dt <= 0.45) flash = 1;
       flash *= Math.pow(0.12, dt);
       glow.material.uniforms.uT.value = t;
-      glow.material.uniforms.uAmp.value = 0.25 * clamp01((k - 0.4) / 0.6) + flash * 0.8;
+      glow.material.uniforms.uAmp.value = 0.18 * clamp01((k - 0.4) / 0.6) + flash * 0.6;
+      spark.material.uniforms.uT.value = t; spark.material.uniforms.uAmp.value = clamp01((k - 0.4) / 0.5) * 0.9;
       pop.forEach((p, i) => {
         const q = easeOutBack(clamp01((k - 0.35 - i * 0.08) / 0.8));
         p.o.position.set(p.to.x * (0.5 + 0.5 * q), 0.9 + (p.to.y - 0.9) * q + Math.sin(t * 1.4 + p.ph) * 0.08 * q, p.to.z * q);

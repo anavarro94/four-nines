@@ -84,3 +84,37 @@ footer h4,footer .flogo .e{color:var(--gold)!important}
 footer .flogo{display:inline-flex;flex-direction:column;align-items:center}
 footer .nn9{font-size:.95rem;margin-top:8px}
 footer .flogo .w{color:#fff}
+
+/* Logo 9s: DM Serif Display (curved, pointed tail) to match the tab icon */
+.nn9{font-family:"DM Serif Display",Georgia,serif!important;font-weight:400!important;letter-spacing:.34em!important;padding-left:.34em!important}
+.top .nn9{font-size:.95rem!important;margin-top:2px!important}
+footer .nn9{font-size:1.2rem!important}
+.drop{border:2px dashed #B9C0CC!important;background:#F7F8FA!important;border-radius:6px!important}
+.drop:hover{border-color:var(--brass)!important;background:#fff!important}
+
+/* Seasonal bar (Nov 1 – Dec 20) */
+.season{background:#FBF4E2;border-bottom:1px solid #EADBB0;font-size:.95rem;color:var(--teal)}
+.season .wrap{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;justify-content:center;padding-top:9px;padding-bottom:9px;text-align:center}
+.season b{color:var(--brass);font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.season a{color:var(--teal);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+/* Sweep: no heavy offset shadows or thick dark borders anywhere */
+:root{--hard:0 1px 2px #1C26380f,0 8px 24px #1C263812}
+.hero h1{text-shadow:0 2px 18px #12182A55!important}
+.svc .ph .tag{border:0!important}
+.about .pic::before{display:none!important}
+.about .pic div{border:0!important;box-shadow:var(--soft)!important}
+.about .pic .chip{border:0!important;box-shadow:0 8px 24px #12182A40!important;border-left:4px solid var(--gold)!important;border-radius:4px!important}
+.faq details{border-radius:6px!important}
+.fnc-btn{border-radius:50%!important;box-shadow:0 8px 22px #1C263855!important}
+.compare .us{box-shadow:var(--soft)!important}
+.compare .them{border:1px solid var(--edge)!important;box-shadow:none!important}
+.town-svcs{border:1px solid var(--edge)!important;box-shadow:var(--soft)!important}
+.town-hero{background:var(--teal)!important;border-bottom:4px solid var(--gold)!important}
+.towns span,.towns a{border:1px solid var(--edge)!important;background:#fff!important;border-radius:999px!important;box-shadow:none!important}
+.towns a:hover{border-color:var(--brass)!important}
+.est-out{box-shadow:var(--soft)!important}
+@media(max-width:640px){.season{font-size:.88rem}.season .wrap{padding-top:7px;padding-bottom:7px}}
+.town-faq details{border:1px solid var(--edge)!important;border-radius:6px!important;box-shadow:var(--soft)!important;background:#fff!important}
+.compare .col{border-width:1px!important;border-color:var(--edge)!important}
+.compare .us{border-color:var(--teal)!important}

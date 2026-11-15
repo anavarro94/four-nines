@@ -45,7 +45,7 @@
   @keyframes fncDot{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
   @keyframes fncIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .fnc-opts{display:flex;flex-wrap:wrap;gap:8px;padding:2px 0 4px}
-  .fnc-opts button{border:1.5px solid #C42B2B;background:#fff;color:#8F3F1E;border-radius:20px;padding:9px 14px;
+  .fnc-opts button{border:1.5px solid #C42B2B;background:#fff;color:#9E2121;border-radius:20px;padding:9px 14px;
     font:600 .88rem "Work Sans",system-ui,sans-serif;cursor:pointer}
   .fnc-opts button:hover{background:#C42B2B;color:#fff}
   .fnc-in{display:flex;gap:8px;padding:12px;background:#fff;border-top:1px solid #E2E5EA}
@@ -108,6 +108,7 @@
   }
   // ---------- free-text questions (keyword matching, no AI) ----------
   const SYN = {
+    'Christmas lights': /christmas|xmas|holiday light|string light|roofline|light display|lights? (up|on)|hang(ing)? lights/,
     'Drywall repair': /drywall|sheetrock|hole in (the |my )?wall|crack|patch|plaster/,
     'Ceiling fans': /ceiling fan|\bfans?\b/,
     'Outlets & switches': /outlet|switch|gfci|usb|plug|receptacle|dimmer/,
@@ -121,14 +122,14 @@
   };
   const svcFor = t => Object.keys(SYN).find(k => SYN[k].test(t) && C.services.some(s => s.name === k));
   function rangeHtml(name) {
-    return `Yes, we do <b>${esc(name.toLowerCase().replace(/\btv\b/,'TV'))}</b>! Every job is a little different, so we give a free written quote. Send a photo and we'll get you an exact price fast.`;
+    return `Yes, we do <b>${esc(name.toLowerCase().replace(/\btv\b/,'TV').replace(/^christmas/,'Christmas'))}</b>! Every job is a little different, so we give a free written quote. Send a photo and we'll get you an exact price fast.`;
   }
 
   async function answer(t) {
     t = t.toLowerCase();
     const towns = C.serviceArea.split(/,|&/).map(x => x.trim()).filter(Boolean);
     const svc = svcFor(t);
-    if (/roof|shingle|gutter/.test(t)) return bot("We don't do roofing or gutters, but we're happy to help with almost anything inside or around the house. Want a quote on something else?");
+    if (svc !== 'Christmas lights' && /roof|shingle|gutter/.test(t)) return bot("We don't do roofing or gutters, but we're happy to help with almost anything inside or around the house. Want a quote on something else?");
     if (/plumb|water heater|leak|toilet|faucet|electric panel|breaker|rewir|hvac|furnace|a\/?c\b/.test(t)) return bot(`That one depends on the details — some plumbing and electrical work needs a licensed specialist. Send a photo and we'll tell you honestly if it's a job for us, or ${reach}.`);
     if (/remodel|addition|renovat|kitchen remodel|bathroom remodel|build a (deck|room)/.test(t)) return bot("We focus on smaller jobs done really well. For a big remodel we'll be straight with you and point you to the right pro. Send the details and we'll take a look.");
     if (/insur|licens|bond/.test(t)) return bot(`Good question — ${reach} and we'll answer that directly before any work starts.`);
@@ -148,7 +149,7 @@
     const t = await ask('Type your question…');
     await answer(t);
     const svc = svcFor(t.toLowerCase());
-    const n = await opts([...(svc ? [[`Quote my ${svc.toLowerCase()} job`, 'qs']] : [['Get a free quote', 'q']]), ['Ask another question', 'a'], ['Back to menu', 'm']]);
+    const n = await opts([...(svc ? [[`Quote my ${svc.toLowerCase().replace(/^christmas/,'Christmas').replace(/\btv\b/,'TV')} job`, 'qs']] : [['Get a free quote', 'q']]), ['Ask another question', 'a'], ['Back to menu', 'm']]);
     if (n === 'a') return askq();
     if (n === 'q') return quote();
     if (n === 'qs') return quote(svc);

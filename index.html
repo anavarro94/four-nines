@@ -18,7 +18,7 @@
 <link rel="alternate icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600;700;800&family=Roboto+Condensed:wght@600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Roboto+Slab:wght@600;700;800&family=Roboto+Condensed:wght@600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="pro.css">
 <script src="config.js"></script>
@@ -50,6 +50,8 @@
     </div>
   </div>
 </header>
+<div class="season" id="season" hidden><div class="wrap"><span><b>Now booking</b> Christmas lights</span><a href="#quote" data-svc="Christmas lights">Get a quote &rarr;</a></div></div>
+<script>(function(){var d=new Date(),m=d.getMonth();if(m===10||(m===11&&d.getDate()<=20))document.getElementById('season').hidden=false})()</script>
 
 <main id="top">
 <section class="hero" id="hero">
@@ -525,6 +527,7 @@ $('#qf').addEventListener('submit', async e => {
 <script src="chat.js"></script>
 <script src="fx-ui.js"></script>
 <script src="track.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module" src="fx3d.js"></script>
 </body>
 </html>
