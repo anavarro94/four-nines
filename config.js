@@ -61,6 +61,7 @@ window.FN_CONFIG = {
   // Before/after photos. Upload images to the /img folder on GitHub,
   // then list them here. Leave the list empty to hide the section.
   gallery: [
+    { before: "img/coffee-before.jpg", after: "img/coffee-after.jpg", caption: "Old table swapped for a built-in coffee bar with beverage fridge" },
     { before: "img/carpet-before.jpg", after: "img/carpet-after.jpg", caption: "Bedroom carpet installed over new pad and tack strip" },
     { before: "img/sink-before.jpg", after: "img/sink-after.jpg", caption: "Water-damaged sink cabinet floor rebuilt and sealed" },
     { before: "img/tv-before.jpg",   after: "img/tv-after.jpg",   caption: "Bedroom TV mounted level and secure" },
