@@ -176,3 +176,4 @@ footer .nn9{font-size:1.2rem!important}
 @media(max-width:759px){footer{padding-top:40px!important}footer .cols>div:nth-child(3){display:none}footer .cols{gap:22px!important}}
 .area-box{padding:32px!important}
 @media(max-width:600px){.area-box{padding:22px 18px!important;gap:18px!important}}
+.fnc-hint{display:none!important}

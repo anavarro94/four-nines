@@ -7,7 +7,7 @@ window.FN_CONFIG = {
   legalName: "Four Nines Enterprise, LLC",   // shown in footer and on quotes/invoices
   ownerName: "",                 // your first name, used to sign messages (optional)
   tagline: "Your to-do list, done right.",
-  subhead: "Repairs, installs and assembly on evenings and weekends.",
+  subhead: "Repairs, installs and assembly.",
   phone: "8036732971",            // <-- business number, digits only (blank = email only)
   email: "office@fourninesenterprise.com",
   goatcounter: "",                // <-- free visitor counts: your GoatCounter code (e.g. "fournines"); blank = off
@@ -36,7 +36,7 @@ window.FN_CONFIG = {
     { name: "Small yard work",       price: "From $60", desc: "Trimming, edging, leaf cleanup and hedge shaping to get your yard back in shape.", img: "img/fire-pit.jpg" },
     { name: "Small junk removal",    price: "From $75", desc: "Old furniture, boxes and clutter hauled away. We do the lifting.", img: "https://images.unsplash.com/photo-1757837593538-b4a8654132f1?w=900&q=70&auto=format&fit=crop" },
     { name: "Small cleaning",        price: "From $70", desc: "Move-out touch-ups, garages, and the spots that never get cleaned.", img: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=900&q=70&auto=format&fit=crop" },
-    { name: "Honey-do list",         price: "From $55/hr", desc: "Send the whole list. One visit, everything checked off.", img: "https://images.unsplash.com/photo-1599619585752-c3edb42a414c?w=900&q=70&auto=format&fit=crop" }
+    { name: "Honey-do list",         price: "From $55/hr", desc: "Several small jobs, one visit.", img: "https://images.unsplash.com/photo-1599619585752-c3edb42a414c?w=900&q=70&auto=format&fit=crop" }
   ],
 
   // Instant ballpark ranges shown on the site — [option, low $, high $].
