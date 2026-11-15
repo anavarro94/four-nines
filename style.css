@@ -1,8 +1,8 @@
 :root{
   /* Brand: Four Nines Enterprise LLC — sand + deep teal */
-  --ink:#2F4B3A;--ink2:#40624E;--accent:#2F4B3A;--accent2:#1F3328;
-  --sand:#E6DCC6;--sand2:#F5F0E5;
-  --bg:#F5F0E5;--card:#FFFDF7;--line:#E0D5BE;--muted:#5D695F;
+  --ink:#23344F;--ink2:#34496B;--accent:#23344F;--accent2:#1C2638;
+  --sand:#E6E8EC;--sand2:#F4F5F7;
+  --bg:#F4F5F7;--card:#FFFFFF;--line:#E2E5EA;--muted:#5B636E;
   --serif:"Playfair Display",Georgia,"Times New Roman",serif;
   --caps:"Montserrat",system-ui,sans-serif;
   --ok:#2e8b57;--warn:#c98a00;--bad:#c0392b;--r:14px;
@@ -68,7 +68,7 @@ h1,h2{font-family:var(--serif);font-weight:700}
 .hp{position:absolute;left:-9999px}
 .site footer{background:var(--ink);color:var(--sand2);padding:32px 0 110px;font-size:.92rem}
 .site footer a{color:var(--sand)}
-.dock{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#F5F0E5f2;border-top:1px solid var(--line);z-index:6}
+.dock{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#F4F5F7f2;border-top:1px solid var(--line);z-index:6}
 .dock .btn{flex:1}
 @media(min-width:800px){.dock{display:none}.site footer{padding-bottom:32px}}
 
@@ -110,7 +110,7 @@ h1,h2{font-family:var(--serif);font-weight:700}
 .toolbar input{flex:1;min-width:160px}
 .empty{text-align:center;color:var(--muted);padding:36px 12px}
 dialog{border:0;border-radius:16px;padding:0;width:min(560px,94vw);max-height:90vh;box-shadow:0 20px 60px #0005}
-dialog::backdrop{background:#121F1899}
+dialog::backdrop{background:#12182A99}
 dialog form{padding:18px}
 dialog h2{font-size:1.2rem}
 .dlgacts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
@@ -148,9 +148,9 @@ dialog h2{font-size:1.2rem}
    OFFICE APP — matches the website (teal / sand / brass)
    ========================================================= */
 :root{
-  --ink:#1F3328;--ink2:#2F4B3A;--accent:#2F4B3A;--accent2:#1F3328;
-  --brass:#B4532A;--brass-lt:#E08458;
-  --sand:#E6DCC6;--sand2:#F5F0E5;--bg:#F5F0E5;--card:#FFFDF7;--line:#E0D5BE;--muted:#5D695F;
+  --ink:#1C2638;--ink2:#23344F;--accent:#23344F;--accent2:#1C2638;
+  --brass:#C42B2B;--brass-lt:#D9AE45;
+  --sand:#E6E8EC;--sand2:#F4F5F7;--bg:#F4F5F7;--card:#FFFFFF;--line:#E2E5EA;--muted:#5B636E;
   --serif:"Roboto Slab",Georgia,serif;
   --caps:"Roboto Condensed","Arial Narrow",sans-serif;
   --r:6px;
@@ -159,13 +159,13 @@ body.app{font-family:"Work Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-
 .app h1,.app h2{font-family:var(--serif);text-transform:uppercase;letter-spacing:.02em;font-weight:600}
 .app h3{font-family:var(--caps);font-weight:700;font-size:1.12rem;letter-spacing:.02em;color:var(--ink)}
 .btn{border-radius:var(--r);font-family:var(--caps);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
-.btn.brass{background:var(--brass)} .btn.brass:hover{background:#8F3F1E}
-.btn.ghost{border-color:#C6B898;color:var(--ink)}
+.btn.brass{background:var(--brass)} .btn.brass:hover{background:#9E2121}
+.btn.ghost{border-color:#B9C0CC;color:var(--ink)}
 .app header{background:var(--ink);border-bottom:4px solid var(--brass)}
 .app header h1{font-size:1.2rem;gap:12px}
 .app header .wm{display:flex;flex-direction:column;line-height:1;padding-right:12px;margin-right:2px;border-right:1px solid #ffffff2a}
 .app header .wm b{font-family:var(--serif);font-weight:700;font-size:1rem;letter-spacing:.08em;color:var(--sand)}
-.app header .wm small{font-family:var(--caps);font-size:.52rem;letter-spacing:.28em;color:#E6DCC699;margin-top:3px}
+.app header .wm small{font-family:var(--caps);font-size:.52rem;letter-spacing:.28em;color:#E6E8EC99;margin-top:3px}
 .app header #hTitle{font-family:var(--caps);font-weight:700;font-size:1.15rem;letter-spacing:.06em;color:#fff}
 .hbtn{background:#ffffff14;border:0;color:#fff;width:40px;height:40px;border-radius:var(--r);display:grid;place-items:center;cursor:pointer}
 .hbtn svg{width:20px;height:20px}
@@ -177,13 +177,13 @@ body.app{font-family:"Work Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-
 .stat{border-radius:var(--r);background:var(--card)}
 .stat b{font-family:var(--serif);font-weight:600;color:var(--ink)}
 .stat span{font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem}
-.item{border-radius:var(--r);background:var(--card);box-shadow:0 1px 2px #1F332810}
+.item{border-radius:var(--r);background:var(--card);box-shadow:0 1px 2px #1C263810}
 .chip{border-radius:var(--r);font-family:var(--caps);text-transform:uppercase;letter-spacing:.04em}
 .chip.on{background:var(--ink);border-color:var(--ink)}
 .pill{border-radius:4px;font-family:var(--caps);letter-spacing:.04em;text-transform:uppercase;font-size:.7rem}
-.pill.New,.pill.Lead,.pill.Draft{background:#F3DDD0;color:#8F3F1E}
+.pill.New,.pill.Lead,.pill.Draft{background:#F3DDD0;color:#9E2121}
 .pill.Paid{background:#2e7d4f}
-input,select,textarea{border-radius:var(--r);border-color:#C6B898}
+input,select,textarea{border-radius:var(--r);border-color:#B9C0CC}
 label{font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;font-size:.82rem;color:var(--ink2)}
 dialog{border-radius:10px}
 dialog h2{color:var(--ink)}
@@ -197,12 +197,12 @@ dialog h2{color:var(--ink)}
 .sect a,.sect button.link{font-family:var(--caps);text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--brass);background:none;border:0;cursor:pointer;text-decoration:none}
 .hello{background:var(--ink);color:var(--sand);border-radius:var(--r);padding:16px 18px;margin-top:4px;border-left:6px solid var(--brass)}
 .hello b{display:block;font-family:var(--serif);font-size:1.4rem;color:#fff;letter-spacing:.03em;text-transform:uppercase}
-.hello span{font-size:.95rem;color:#E6DCC6cc}
+.hello span{font-size:.95rem;color:#E6E8ECcc}
 .when{display:inline-block;font-family:var(--caps);font-weight:700;letter-spacing:.04em;color:var(--brass);text-transform:uppercase;font-size:.85rem}
 .todo{display:flex;gap:12px;align-items:flex-start}
 .todo .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--brass);margin-top:7px}
 .todo.warn .dot{background:#b3392b}
-.allclear{background:var(--card);border:1px dashed #C6B898;border-radius:var(--r);padding:14px;color:var(--muted);text-align:center;font-size:.95rem}
+.allclear{background:var(--card);border:1px dashed #B9C0CC;border-radius:var(--r);padding:14px;color:var(--muted);text-align:center;font-size:.95rem}
 .thumbs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .thumbs a{font-family:var(--caps);font-size:.85rem;background:var(--sand2);border:1px solid var(--line);border-radius:4px;padding:5px 9px;text-decoration:none;color:var(--ink)}
 .tpl{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
