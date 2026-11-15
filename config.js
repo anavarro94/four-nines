@@ -20,9 +20,6 @@ window.FN_CONFIG = {
   scriptUrl: "https://script.google.com/macros/s/AKfycbxnNNW6lomqosiwASAX9jwDRSxZwvrWHvy32dmPkRZshDmkh7QxbNhjZsuoMInvFGV_/exec",
 
   // Default tax rate for quotes/invoices (percent). 0 = no tax line.
-  // Christmas lights price per foot of roofline [low, high] — used by the measuring tool.
-  christmasPerFoot: [4, 6],
-
   taxRate: 0,
   paymentNote: "We accept cash, Zelle, Venmo or Apple Pay.",
   // Printed at the bottom of every quote.
