@@ -7,7 +7,7 @@ window.FN_CONFIG = {
   legalName: "Four Nines Enterprise, LLC",   // shown in footer and on quotes/invoices
   ownerName: "",                 // your first name, used to sign messages (optional)
   tagline: "Your to-do list, done right.",
-  subhead: "Drywall, TV mounting, ceiling fans, furniture assembly and more, on evenings and weekends so you never take off work. Clear written quotes before any work starts.",
+  subhead: "Repairs, installs and assembly on evenings and weekends.",
   phone: "8036732971",            // <-- business number, digits only (blank = email only)
   email: "office@fourninesenterprise.com",
   goatcounter: "",                // <-- free visitor counts: your GoatCounter code (e.g. "fournines"); blank = off
