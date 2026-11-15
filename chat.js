@@ -122,7 +122,7 @@
   };
   const svcFor = t => Object.keys(SYN).find(k => SYN[k].test(t) && C.services.some(s => s.name === k));
   function rangeHtml(name) {
-    if (name === 'Christmas lights') return "Yes, we hang <b>Christmas lights</b>: rooflines, bushes and trees, set on timers. Send a photo of the front of your house and we'll give you an estimated quote before we come out.";
+    if (name === 'Christmas lights') return "Yes, we hang <b>Christmas lights</b>: rooflines, bushes and trees, set on timers. Send a photo of the front of your house and we'll give you an estimated quote before we come out. <a href=\"/christmas-lights/\">Start your lights quote</a>";
     return `Yes, we do <b>${esc(name.toLowerCase().replace(/\btv\b/,'TV').replace(/^christmas/,'Christmas'))}</b>! Every job is a little different, so we give a free written quote. Send a photo and we'll get you an exact price fast.`;
   }
 

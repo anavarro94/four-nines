@@ -49,7 +49,7 @@
     </div>
   </div>
 </header>
-<div class="season" id="season" hidden><div class="wrap"><span><b>Now booking</b> Christmas lights</span><a href="#fast" data-svc="Christmas lights">Get a quote &rarr;</a></div></div>
+<div class="season" id="season" hidden><div class="wrap"><span><b>Now booking</b> Christmas lights</span><a href="/christmas-lights/">Get a quote &rarr;</a></div></div>
 <script>(function(){var d=new Date(),m=d.getMonth();if(m===10||(m===11&&d.getDate()<=20))document.getElementById('season').hidden=false})()</script>
 
 <main id="top">
@@ -291,7 +291,7 @@ $('#svcGrid').innerHTML = C.services.map(s => {
   return `<div class="svc rv">
     <div class="ph"${s.img ? ` style="background-image:url('${esc(s.img)}')"` : ''}><span class="ico">${svg(pick(s.name))}</span></div>
     <div class="bd"><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p>
-    <a class="go" href="#fast" data-svc="${esc(s.name)}">Get a quote ${ARROW}</a></div></div>`; }).join('');
+    ${s.name === 'Christmas lights' ? `<a class="go" href="/christmas-lights/">Get a quote ${ARROW}</a>` : `<a class="go" href="#fast" data-svc="${esc(s.name)}">Get a quote ${ARROW}</a>`}</div></div>`; }).join('');
 document.addEventListener('click', e => { const a = e.target.closest('[data-svc]'); if (!a) return; $('#service').value = a.dataset.svc; const w = $('#fWhat'); if (w && !w.value) w.value = a.dataset.svc + ': '; });
 if (C.heroImage) $('#hero').style.backgroundImage = `url('${C.heroImage}')`;
 if (C.aboutImage && $('#aboutPic')) $('#aboutPic').style.backgroundImage = `url('${C.aboutImage}')`;
