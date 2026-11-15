@@ -65,6 +65,19 @@
 .xl-steps p{margin:0;color:var(--muted)}
 .parts{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
 .parts .chip{padding:9px 14px;font-size:.88rem}
+.ms-card{background:#fff;border:1px solid #E1E4EA;border-radius:12px;padding:16px;box-shadow:0 8px 24px #1F232812;max-width:900px}
+.ms-find{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}@media(max-width:520px){.ms-find .btn{width:100%}}.ms-find input{flex:1;min-width:0;min-height:48px;padding:10px 12px;border:1.5px solid #D3D8E0;border-radius:8px;font:inherit;font-size:16px}.ms-find .btn{padding:12px 16px;white-space:nowrap}
+.ms-map-wrap{position:relative;border-radius:10px;overflow:hidden;background:#0B1422}
+.ms-map{height:min(62vh,440px);width:100%}
+.ms-hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:500;background:#0B1422e6;color:#fff;font:600 .85rem 'Work Sans',sans-serif;padding:8px 14px;border-radius:20px;pointer-events:none;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+.ms-tools{display:flex;gap:8px;margin:12px 0}.ms-tools .chip{flex:1;display:flex;align-items:center;justify-content:center;font-size:.78rem;padding:6px 4px;min-height:44px;white-space:nowrap;width:auto}
+.ms-out{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ms-out div{background:#F4F5F7;border-radius:10px;padding:12px 14px}.ms-out span{display:block;font:700 .72rem 'Roboto Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5B636E}
+.ms-out b{display:block;font:800 1.25rem/1.2 'Roboto Slab',serif;color:#23344F}#msPrice{color:#C42B2B}
+.ms-note{font-size:.86rem;color:#5B636E;margin:12px 0 14px}
+.ms-lbl{background:#0B1422d9;color:#fff;border:0;border-radius:4px;padding:1px 5px;font:700 11px 'Work Sans',sans-serif;box-shadow:none}.ms-lbl::before{display:none}
+.ms-dot{width:14px;height:14px;border-radius:50%;background:#FFD54A;border:2px solid #fff;box-shadow:0 0 6px #FFD54A}
+.ms-tag{margin:0 0 12px;padding:10px 12px;background:#FBF4E2;border:1px solid #EADBB0;border-radius:8px;font-weight:600;color:#23344F}
 .xl-off{background:#FBF4E2;border:1px solid #EADBB0;border-radius:6px;padding:12px 14px;margin:0 0 16px;color:var(--teal);font-weight:600}
 </style>
 </head>
@@ -101,10 +114,35 @@
   <div class="wrap">
     <div class="sec-head"><div><h2>How it <em>works</em></h2></div></div>
     <ol class="xl-steps">
-      <li><span class="n">1</span><h3>Snap your house</h3><p>One photo of the front from the street.</p></li>
+      <li><span class="n">1</span><h3>Snap your house</h3><p>One photo of the front from the street, or <a href="#measure">measure your roofline</a> on the map.</p></li>
       <li><span class="n">2</span><h3>Get your quote</h3><p>Pick what you want lit and we send a price.</p></li>
       <li><span class="n">3</span><h3>We hang them</h3><p>We bring the lights. After the holidays we take them down and store them for next year.</p></li>
     </ol>
+  </div>
+</section>
+
+<section id="measure" class="sec alt-est">
+  <div class="wrap">
+    <div class="sec-head"><div><h2>Measure your <em>roofline</em></h2></div>
+      <p class="lede" style="margin:0">Find your house on the satellite map, tap along the edge of the roof, and see your price right away.</p></div>
+    <div class="ms-card">
+      <form class="ms-find" id="msFind"><input id="msAddr" placeholder="Your street address" autocomplete="street-address" aria-label="Street address"><button class="btn brass" type="submit">Find my house</button></form>
+      <div class="ms-map-wrap">
+        <div id="msMap" class="ms-map" aria-label="Satellite map of your house"></div>
+        <div class="ms-hint" id="msHint">Type your address above to start</div>
+      </div>
+      <div class="ms-tools">
+        <button type="button" class="chip" id="msUndo">Undo</button>
+        <button type="button" class="chip" id="msNew">New line</button>
+        <button type="button" class="chip" id="msClear">Clear</button>
+      </div>
+      <div class="ms-out">
+        <div><span>Roofline</span><b id="msFt">0 ft</b></div>
+        <div><span>Estimated price</span><b id="msPrice">—</b></div>
+      </div>
+      <p class="ms-note">Includes the lights, hanging them, taking them down and storing them for next year. Peaks look shorter from above, so we confirm the final number before we start.</p>
+      <button type="button" class="btn brass" id="msUse" style="width:100%" disabled>Use this for my quote</button>
+    </div>
   </div>
 </section>
 
@@ -116,6 +154,7 @@
         <ol class="mini-steps"><li><b>1</b>Add a photo</li><li><b>2</b>Pick what to light</li><li><b>3</b>Get your quote</li></ol>
       </div>
       <form id="xf" class="fast-form" autocomplete="on">
+        <p class="ms-tag" id="msTag" hidden></p>
         <p class="xl-off" id="xoff" hidden>This season is booked. Send a photo and we'll put you on next year's list.</p>
         <label class="drop" for="xPhotos">
           <input id="xPhotos" type="file" accept="image/*" multiple>
@@ -244,7 +283,8 @@
     e.preventDefault();
     const f = e.target, btn = f.querySelector('[type=submit]'), msg = $('#xmsg');
     const parts = picked(), note = $('#xNote').value.trim();
-    const details = `Christmas lights${parts.length ? ': ' + parts.join(', ') : ''}${note ? '. ' + note : ''}${inSeason ? '' : ' (next season)'} (photo quote)`;
+    const mtag = ($('#msTag') && !$('#msTag').hidden && $('#msTag').dataset.v) || '';
+    const details = `Christmas lights${parts.length ? ': ' + parts.join(', ') : ''}${note ? '. ' + note : ''}${mtag ? '. ' + mtag : ''}${inSeason ? '' : ' (next season)'} (photo quote)`;
     const data = { name: $('#xName').value.trim(), phone: $('#xTel').value.trim(), email: '', address: $('#xTown').value, service: 'Christmas lights', details, preferredTime: '' };
     if (f.company.value) { f.reset(); msg.className = 'msg ok'; msg.textContent = "Got it! We'll get back to you soon with your quote."; return; }
     if (data.phone.replace(/\D/g, '').length < 10) { msg.className = 'msg bad'; msg.textContent = 'Please enter your full 10-digit phone number so we can reach you.'; return; }
@@ -259,7 +299,7 @@
       const photos = []; for (const file of [...inp.files].slice(0, 5)) photos.push(await shrink(file));
       await fetch(C.scriptUrl, { method: 'POST', mode: 'no-cors', signal: (AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined), body: JSON.stringify({ action: 'quote', request: { ...data, photos } }) });
       f.reset(); th.innerHTML = ''; inp.closest('.drop').classList.remove('has');
-      document.querySelectorAll('#xParts .chip.on').forEach(c => c.classList.remove('on'));
+      document.querySelectorAll('#xParts .chip.on').forEach(c => c.classList.remove('on')); if ($('#msTag')) $('#msTag').hidden = true;
       msg.className = 'msg ok'; msg.innerHTML = `<b>Got it, ${esc(data.name.split(' ')[0])}!</b> Your house photo is in. We'll text your lights quote to <span style="white-space:nowrap">${esc(data.phone)}</span>, usually within one day.`;
       window.fnTrack && fnTrack('quote-sent-lights');
     } catch (err) {
@@ -267,6 +307,72 @@
       msg.innerHTML = `Couldn't send right now — please ${HAS_PHONE ? `<a href="${sms}">text us your photo</a>` : `email your photo to <a href="${mail}">${esc(C.email)}</a>`}.`;
     } finally { btn.disabled = false; btn.textContent = 'Get my quote'; }
   });
+})();
+</script>
+<script>
+(function () {
+  const C = window.FN_CONFIG || {}, $ = s => document.querySelector(s);
+  const PF = C.christmasPerFoot || [4, 6];
+  const sec = $('#measure'); let L, map, lines = [[]], layer, ready;
+  const hint = t => { $('#msHint').textContent = t; $('#msHint').hidden = !t; };
+  function loadLeaflet() {
+    if (ready) return ready;
+    return ready = new Promise((res, rej) => {
+      const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/vendor/leaflet/leaflet.css'; document.head.appendChild(l);
+      const sc = document.createElement('script'); sc.src = '/vendor/leaflet/leaflet.js'; sc.onload = () => { L = window.L; init(); res(); }; sc.onerror = rej; document.head.appendChild(sc);
+    });
+  }
+  function init() {
+    map = L.map('msMap', { zoomControl: true, attributionControl: true, tap: true }).setView([34.1727, -80.7887], 15);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxNativeZoom: 19, maxZoom: 21, attribution: 'Imagery © Esri' }).addTo(map);
+    layer = L.layerGroup().addTo(map);
+    map.on('click', e => { if (map.getZoom() < 18) { map.setView(e.latlng, 20); return; } lines[lines.length - 1].push(e.latlng); draw(); });
+  }
+  const ft = (a, b) => map.distance(a, b) * 3.28084;
+  function draw() {
+    layer.clearLayers(); let total = 0;
+    lines.forEach(pts => {
+      if (pts.length > 1) L.polyline(pts, { color: '#FFD54A', weight: 5, opacity: .95 }).addTo(layer);
+      pts.forEach((p, i) => {
+        L.marker(p, { icon: L.divIcon({ className: '', html: '<div class="ms-dot"></div>', iconSize: [14, 14], iconAnchor: [7, 7] }), interactive: false }).addTo(layer);
+        if (i) { const d = ft(pts[i - 1], p); total += d;
+          L.tooltip({ permanent: true, direction: 'center', className: 'ms-lbl' }).setLatLng([(p.lat + pts[i - 1].lat) / 2, (p.lng + pts[i - 1].lng) / 2]).setContent(Math.round(d) + ' ft').addTo(layer); }
+      });
+    });
+    const t = Math.round(total);
+    $('#msFt').textContent = t + ' ft';
+    $('#msPrice').textContent = t ? `$${(t * PF[0]).toLocaleString()}–$${(t * PF[1]).toLocaleString()}` : '—';
+    $('#msUse').disabled = !t;
+    const n = lines[lines.length - 1].length;
+    hint(map.getZoom() < 18 ? 'Tap your house to zoom in' : n === 0 ? 'Tap one corner of the roof edge' : n === 1 ? 'Now tap the next corner' : t ? 'Tap the next corner' : '');
+    return t;
+  }
+  $('#msFind').addEventListener('submit', async e => {
+    e.preventDefault(); const q = $('#msAddr').value.trim(); if (!q) return;
+    const btn = e.target.querySelector('button'); btn.disabled = true; btn.textContent = 'Finding…';
+    try {
+      await loadLeaflet();
+      const u = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&viewbox=-81.4,34.6,-80.2,33.8&q=' + encodeURIComponent(/,\s*sc\b|south carolina/i.test(q) ? q : q + ', SC');
+      const j = await (await fetch(u, { headers: { 'Accept-Language': 'en' } })).json();
+      if (!j.length) { hint("Couldn't find that address. Try adding your town."); return; }
+      map.setView([+j[0].lat, +j[0].lon], 20); lines = [[]]; draw();
+      window.fnTrack && fnTrack('measure-find');
+    } catch (err) { hint("Map didn't load. Check your connection and try again."); }
+    finally { btn.disabled = false; btn.textContent = 'Find my house'; }
+  });
+  $('#msUndo').onclick = () => { if (!map) return; const cur = lines[lines.length - 1]; if (cur.length) cur.pop(); else if (lines.length > 1) { lines.pop(); lines[lines.length - 1].pop(); } draw(); };
+  $('#msNew').onclick = () => { if (!map) return; if (lines[lines.length - 1].length) lines.push([]); draw(); };
+  $('#msClear').onclick = () => { if (!map) return; lines = [[]]; draw(); };
+  $('#msUse').onclick = () => {
+    const t = draw(), addr = $('#msAddr').value.trim();
+    const tag = $('#msTag'); tag.hidden = false;
+    tag.textContent = `Roofline: ${t} ft · estimate $${(t * PF[0]).toLocaleString()}–$${(t * PF[1]).toLocaleString()}${addr ? ' · ' + addr : ''}`;
+    tag.dataset.v = tag.textContent;
+    const rl = [...document.querySelectorAll('#xParts .chip')].find(c => c.textContent === 'Roofline'); if (rl) rl.classList.add('on');
+    $('#lights').scrollIntoView({ behavior: 'smooth' });
+    window.fnTrack && fnTrack('measure-use');
+  };
+  if ('IntersectionObserver' in window) new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { o.disconnect(); loadLeaflet().catch(() => {}); } }, { rootMargin: '400px' }).observe(sec);
 })();
 </script>
 <script src="/fx-ui.js"></script>
