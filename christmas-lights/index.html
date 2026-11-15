@@ -23,10 +23,43 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do you do roof repairs?","acceptedAnswer":{"@type":"Answer","text":"No. We only go on the roof to hang lights."}},{"@type":"Question","name":"How can I pay?","acceptedAnswer":{"@type":"Answer","text":"Cash, Zelle, Venmo or Apple Pay."}}]}</script>
 <style>
 .xl-hero{background:var(--teal);border-bottom:4px solid #C59A2E;color:#fff}
-.xl-hero .wrap{padding-top:44px;padding-bottom:48px}
 .xl-hero h1{color:#fff;margin:6px 0 12px}
 .xl-hero h1 em{color:#D9AE45;font-style:normal}
 .xl-hero .sub{color:#DDE3EC;max-width:46ch;font-size:1.1rem;margin:0 0 22px}
+.xl-hero{position:relative;overflow:hidden;background:#0B1422!important}
+.xl-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(90deg,#C42B2B 0 22px,#fff 22px 30px,#1E4436 30px 52px,#fff 52px 60px)}
+.xl-hero .hero-copy{position:relative;padding-top:22px;padding-bottom:44px}
+.scene-wrap{position:relative;width:100%;aspect-ratio:400/260;max-height:62vh;overflow:hidden}
+.scene-wrap svg{display:block;width:100%;height:100%}
+@media(min-width:900px){
+  .xl-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:center}
+  .xl-hero .hero-copy{order:-1;padding:56px 24px 64px max(24px,calc((100vw - 1180px)/2 + 24px))}
+  .scene-wrap{height:100%;max-height:none;aspect-ratio:auto;min-height:440px}
+  .scene-wrap::before{content:"";position:absolute;left:0;top:0;bottom:0;width:90px;background:linear-gradient(90deg,#0B1422,#0B142200);z-index:1;pointer-events:none}
+}
+.replay{position:absolute;right:10px;bottom:10px;background:#0B1422b3;color:#E6E8EC;border:1px solid #ffffff33;border-radius:20px;padding:5px 12px;font:600 .78rem 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;opacity:0;transition:opacity .4s}
+.scene-wrap.done .replay{opacity:1}
+.zoom{transform-origin:251px 150px;transform:scale(2.4)}
+.sleigh-path{transform:translate(-200px,80px)}
+.sleigh{transform:scale(1.35) rotate(-6deg)}
+.win{fill:#2A3954;transition:fill .5s}
+.star{transition:fill .4s}
+.wreath{transition:stroke .4s}
+#bulbs path{opacity:.95}
+.go .zoom{animation:zoomIn 2.2s cubic-bezier(.45,0,.2,1) forwards}
+.go .sleigh-path{animation:fly 2.8s .9s cubic-bezier(.45,.05,.55,.95) forwards}
+.go .sleigh{animation:bob .5s .5s ease-in-out 5 alternate}
+.lit .win{fill:url(#winGlow)}
+.lit .star{fill:#F2C14E;filter:url(#glow)}
+.lit #bulbs .tw1{animation:tw 1.6s ease-in-out infinite alternate}
+.lit #bulbs .tw2{animation:tw 1.6s .8s ease-in-out infinite alternate}
+@keyframes zoomIn{from{transform:scale(2.4)}to{transform:scale(1)}}
+@keyframes fly{0%{transform:translate(-200px,80px)}55%{transform:translate(230px,52px)}100%{transform:translate(560px,20px)}}
+@keyframes bob{to{transform:scale(1.35) rotate(-2deg) translateY(-3px)}}
+@keyframes tw{from{opacity:1}to{opacity:.35}}
+@keyframes fall{to{transform:translate(var(--dx),290px)}}
+#snow circle{animation:fall linear infinite}
+@media(prefers-reduced-motion:reduce){#snow{display:none}}
 .xl-hero .crumbs,.xl-hero .crumbs a{color:#B9C3D3}
 .xl-hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
 .cd{display:flex;gap:10px;margin:0 0 26px;flex-wrap:wrap;align-items:center}
@@ -54,9 +87,64 @@
 </header>
 <main id="top">
 <section class="xl-hero">
-  <div class="wrap">
+  <div class="scene-wrap" id="scene" role="img" aria-label="Santa's sleigh flies over a dark house, then Christmas lights wrap the roofline and the tree out front">
+    <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1422"/><stop offset=".75" stop-color="#23344F"/><stop offset="1" stop-color="#34496A"/></linearGradient>
+        <radialGradient id="moonGlow"><stop offset="0" stop-color="#F3E7C4" stop-opacity=".35"/><stop offset="1" stop-color="#F3E7C4" stop-opacity="0"/></radialGradient>
+        <radialGradient id="winGlow"><stop offset="0" stop-color="#FFE3A3"/><stop offset="1" stop-color="#F0B54B"/></radialGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <mask id="lightMask" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="260"><g id="maskPaths" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="butt"></g></mask>
+      </defs>
+      <g class="zoom">
+        <rect width="400" height="260" fill="url(#sky)"/>
+        <g id="stars" fill="#fff"></g>
+        <circle cx="318" cy="52" r="46" fill="url(#moonGlow)"/>
+        <circle cx="318" cy="52" r="22" fill="#F3E7C4"/>
+        <circle cx="310" cy="46" r="3.5" fill="#E2D4AC"/><circle cx="325" cy="58" r="2.5" fill="#E2D4AC"/>
+        <!-- sleigh (generic Santa, no named reindeer) -->
+        <g class="sleigh-path"><g class="sleigh" fill="#060B14" stroke="#D9AE45" stroke-width=".35" stroke-opacity=".55">
+          <g class="deer" transform="translate(96,0)"><ellipse cx="0" cy="0" rx="11" ry="4.5"/><path d="M8 -2 l6 -6 l4 1 l-3 5z"/><path d="M15 -8 l-2 -6 M15 -8 l3 -5 M13 -12 l-3 -1 M17 -12 l3 -1" stroke="#0A111D" stroke-width="1.3" fill="none"/><path d="M-7 3 l-4 6 M-4 3 l-1 7 M5 3 l3 6 M8 2 l5 5" stroke="#0A111D" stroke-width="1.6"/></g>
+          <g class="deer" transform="translate(70,3)"><ellipse cx="0" cy="0" rx="11" ry="4.5"/><path d="M8 -2 l6 -6 l4 1 l-3 5z"/><path d="M15 -8 l-2 -6 M15 -8 l3 -5 M13 -12 l-3 -1 M17 -12 l3 -1" stroke="#0A111D" stroke-width="1.3" fill="none"/><path d="M-7 3 l-4 6 M-4 3 l-1 7 M5 3 l3 6 M8 2 l5 5" stroke="#0A111D" stroke-width="1.6"/></g>
+          <g class="deer" transform="translate(44,6)"><ellipse cx="0" cy="0" rx="11" ry="4.5"/><path d="M8 -2 l6 -6 l4 1 l-3 5z"/><path d="M15 -8 l-2 -6 M15 -8 l3 -5 M13 -12 l-3 -1 M17 -12 l3 -1" stroke="#0A111D" stroke-width="1.3" fill="none"/><path d="M-7 3 l-4 6 M-4 3 l-1 7 M5 3 l3 6 M8 2 l5 5" stroke="#0A111D" stroke-width="1.6"/></g>
+          <path d="M14 14 Q40 10 100 0" stroke="#0A111D" stroke-width=".9" fill="none"/>
+          <path d="M-14 6 h26 q6 0 6 -8 v-2 h-6 l-4 4 h-18 q-6 0 -6 6z"/>
+          <path d="M-18 14 h30 q8 0 10 -6" stroke="#0A111D" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M-8 9 v5 M6 9 v5" stroke="#0A111D" stroke-width="1.4"/>
+          <circle cx="-2" cy="-10" r="4.5"/><path d="M-6 -12 l4 -9 l6 6z"/><circle cx="-1" cy="-21" r="1.8" fill="#F3E7C4"/>
+          <path d="M-7 -6 h11 v6 h-11z"/><path d="M-12 -4 q-4 -6 2 -9 h6 v9z"/>
+        </g></g>
+        <!-- ground -->
+        <path d="M0 214 Q120 204 220 212 T400 208 V260 H0Z" fill="#DCE4EE"/>
+        <path d="M0 226 Q140 216 260 226 T400 222 V260 H0Z" fill="#EEF2F7"/>
+        <!-- tree -->
+        <g class="tree"><rect x="66" y="200" width="8" height="14" fill="#2B1E14"/>
+          <path d="M70 92 L42 140 H56 L34 176 H50 L28 210 H112 L90 176 H106 L84 140 H98Z" fill="#163428"/>
+          <path class="star" d="M70 80 l3 7 7 .5 -5.5 4.5 2 7 -6.5-4 -6.5 4 2-7 -5.5-4.5 7-.5z" fill="#3A3424"/></g>
+        <!-- house -->
+        <g class="house">
+          <rect x="120" y="166" width="54" height="46" fill="#1A2638"/><path d="M114 168 L147 144 L180 168Z" fill="#121B2A"/>
+          <rect x="126" y="178" width="42" height="34" fill="#22314A"/><path d="M126 186 h42 M126 194 h42 M126 202 h42" stroke="#1A2638" stroke-width="1"/>
+          <rect x="166" y="136" width="170" height="76" fill="#1E2C41"/>
+          <path d="M156 140 L251 84 L346 140Z" fill="#121B2A"/>
+          <rect x="296" y="96" width="14" height="26" fill="#18243A"/>
+          <rect class="win" x="184" y="152" width="26" height="22" rx="1"/><rect class="win" x="292" y="152" width="26" height="22" rx="1"/>
+          <rect class="win" x="238" y="104" width="26" height="22" rx="1"/>
+          <rect x="240" y="170" width="22" height="42" fill="#5A1D1D"/><circle cx="257" cy="192" r="1.4" fill="#C59A2E"/>
+          <circle class="wreath" cx="251" cy="182" r="6" fill="none" stroke="#163428" stroke-width="3"/>
+          <rect class="win" x="184" y="186" width="26" height="18" rx="1"/><rect class="win" x="292" y="186" width="26" height="18" rx="1"/>
+          <path d="M166 212 q12 -14 24 0 q12 -14 24 0 M290 212 q12 -14 24 0 q12 -14 24 0" fill="#163428"/>
+        </g>
+        <!-- lights (built by script) -->
+        <g mask="url(#lightMask)"><g id="wires" fill="none" stroke="#0A0F18" stroke-width="1"></g><g id="bulbs" fill="none" stroke-linecap="round" filter="url(#glow)"></g></g>
+        <g id="snow" fill="#fff"></g>
+      </g>
+    </svg>
+    <button type="button" class="replay" id="replay" aria-label="Play the animation again">&#8635; Replay</button>
+  </div>
+  <div class="wrap hero-copy">
     <p class="crumbs"><a href="/">Home</a> / Christmas lights</p>
-    <h1>Christmas lights, <em>hung for you</em></h1>
+    <h1>Christmas lights. <em>Get your house done today.</em></h1>
     <p class="sub">Send a photo of the front of your house and get an estimated quote.</p>
     <div class="cd" id="cd" hidden><span class="cd-lab">Countdown to Christmas</span><div><b id="cdD">0</b><small>Days</small></div><div><b id="cdH">0</b><small>Hours</small></div><div><b id="cdM">0</b><small>Min</small></div></div>
     <div class="ctas"><a class="btn brass" href="#lights">Send a photo</a><a class="btn line" href="tel:8036732971">Call (803) 673-2971</a></div>
@@ -134,6 +222,43 @@
     <p class="legal">© 2026 Four Nines Enterprise, LLC · Elgin, SC</p>
   </div>
 </footer>
+<script>
+(function () {
+  const NS = 'http://www.w3.org/2000/svg', wrap = document.getElementById('scene'), svg = wrap.querySelector('svg');
+  const mk = (tag, attrs, parent) => { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); parent.appendChild(el); return el; };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // stars + snow
+  const st = document.getElementById('stars');
+  for (let i = 0; i < 40; i++) mk('circle', { cx: (Math.random() * 400).toFixed(1), cy: (Math.random() * 150).toFixed(1), r: (Math.random() * .9 + .3).toFixed(2), opacity: (Math.random() * .6 + .3).toFixed(2) }, st);
+  if (!reduce) { const sn = document.getElementById('snow');
+    for (let i = 0; i < 34; i++) { const c = mk('circle', { cx: (Math.random() * 400).toFixed(1), cy: -10, r: (Math.random() * 1.3 + .6).toFixed(2), opacity: (Math.random() * .5 + .4).toFixed(2) }, sn);
+      c.style.setProperty('--dx', (Math.random() * 40 - 20).toFixed(0) + 'px'); c.style.animationDuration = (Math.random() * 6 + 6).toFixed(1) + 's'; c.style.animationDelay = (-Math.random() * 12).toFixed(1) + 's'; } }
+  // light runs: roofline, eaves, garage, bushes, windows and a garland spiral on the tree
+  let tree = 'M70 96'; const rows = 9;
+  for (let i = 1; i <= rows; i++) { const y = 96 + i * 12.5, half = 4 + i * 4.3, dir = i % 2 ? 1 : -1; tree += ` Q${70 + dir * (half + 4)} ${y - 7} ${70 + dir * half} ${y}`; }
+  const RUNS = [
+    'M156 140 L251 84 L346 140', 'M166 136 H336', 'M114 168 L147 144 L180 168',
+    'M182 150 h30 v26 h-30z', 'M290 150 h30 v26 h-30z', 'M236 102 h30 v26 h-30z',
+    'M168 210 q11 -12 22 0 q11 -12 22 0', 'M292 210 q11 -12 22 0 q11 -12 22 0', tree ];
+  const COLORS = ['#FF4A3D', '#F7C948', '#35D07F', '#5AA9FF'];
+  const maskG = document.getElementById('maskPaths'), wires = document.getElementById('wires'), bulbs = document.getElementById('bulbs');
+  const maskPaths = RUNS.map(d => {
+    mk('path', { d }, wires);
+    COLORS.forEach((c, i) => mk('path', { d, stroke: c, 'stroke-width': 4, 'stroke-dasharray': '0 20', 'stroke-dashoffset': -i * 5, class: i % 2 ? 'tw2' : 'tw1' }, bulbs));
+    const m = mk('path', { d }, maskG); const L = m.getTotalLength() + 2;
+    m.style.strokeDasharray = L; m.style.strokeDashoffset = L; return m;
+  });
+  const wreath = svg.querySelector('.wreath');
+  function reset() { wrap.classList.remove('go', 'lit', 'done'); maskPaths.forEach(m => { m.style.transition = 'none'; m.style.strokeDashoffset = m.style.strokeDasharray; }); wreath.style.stroke = ''; }
+  function lightsOn(fast) { maskPaths.forEach(m => { m.style.transition = fast ? 'none' : 'stroke-dashoffset .9s cubic-bezier(.6,0,.3,1)'; m.style.strokeDashoffset = 0; });
+    setTimeout(() => { wrap.classList.add('lit'); wreath.style.stroke = '#2E7D57'; }, fast ? 0 : 700); setTimeout(() => wrap.classList.add('done'), fast ? 0 : 1400); }
+  let timers = [];
+  function play() { timers.forEach(clearTimeout); reset(); void wrap.offsetWidth; wrap.classList.add('go'); timers = [setTimeout(() => lightsOn(false), 3300)]; }
+  if (reduce) { svg.querySelector('.zoom').style.transform = 'none'; svg.querySelector('.sleigh-path').style.display = 'none'; lightsOn(true); }
+  else play();
+  document.getElementById('replay').addEventListener('click', () => { svg.querySelector('.sleigh-path').style.display = ''; play(); });
+})();
+</script>
 <script>
 (function () {
   const C = window.FN_CONFIG || {}, $ = s => document.querySelector(s);
