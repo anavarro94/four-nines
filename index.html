@@ -38,8 +38,8 @@
             <span class="wm"><b>Four Nines</b><span class="nn9">9999</span><small>ENTERPRISE, LLC</small></span>
     </a>
     <nav class="nav" aria-label="Main">
-      <a href="#services">Services</a>
       <a href="#work">Our work</a>
+      <a href="#services">Services</a>
       <a href="#area">Service area</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -105,6 +105,13 @@
   </div>
 </section>
 
+<section id="work" class="sec alt-est" hidden>
+  <div class="wrap">
+    <div class="sec-head rv"><div><h2>Before &amp; <em>after</em></h2></div></div>
+    <div class="ba-grid" id="gallery"></div>
+    <div class="ss-ctrl"><button type="button" class="ss-btn" id="ssPrev" aria-label="Previous job">&#8249;</button><span class="ss-count" id="ssCount" aria-live="polite"></span><button type="button" class="ss-btn" id="ssNext" aria-label="Next job">&#8250;</button></div>
+  </div>
+</section>
 <section id="services" class="sec">
   <div class="wrap">
     <div class="sec-head rv">
@@ -116,13 +123,6 @@
   </div>
 </section>
 
-<section id="work" class="sec alt-est" hidden>
-  <div class="wrap">
-    <div class="sec-head rv"><div><h2>Before &amp; <em>after</em></h2></div></div>
-    <div class="ba-grid" id="gallery"></div>
-    <p class="more-wrap"><button type="button" class="btn more-btn" id="moreWork">See all our work</button><span class="swipe-hint">Swipe for more &rarr;</span></p>
-  </div>
-</section>
 
 <section class="band">
   <div class="wrap">
@@ -201,7 +201,7 @@
         <p style="margin-top:18px;max-width:34ch">Evening and weekend handyman service for Elgin, Lugoff, Camden, Blythewood and Northeast Columbia.</p>
       </div>
       <div><h4>Contact</h4><ul><li><a id="fPhone" href="#"></a></li><li><a id="fEmail" href="#"></a></li><li id="fHours"></li></ul></div>
-      <div><h4>Quick links</h4><ul><li><a href="#services">Services</a></li><li><a href="#work">Our work</a></li><li><a href="#fast">Free quote</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Quick links</h4><ul><li><a href="#work">Our work</a></li><li><a href="#services">Services</a></li><li><a href="#fast">Free quote</a></li><li><a href="#faq">FAQ</a></li></ul></div>
     </div>
     <p class="legal">© <span id="yr"></span> <span id="fName"></span> · Serving <span id="fArea"></span></p>
   </div>
@@ -466,7 +466,20 @@ $('#qf').addEventListener('submit', async e => {
 <script src="track.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module" src="fx3d.js"></script>
-<script>(function(){var g=document.getElementById('gallery'),b=document.getElementById('moreWork');if(!g||!b)return;
-var n=g.children.length;if(n>6){g.classList.add('collapsed');b.textContent='See all '+n+' jobs';b.onclick=function(){g.classList.remove('collapsed');b.parentNode.classList.add('done')}}else b.parentNode.classList.add('done')})()</script>
+<script>(function(){
+  var g=document.getElementById('gallery'); if(!g||!g.children.length) return;
+  var n=g.children.length, cnt=document.getElementById('ssCount'), timer=null, user=false, visible=false;
+  function idx(){ return Math.round(g.scrollLeft / g.clientWidth); }
+  function go(i){ i=(i+n)%n; g.scrollTo({left:i*g.clientWidth, behavior:'smooth'}); }
+  function upd(){ cnt.textContent=(idx()+1)+' / '+n; }
+  document.getElementById('ssPrev').onclick=function(){ user=true; go(idx()-1); };
+  document.getElementById('ssNext').onclick=function(){ user=true; go(idx()+1); };
+  g.addEventListener('scroll',function(){ clearTimeout(g._t); g._t=setTimeout(upd,80); },{passive:true});
+  ['pointerdown','touchstart','wheel'].forEach(function(e){ g.addEventListener(e,function(){ user=true; },{passive:true}); });
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tick(){ if(!user && visible && !document.hidden) go(idx()+1); }
+  if(!reduce && 'IntersectionObserver' in window){ new IntersectionObserver(function(es){ visible=es[0].isIntersecting; },{threshold:.5}).observe(g); timer=setInterval(tick,5000); }
+  upd();
+})()</script>
 </body>
 </html>
