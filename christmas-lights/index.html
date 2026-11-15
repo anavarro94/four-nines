@@ -29,44 +29,23 @@
 .xl-hero{position:relative;overflow:hidden;background:#0B1422!important}
 .xl-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(90deg,#C42B2B 0 22px,#fff 22px 30px,#1E4436 30px 52px,#fff 52px 60px)}
 .xl-hero .hero-copy{position:relative;padding-top:22px;padding-bottom:44px}
-.scene-wrap{position:relative;width:100%;aspect-ratio:400/260;max-height:62vh;overflow:hidden}
-.scene-wrap svg{display:block;width:100%;height:100%}
+.scene-wrap{position:relative;width:100%;aspect-ratio:1600/1039;max-height:62vh;overflow:hidden;background:#06101f}
+.scene-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 40%}
 @media(min-width:900px){
   .xl-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:center}
   .xl-hero .hero-copy{order:-1;padding:56px 24px 64px max(24px,calc((100vw - 1180px)/2 + 24px))}
-  .scene-wrap{width:auto;max-height:none;aspect-ratio:400/270;margin:36px max(24px,calc((100vw - 1180px)/2 + 24px)) 42px 0;border-radius:16px;box-shadow:0 24px 60px #0008,0 0 0 1px #ffffff14}
+  .scene-wrap{width:auto;max-height:none;margin:36px max(24px,calc((100vw - 1180px)/2 + 24px)) 42px 0;border-radius:16px;box-shadow:0 24px 60px #0008,0 0 0 1px #ffffff14}
 }
-.scene-wrap.done .near{transform-origin:250px 150px;transform:scale(2.4)}
-.far{transform-origin:250px 120px;transform:scale(1.35)}
-.sleigh-path{transform:translate(-220px,86px)}
-.sleigh{transform:scale(1.3) rotate(-7deg)}
-.win{fill:url(#win);transition:fill .5s}
-.star{transition:fill .4s}
-.wreath{transition:stroke .4s}
-.far-win{opacity:.35;transition:opacity .6s}
-.go .near{animation:zoomIn 2.4s cubic-bezier(.5,0,.15,1) forwards}
-.go .far{animation:zoomFar 2.4s cubic-bezier(.5,0,.15,1) forwards}
-.go .sleigh-path{animation:fly 3s 1s cubic-bezier(.4,0,.6,1) forwards}
-.go .sleigh{animation:bob .45s 1s ease-in-out 7 alternate}
-.trail circle{animation:sparkle .5s ease-in-out infinite alternate}.trail circle:nth-child(2n){animation-delay:.25s}
-.lit .win{fill:url(#winGlow)}
-.lit .far-win{opacity:1}
-.lit .star{fill:#FFD45E;filter:url(#glow)}
-.lit #spill{opacity:1;transition:opacity .8s}
-.lit #bulbs .tw1,.lit #halos .tw1{animation:tw 1.4s ease-in-out infinite alternate}
-.lit #bulbs .tw2,.lit #halos .tw2{animation:tw 1.4s .7s ease-in-out infinite alternate}
-.flash #flash{animation:flash .7s ease-out}
-@keyframes zoomIn{from{transform:scale(2.4)}to{transform:scale(1)}}
-@keyframes zoomFar{from{transform:scale(1.35)}to{transform:scale(1)}}
-@keyframes fly{0%{transform:translate(-220px,86px)}55%{transform:translate(225px,56px)}100%{transform:translate(580px,18px)}}
-@keyframes bob{to{transform:scale(1.3) rotate(-3deg) translateY(-3px)}}
-@keyframes tw{from{opacity:1}to{opacity:.45}}
-@keyframes puff{from{transform:translate(0,14px) scale(.4);opacity:0}30%{opacity:.6}to{transform:translate(8px,-18px) scale(1.4);opacity:0}}
-@keyframes sparkle{to{opacity:.15}}
-@keyframes flash{0%{opacity:0}25%{opacity:.28}100%{opacity:0}}
-@keyframes fall{to{transform:translate(var(--dx),290px)}}
-#snow circle{animation:fall linear infinite}
-@media(prefers-reduced-motion:reduce){#snow{display:none}}
+.scene-wrap .lit{opacity:0}
+.scene-wrap.go img{animation:pull 3.4s cubic-bezier(.3,0,.2,1) both}
+.scene-wrap.on .lit{opacity:1;animation:pull 3.4s -2.3s cubic-bezier(.3,0,.2,1) both,flick .9s steps(1,end),glow 3.2s .9s ease-in-out infinite alternate}
+.scene-wrap.static img{animation:none!important}
+.replay{position:absolute;right:10px;bottom:10px;z-index:2;font:600 .78rem 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:#0009;border:1px solid #ffffff40;border-radius:20px;padding:6px 12px;cursor:pointer;opacity:0;transition:opacity .4s}
+.scene-wrap.done .replay{opacity:1}
+@keyframes pull{from{transform:scale(1.18)}to{transform:scale(1)}}
+@keyframes flick{0%{opacity:.7}12%{opacity:.1}22%{opacity:.9}32%{opacity:.35}45%{opacity:1}}
+@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.07) saturate(1.08)}}
+@media(prefers-reduced-motion:reduce){.scene-wrap img{animation:none!important}}
 .xl-hero .crumbs,.xl-hero .crumbs a{color:#B9C3D3}
 .xl-hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
 .cd{display:flex;gap:10px;margin:0 0 26px;flex-wrap:wrap;align-items:center}
@@ -94,116 +73,10 @@
 </header>
 <main id="top">
 <section class="xl-hero">
-  <div class="scene-wrap" id="scene" role="img" aria-label="Santa's sleigh flies past the moon over a snowy two-story house, then Christmas lights wrap the roofline, porch, columns, garage, bushes and the tree out front">
-    <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D1430"/><stop offset=".55" stop-color="#1E3263"/><stop offset="1" stop-color="#4A6699"/></linearGradient>
-        <radialGradient id="moonHalo"><stop offset="0" stop-color="#FFF1CC" stop-opacity=".45"/><stop offset=".5" stop-color="#C9D8FF" stop-opacity=".12"/><stop offset="1" stop-color="#C9D8FF" stop-opacity="0"/></radialGradient>
-        <radialGradient id="moon" cx=".4" cy=".35"><stop offset="0" stop-color="#FFFBEA"/><stop offset=".7" stop-color="#F6E6B8"/><stop offset="1" stop-color="#E4CC90"/></radialGradient>
-        <linearGradient id="hills" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9DB3DC"/><stop offset="1" stop-color="#6A84B8"/></linearGradient>
-        <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F7FD"/><stop offset=".5" stop-color="#D5E0F2"/><stop offset="1" stop-color="#AFC0E0"/></linearGradient>
-        <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7D8FBC"/><stop offset=".55" stop-color="#6476A6"/><stop offset="1" stop-color="#4D5E8E"/></linearGradient>
-        <linearGradient id="wall2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6E80AE"/><stop offset="1" stop-color="#55679A"/></linearGradient>
-        <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B3560"/><stop offset="1" stop-color="#27244A"/></linearGradient>
-        <linearGradient id="door" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C2413A"/><stop offset="1" stop-color="#8E2630"/></linearGradient>
-        <linearGradient id="pine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2F7A5A"/><stop offset=".6" stop-color="#1F5A44"/><stop offset="1" stop-color="#143E31"/></linearGradient>
-        <linearGradient id="sage" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8FAFAA"/><stop offset=".6" stop-color="#78989A"/><stop offset="1" stop-color="#5F7E86"/></linearGradient>
-        <linearGradient id="lap" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A9B3CA"/><stop offset="1" stop-color="#8E99B5"/></linearGradient>
-        <linearGradient id="lap2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9AA5C0"/><stop offset="1" stop-color="#7D89A8"/></linearGradient>
-        <linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C3D6A"/><stop offset="1" stop-color="#1C2A4E"/></linearGradient>
-        <radialGradient id="winGlow" cx=".5" cy=".6"><stop offset="0" stop-color="#FFF0C2"/><stop offset=".6" stop-color="#FFC861"/><stop offset="1" stop-color="#E8923A"/></radialGradient>
-        <radialGradient id="spillWarm"><stop offset="0" stop-color="#FFC86A" stop-opacity=".75"/><stop offset="1" stop-color="#FFC86A" stop-opacity="0"/></radialGradient>
-        <radialGradient id="spillMulti"><stop offset="0" stop-color="#FF7A6A" stop-opacity=".5"/><stop offset=".5" stop-color="#7AE0A8" stop-opacity=".25"/><stop offset="1" stop-color="#6AB0FF" stop-opacity="0"/></radialGradient>
-        <radialGradient id="ao"><stop offset="0" stop-color="#2A3C6A" stop-opacity=".55"/><stop offset="1" stop-color="#2A3C6A" stop-opacity="0"/></radialGradient>
-        <radialGradient id="fur" cx=".4" cy=".35"><stop offset="0" stop-color="#B07A52"/><stop offset="1" stop-color="#6E4329"/></radialGradient>
-        <linearGradient id="sled" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E5483F"/><stop offset="1" stop-color="#9E1F2A"/></linearGradient>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
-        <mask id="lightMask" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="260"><g id="maskPaths" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="butt"></g></mask>
-      </defs>
-      <rect width="400" height="260" fill="url(#sky)"/>
-      <g id="stars" fill="#fff"></g>
-      <g class="far">
-        <circle cx="318" cy="54" r="70" fill="url(#moonHalo)"/>
-        <circle cx="318" cy="54" r="24" fill="url(#moon)"/>
-        <circle cx="309" cy="47" r="4" fill="#EAD59E" opacity=".6"/><circle cx="326" cy="62" r="2.6" fill="#EAD59E" opacity=".6"/><circle cx="322" cy="44" r="1.6" fill="#EAD59E" opacity=".6"/>
-        <path d="M0 192 Q60 160 135 180 Q200 196 262 172 Q330 150 400 178 V260 H0Z" fill="url(#hills)"/>
-        <g fill="#4D6699"><path d="M20 186 l7 -16 7 16z"/><path d="M34 188 l5 -12 5 12z"/><path d="M372 178 l6 -15 6 15z"/><path d="M386 181 l5 -11 5 11z"/></g>
-        <g><rect x="340" y="170" width="16" height="11" rx="1.5" fill="#5D76A8"/><path d="M337 171 l11 -8 11 8z" fill="#3E3D68"/><rect class="far-win" x="345" y="173" width="5" height="4" fill="#FFCB6B"/></g>
-        <g><rect x="52" y="176" width="14" height="10" rx="1.5" fill="#5D76A8"/><path d="M49 177 l10 -7 10 7z" fill="#3E3D68"/><rect class="far-win" x="56" y="179" width="4" height="4" fill="#FFCB6B"/></g>
-      </g>
-      <!-- sleigh -->
-      <g class="sleigh-path"><g class="sleigh">
-        <g class="trail" fill="#FFD976"><circle cx="-34" cy="10" r="1.6"/><circle cx="-46" cy="13" r="1.2" opacity=".7"/><circle cx="-58" cy="17" r="1" opacity=".5"/><circle cx="-70" cy="21" r=".8" opacity=".3"/><circle cx="-40" cy="4" r=".9" opacity=".6"/></g>
-        <g class="deer" transform="translate(100,-6)"><path d="M-8 3 l-4 7 M-4 4 l-1 7 M5 4 l4 6 M8 3 l6 4" stroke="#5A3520" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="0" cy="0" rx="10" ry="5.5" fill="url(#fur)"/><ellipse cx="1" cy="2.4" rx="6" ry="2.4" fill="#D8B48C"/><path d="M7 -2 q4 -4 6 -6" stroke="#8B5A3C" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="-9" r="3.6" fill="url(#fur)"/><ellipse cx="17" cy="-8" rx="2.4" ry="1.7" fill="#D8B48C"/><circle cx="14.6" cy="-10" r=".7" fill="#1A1020"/><path d="M12 -12 q-2 -5 -6 -6 M12 -12 q0 -4 -2 -6 M15 -12 q2 -5 6 -6 M15 -12 q1 -4 4 -6" stroke="#EBD7AE" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M-9 -2 q-3 -1 -4 1" stroke="#D8B48C" stroke-width="2" stroke-linecap="round"/></g>
-        <g class="deer" transform="translate(74,-1)"><path d="M-8 3 l-4 7 M-4 4 l-1 7 M5 4 l4 6 M8 3 l6 4" stroke="#5A3520" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="0" cy="0" rx="10" ry="5.5" fill="url(#fur)"/><ellipse cx="1" cy="2.4" rx="6" ry="2.4" fill="#D8B48C"/><path d="M7 -2 q4 -4 6 -6" stroke="#8B5A3C" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="-9" r="3.6" fill="url(#fur)"/><ellipse cx="17" cy="-8" rx="2.4" ry="1.7" fill="#D8B48C"/><circle cx="14.6" cy="-10" r=".7" fill="#1A1020"/><path d="M12 -12 q-2 -5 -6 -6 M12 -12 q0 -4 -2 -6 M15 -12 q2 -5 6 -6 M15 -12 q1 -4 4 -6" stroke="#EBD7AE" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M-9 -2 q-3 -1 -4 1" stroke="#D8B48C" stroke-width="2" stroke-linecap="round"/></g>
-        <g class="deer" transform="translate(48,4)"><path d="M-8 3 l-4 7 M-4 4 l-1 7 M5 4 l4 6 M8 3 l6 4" stroke="#5A3520" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="0" cy="0" rx="10" ry="5.5" fill="url(#fur)"/><ellipse cx="1" cy="2.4" rx="6" ry="2.4" fill="#D8B48C"/><path d="M7 -2 q4 -4 6 -6" stroke="#8B5A3C" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="-9" r="3.6" fill="url(#fur)"/><ellipse cx="17" cy="-8" rx="2.4" ry="1.7" fill="#D8B48C"/><circle cx="14.6" cy="-10" r=".7" fill="#1A1020"/><path d="M12 -12 q-2 -5 -6 -6 M12 -12 q0 -4 -2 -6 M15 -12 q2 -5 6 -6 M15 -12 q1 -4 4 -6" stroke="#EBD7AE" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M-9 -2 q-3 -1 -4 1" stroke="#D8B48C" stroke-width="2" stroke-linecap="round"/></g>
-        <path d="M20 4 Q40 3 58 2 M58 1 Q80 -2 92 -6" stroke="#F2C14E" stroke-width=".9" fill="none"/>
-        <ellipse cx="-4" cy="-6" rx="7" ry="7" fill="#7A4B2A"/><path d="M-9 -11 q5 -5 10 0" stroke="#F2C14E" stroke-width="1.2" fill="none"/>
-        <circle cx="8" cy="-8" r="6.5" fill="#D93A35"/><path d="M2 -5 h12" stroke="#FFF" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="9" cy="-16" r="4" fill="#F6C9A6"/><path d="M5.5 -15 q3.5 7 7 0 q-3.5 2 -7 0z" fill="#FFFFFF"/><circle cx="10.8" cy="-17" r=".6" fill="#2A1A20"/><circle cx="11.6" cy="-15.6" r="1" fill="#F29A8E"/>
-        <path d="M5 -18 q4 -8 11 -3 l-1 2 q-5 -2 -10 1z" fill="#D93A35"/><path d="M4.6 -18 q4.5 -2 10.5 0" stroke="#FFF" stroke-width="2" stroke-linecap="round"/><circle cx="16.5" cy="-21" r="1.8" fill="#FFF"/>
-        <path d="M-14 -3 h28 q8 0 9 -9 l4 -2 q-1 14 -12 18 h-25 q-8 0 -9 -5 q-1 -4 5 -2z" fill="url(#sled)"/>
-        <path d="M-12 -1 h26 q5 0 7 -5" stroke="#F2C14E" stroke-width="1" fill="none"/>
-        <path d="M-18 12 h34 q9 0 11 -8 q1 -3 -2 -3" stroke="#F2C14E" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M-8 6 v6 M8 6 v6" stroke="#F2C14E" stroke-width="1.3"/>
-      </g></g>
-      <g class="near">
-        <path d="M0 208 Q90 196 190 206 Q300 216 400 202 V260 H0Z" fill="url(#snow)"/>
-        <ellipse cx="250" cy="216" rx="118" ry="9" fill="url(#ao)"/><ellipse cx="72" cy="210" rx="44" ry="7" fill="url(#ao)"/>
-        <g id="spill" opacity="0"><ellipse cx="248" cy="222" rx="140" ry="20" fill="url(#spillWarm)"/><ellipse cx="72" cy="216" rx="56" ry="14" fill="url(#spillMulti)"/></g>
-        <!-- tree -->
-        <g class="tree">
-          <rect x="66" y="196" width="9" height="16" rx="2" fill="#5B3A26"/>
-          <path d="M71 140 Q56 166 30 192 Q71 206 112 192 Q86 166 71 140Z" fill="url(#pine)"/>
-          <path d="M71 116 Q58 138 38 160 Q71 172 104 160 Q84 138 71 116Z" fill="url(#pine)"/>
-          <path d="M71 92 Q61 110 46 128 Q71 138 96 128 Q81 110 71 92Z" fill="url(#pine)"/>
-          <path d="M33 190 Q71 203 109 190 Q90 196 71 197 Q52 196 33 190Z" fill="#EEF3FB"/><path d="M41 158 Q71 169 101 158 Q86 164 71 165 Q56 164 41 158Z" fill="#EEF3FB"/><path d="M49 126 Q71 135 93 126 Q82 131 71 132 Q60 131 49 126Z" fill="#EEF3FB"/>
-          <path class="star" d="M71 76 l3.6 7.4 8 1 -6 5.6 1.6 8 -7.2 -4 -7.2 4 1.6 -8 -6 -5.6 8 -1z" fill="#6B6247"/>
-        </g>
-        <!-- house: two-story with dormer, porch and one-car garage -->
-        <path d="M262 214 L250 260 H400 V246 L330 214Z" fill="#C3CFE4" opacity=".9"/>
-        <!-- upper story, board and batten -->
-        <rect x="170" y="98" width="160" height="62" fill="url(#sage)"/>
-        <path d="M178 104 V160 M186 104 V160 M194 104 V160 M202 104 V160 M210 104 V160 M218 104 V160 M226 104 V160 M234 104 V160 M242 104 V160 M250 104 V160 M258 104 V160 M266 104 V160 M274 104 V160 M282 104 V160 M290 104 V160 M298 104 V160 M306 104 V160 M314 104 V160 M322 104 V160" stroke="#5E7A7E" stroke-width=".6" opacity=".55"/>
-        <!-- main hip roof + dormer -->
-        <path d="M154 102 Q152 99 155 97 L180 70 Q182 68 185 68 H315 Q318 68 320 70 L345 97 Q348 99 346 102Z" fill="url(#roof)"/>
-        <path d="M160 96 L182 71 H318 L340 96" stroke="#F4F7FD" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="224" y="66" width="52" height="22" fill="url(#sage)"/>
-        <path d="M218 68 Q217 66 219 65 L232 56 H268 L281 65 Q283 66 282 68Z" fill="url(#roof)"/>
-        <path d="M221 64 L233 56 H267 L279 64" stroke="#F4F7FD" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M218 68 H282" stroke="#F4F7FD" stroke-width="2.2"/>
-        <rect class="win" x="229" y="72" width="12" height="11" rx="1" stroke="#F4F7FD" stroke-width="1.8"/><rect class="win" x="244" y="72" width="12" height="11" rx="1" stroke="#F4F7FD" stroke-width="1.8"/><rect class="win" x="259" y="72" width="12" height="11" rx="1" stroke="#F4F7FD" stroke-width="1.8"/>
-        <path d="M152 102 H348" stroke="#F4F7FD" stroke-width="4" stroke-linecap="round"/>
-        <!-- upper windows -->
-        <g stroke="#F4F7FD"><rect class="win" x="181" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/><rect class="win" x="220" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/><rect class="win" x="260" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/><rect class="win" x="299" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/></g>
-        <path d="M191 113 v32 M181 129 h20 M230 113 v32 M220 129 h20 M270 113 v32 M260 129 h20 M309 113 v32 M299 129 h20" stroke="#F4F7FD" stroke-width="1.1"/>
-        <!-- porch roof -->
-        <path d="M160 160 H340 L350 174 Q351 177 348 177 H152 Q149 177 150 174Z" fill="url(#roof)"/>
-        <path d="M162 159 H338" stroke="#F4F7FD" stroke-width="4.5" stroke-linecap="round"/>
-        <path d="M150 177 H350" stroke="#F4F7FD" stroke-width="3.4" stroke-linecap="round"/>
-        <!-- lower story, lap siding -->
-        <rect x="168" y="179" width="76" height="35" fill="url(#lap)"/>
-        <rect x="244" y="179" width="86" height="35" fill="url(#lap2)"/>
-        <path d="M168 185 h162 M168 191 h162 M168 197 h162 M168 203 h162 M168 209 h162" stroke="#7D8AA8" stroke-width=".6" opacity=".6"/>
-        <path d="M244 179 v35" stroke="#F4F7FD" stroke-width="2"/>
-        <rect class="win" x="180" y="184" width="17" height="26" rx="1.5" stroke="#F4F7FD" stroke-width="2.4"/><path d="M188.5 184 v26 M180 197 h17" stroke="#F4F7FD" stroke-width="1"/>
-        <rect x="215" y="183" width="20" height="31" fill="#F4F7FD"/><rect x="218" y="186" width="14" height="28" rx="1" fill="#171A24"/><circle cx="229.5" cy="200" r="1" fill="#C59A2E"/>
-        <circle class="wreath" cx="225" cy="194" r="4.6" fill="none" stroke="#1F5A44" stroke-width="2.6"/><path d="M223 198.5 l2 -1.4 2 1.4" stroke="#D93A35" stroke-width="1.2" fill="none"/>
-        <rect x="171" y="179" width="6" height="35" fill="#F4F7FD"/><rect x="206" y="179" width="6" height="35" fill="#F4F7FD"/>
-        <rect x="254" y="185" width="68" height="29" rx="1" fill="#E3E8F2"/>
-        <path d="M254 194 h68 M254 201 h68 M254 208 h68 M271 194 v20 M288 194 v20 M305 194 v20" stroke="#B4C0DA" stroke-width=".9"/>
-        <g class="win"><rect x="258" y="187.5" width="12" height="4.5" rx=".8"/><rect x="274" y="187.5" width="12" height="4.5" rx=".8"/><rect x="290" y="187.5" width="12" height="4.5" rx=".8"/><rect x="306" y="187.5" width="12" height="4.5" rx=".8"/></g>
-        <path d="M212 214 h24 l4 4 h-30z" fill="#DCE3F1"/>
-        <!-- bushes along the porch -->
-        <g fill="#1F5A44"><circle cx="176" cy="212" r="6"/><circle cx="188" cy="211" r="6.5"/><circle cx="200" cy="212" r="6"/><circle cx="246" cy="212" r="5"/></g>
-        <g fill="#EEF3FB"><path d="M171 208 q5 -5 10 -2 q4 -4 10 -1 q4 -3 9 0 q-14 -1 -29 3z"/></g>
-        <path d="M0 236 Q120 222 230 234 Q320 244 400 230 V260 H0Z" fill="#F7F9FE"/>
-        <!-- lights (built by script) -->
-        <g mask="url(#lightMask)"><g id="wires" fill="none" stroke="#14301F" stroke-width="1.1"></g><g id="halos" fill="none" stroke-linecap="round" filter="url(#soft)" opacity=".75"></g><g id="bulbs" fill="none" stroke-linecap="round"></g><g id="shine" fill="none" stroke="#fff" stroke-linecap="round" opacity=".85"></g></g>
-      </g>
-      <rect id="flash" width="400" height="260" fill="#FFE7B0" opacity="0" pointer-events="none"/>
-      <g id="snow" fill="#fff"></g>
-    </svg>
+  <div class="scene-wrap" id="scene" role="img" aria-label="A two-story house at night, then multicolor Christmas lights turn on along the roofline, dormer, porch, columns, garage door and bushes">
+    <img src="/img/xmas-night.jpg" alt="" width="1600" height="1039" fetchpriority="high">
+    <img class="lit" src="/img/xmas-lit.jpg" alt="" width="1600" height="1039">
+    <button class="replay" type="button" id="replay">Replay</button>
   </div>
   <div class="wrap hero-copy">
     <p class="crumbs"><a href="/">Home</a> / Christmas lights</p>
@@ -287,41 +160,18 @@
 </footer>
 <script>
 (function () {
-  const NS = 'http://www.w3.org/2000/svg', wrap = document.getElementById('scene'), svg = wrap.querySelector('svg');
-  const mk = (tag, attrs, parent) => { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); parent.appendChild(el); return el; };
+  const wrap = document.getElementById('scene'), lit = wrap.querySelector('.lit');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // stars + snow
-  const st = document.getElementById('stars');
-  for (let i = 0; i < 40; i++) mk('circle', { cx: (Math.random() * 400).toFixed(1), cy: (Math.random() * 150).toFixed(1), r: (Math.random() * .9 + .3).toFixed(2), opacity: (Math.random() * .6 + .3).toFixed(2) }, st);
-  if (!reduce) { const sn = document.getElementById('snow');
-    for (let i = 0; i < 34; i++) { const c = mk('circle', { cx: (Math.random() * 400).toFixed(1), cy: -10, r: (Math.random() * 1.3 + .6).toFixed(2), opacity: (Math.random() * .5 + .4).toFixed(2) }, sn);
-      c.style.setProperty('--dx', (Math.random() * 40 - 20).toFixed(0) + 'px'); c.style.animationDuration = (Math.random() * 6 + 6).toFixed(1) + 's'; c.style.animationDelay = (-Math.random() * 12).toFixed(1) + 's'; } }
-  // light runs: roofline, eaves, garage, bushes, windows and a garland spiral on the tree
-  let tree = 'M71 98'; const rows = 10;
-  for (let i = 1; i <= rows; i++) { const y = 98 + i * 9.6, half = 6 + i * 3.4, dir = i % 2 ? 1 : -1; tree += ` Q${71 + dir * (half + 5)} ${y - 5} ${71 + dir * half} ${y}`; }
-  const col = x => { let d = `M${x} 179`; for (let y = 179; y < 212; y += 5) d += ` L${x + 6} ${y + 2.5} L${x} ${y + 5}`; return d; };
-  const RUNS = [
-    'M152 101 L180 69 H320 L348 101', 'M152 104 H348', 'M218 67 L232 55 H268 L282 67',
-    'M150 178 H350', 'M162 158 H338', col(171), col(206), 'M252 214 V183 H324 V214',
-    'M170 206 q6 -8 12 -2 q6 -8 12 -1 q6 -6 10 1', tree ];
-  const COLORS = ['#FF5A4E', '#FFD045', '#3FE08E', '#5CB2FF'];
-  const maskG = document.getElementById('maskPaths'), wires = document.getElementById('wires'), bulbs = document.getElementById('bulbs'), halos = document.getElementById('halos'), shine = document.getElementById('shine');
-  const maskPaths = RUNS.map(d => {
-    mk('path', { d }, wires);
-    COLORS.forEach((c, i) => { const a = { d, stroke: c, 'stroke-dasharray': '0 22', 'stroke-dashoffset': -i * 5.5, class: i % 2 ? 'tw2' : 'tw1' };
-      mk('path', { ...a, 'stroke-width': 9 }, halos); mk('path', { ...a, 'stroke-width': 5 }, bulbs); });
-    mk('path', { d, 'stroke-width': 1.4, 'stroke-dasharray': '0 5.5', 'stroke-dashoffset': -.6 }, shine);
-    const m = mk('path', { d }, maskG); const L = m.getTotalLength() + 2;
-    m.style.strokeDasharray = L; m.style.strokeDashoffset = L; return m;
-  });
-  const wreath = svg.querySelector('.wreath');
-  function reset() { wrap.classList.remove('go', 'lit', 'done', 'flash'); maskPaths.forEach(m => { m.style.transition = 'none'; m.style.strokeDashoffset = m.style.strokeDasharray; }); wreath.style.stroke = ''; }
-  function lightsOn(fast) { maskPaths.forEach(m => { m.style.transition = fast ? 'none' : 'stroke-dashoffset .75s cubic-bezier(.5,0,.25,1)'; m.style.strokeDashoffset = 0; });
-    setTimeout(() => { wrap.classList.add('lit'); if (!fast) wrap.classList.add('flash'); wreath.style.stroke = '#2F8A5E'; }, fast ? 0 : 650); setTimeout(() => wrap.classList.add('done'), fast ? 0 : 1400); }
   let timers = [];
-  function play() { timers.forEach(clearTimeout); reset(); void wrap.offsetWidth; wrap.classList.add('go'); timers = [setTimeout(() => lightsOn(false), 3500)]; }
-  if (reduce) { svg.querySelector('.near').style.transform = 'none'; svg.querySelector('.far').style.transform = 'none'; svg.querySelector('.sleigh-path').style.display = 'none'; lightsOn(true); }
-  else play();
+  function play() {
+    timers.forEach(clearTimeout); wrap.classList.remove('go', 'on', 'done'); void wrap.offsetWidth;
+    if (reduce) { wrap.classList.add('on', 'static', 'done'); return; }
+    wrap.classList.add('go');
+    timers = [setTimeout(() => wrap.classList.add('on'), 2300), setTimeout(() => wrap.classList.add('done'), 3600)];
+  }
+  const start = () => (lit.complete ? play() : lit.addEventListener('load', play, { once: true }));
+  document.getElementById('replay').addEventListener('click', play);
+  start();
 })();
 </script>
 <script>
