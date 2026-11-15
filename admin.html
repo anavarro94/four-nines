@@ -150,7 +150,8 @@ function vRequests() {
   const order = { New: 0, '': 0, Replied: 1, Converted: 2, Archived: 3 };
   const L = [...DB.Requests].sort((a, b) => (order[a.status || ''] - order[b.status || '']) || String(b.created).localeCompare(String(a.created)));
   const note = REMOTE ? '' : `<div class="card small" style="margin-bottom:12px">Website quote requests show up here once the Google Sheet is connected (see README). Until then they arrive as text messages.</div>`;
-  return note + (L.length ? `<div class="list">${L.map(r => {
+  const bar = L.length ? `<div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn danger sm" onclick="clearReqs()">Clear all requests</button></div>` : '';
+  return note + bar + (L.length ? `<div class="list">${L.map(r => {
     const ph = Array.isArray(r.photos) ? r.photos : String(r.photos || '').split(/\s+/).filter(Boolean);
     return `<div class="item"><div class="hd"><div><h3>${esc(r.name)} — ${esc(r.service)}</h3>
       <div class="meta">${esc(fmtDate(r.created))} · ${esc(fmtPhone(r.phone))}${r.email ? ' · ' + esc(r.email) : ''}</div></div>${pill(r.status || 'New')}</div>
@@ -161,8 +162,17 @@ function vRequests() {
       ${r.status === 'Converted' ? '' : `<button class="btn" onclick="quoteFromReq('${r.id}')">Quote it</button>`}
       ${contactBtns(r)}
       ${r.status === 'Converted' ? '' : `<button class="btn ghost" onclick="convert('${r.id}')">Make job</button>`}
-      ${r.status === 'Archived' ? '' : `<button class="btn ghost" onclick="setReq('${r.id}','Archived')">Archive</button>`}</div></div>`;
+      ${r.status === 'Archived' ? '' : `<button class="btn ghost" onclick="setReq('${r.id}','Archived')">Archive</button>`}
+      <button class="btn ghost" onclick="if(confirm('Delete this request?'))del('Requests','${r.id}')">Delete</button></div></div>`;
   }).join('')}</div>` : `<div class="empty">No quote requests yet.</div>`);
+}
+async function clearReqs() {
+  const ids = DB.Requests.map(r => r.id); if (!ids.length) return;
+  if (!confirm(`Delete all ${ids.length} request${ids.length > 1 ? 's' : ''}? This can't be undone. Jobs and clients you already made stay.`)) return;
+  DB.Requests = []; persist(); render();
+  if (REMOTE) { let bad = 0; for (const id of ids) { try { await api({ action: 'delete', table: 'Requests', id }); } catch (e) { bad++; } }
+    toast(bad ? `${bad} couldn't be deleted. Tap refresh and try again.` : 'Requests cleared', !!bad); }
+  else toast('Requests cleared');
 }
 function setReq(id, status) { const r = DB.Requests.find(x => x.id === id); save('Requests', { ...r, status }); }
 async function convert(id, quiet) {
