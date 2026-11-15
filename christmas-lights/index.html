@@ -50,7 +50,6 @@
 .go .far{animation:zoomFar 2.4s cubic-bezier(.5,0,.15,1) forwards}
 .go .sleigh-path{animation:fly 3s 1s cubic-bezier(.4,0,.6,1) forwards}
 .go .sleigh{animation:bob .45s 1s ease-in-out 7 alternate}
-.smoke circle{animation:puff 3.2s ease-out infinite}.smoke circle:nth-child(2){animation-delay:-1.1s}.smoke circle:nth-child(3){animation-delay:-2.2s}
 .trail circle{animation:sparkle .5s ease-in-out infinite alternate}.trail circle:nth-child(2n){animation-delay:.25s}
 .lit .win{fill:url(#winGlow)}
 .lit .far-win{opacity:1}
@@ -97,7 +96,7 @@
 </header>
 <main id="top">
 <section class="xl-hero">
-  <div class="scene-wrap" id="scene" role="img" aria-label="Santa's sleigh flies past the moon over a snowy house, then Christmas lights wrap the roofline, windows, bushes and the tree out front">
+  <div class="scene-wrap" id="scene" role="img" aria-label="Santa's sleigh flies past the moon over a snowy two-story house, then Christmas lights wrap the roofline, porch, columns, garage, bushes and the tree out front">
     <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
         <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D1430"/><stop offset=".55" stop-color="#1E3263"/><stop offset="1" stop-color="#4A6699"/></linearGradient>
@@ -110,6 +109,9 @@
         <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B3560"/><stop offset="1" stop-color="#27244A"/></linearGradient>
         <linearGradient id="door" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C2413A"/><stop offset="1" stop-color="#8E2630"/></linearGradient>
         <linearGradient id="pine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2F7A5A"/><stop offset=".6" stop-color="#1F5A44"/><stop offset="1" stop-color="#143E31"/></linearGradient>
+        <linearGradient id="sage" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8FAFAA"/><stop offset=".6" stop-color="#78989A"/><stop offset="1" stop-color="#5F7E86"/></linearGradient>
+        <linearGradient id="lap" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A9B3CA"/><stop offset="1" stop-color="#8E99B5"/></linearGradient>
+        <linearGradient id="lap2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9AA5C0"/><stop offset="1" stop-color="#7D89A8"/></linearGradient>
         <linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C3D6A"/><stop offset="1" stop-color="#1C2A4E"/></linearGradient>
         <radialGradient id="winGlow" cx=".5" cy=".6"><stop offset="0" stop-color="#FFF0C2"/><stop offset=".6" stop-color="#FFC861"/><stop offset="1" stop-color="#E8923A"/></radialGradient>
         <radialGradient id="spillWarm"><stop offset="0" stop-color="#FFC86A" stop-opacity=".75"/><stop offset="1" stop-color="#FFC86A" stop-opacity="0"/></radialGradient>
@@ -149,7 +151,7 @@
       </g></g>
       <g class="near">
         <path d="M0 208 Q90 196 190 206 Q300 216 400 202 V260 H0Z" fill="url(#snow)"/>
-        <ellipse cx="248" cy="215" rx="120" ry="10" fill="url(#ao)"/><ellipse cx="72" cy="210" rx="44" ry="7" fill="url(#ao)"/>
+        <ellipse cx="250" cy="216" rx="118" ry="9" fill="url(#ao)"/><ellipse cx="72" cy="210" rx="44" ry="7" fill="url(#ao)"/>
         <g id="spill" opacity="0"><ellipse cx="248" cy="222" rx="140" ry="20" fill="url(#spillWarm)"/><ellipse cx="72" cy="216" rx="56" ry="14" fill="url(#spillMulti)"/></g>
         <!-- tree -->
         <g class="tree">
@@ -160,31 +162,43 @@
           <path d="M33 190 Q71 203 109 190 Q90 196 71 197 Q52 196 33 190Z" fill="#EEF3FB"/><path d="M41 158 Q71 169 101 158 Q86 164 71 165 Q56 164 41 158Z" fill="#EEF3FB"/><path d="M49 126 Q71 135 93 126 Q82 131 71 132 Q60 131 49 126Z" fill="#EEF3FB"/>
           <path class="star" d="M71 76 l3.6 7.4 8 1 -6 5.6 1.6 8 -7.2 -4 -7.2 4 1.6 -8 -6 -5.6 8 -1z" fill="#6B6247"/>
         </g>
-        <!-- chimney + smoke -->
-        <rect x="292" y="86" width="16" height="34" rx="2" fill="#7E4A3E"/><rect x="289" y="82" width="22" height="7" rx="3" fill="#EEF3FB"/>
-        <g class="smoke" fill="#C9D4EA" opacity=".55"><circle cx="300" cy="74" r="4"/><circle cx="304" cy="64" r="5"/><circle cx="299" cy="52" r="6"/></g>
-        <!-- garage -->
-        <rect x="114" y="164" width="60" height="48" rx="3" fill="url(#wall2)"/>
-        <rect x="122" y="176" width="44" height="36" rx="2" fill="#DCE3F1"/><path d="M122 185 h44 M122 194 h44 M122 203 h44" stroke="#B4C0DA" stroke-width="1.2"/>
-        <path d="M108 168 Q107 165 110 163 L141 142 Q144 140 147 142 L178 163 Q181 165 180 168Z" fill="url(#roof)"/>
-        <path d="M112 162 L144 140 L176 162" stroke="#F4F7FD" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- main house -->
-        <rect x="168" y="134" width="164" height="78" rx="3" fill="url(#wall)"/>
-        <path d="M168 150 h164 M168 166 h164 M168 182 h164 M168 198 h164" stroke="#5A6B9A" stroke-width=".7" opacity=".6"/>
-        <path d="M150 142 Q148 138 152 135 L245 80 Q250 77 255 80 L348 135 Q352 138 350 142Z" fill="url(#roof)"/>
-        <path d="M156 133 L250 77 L344 133" stroke="#F4F7FD" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M158 136 L250 81 L342 136" stroke="#B9C7E2" stroke-width="1.6" fill="none" opacity=".8"/>
-        <path d="M150 142 H350" stroke="#211E3D" stroke-width="3" stroke-linecap="round"/>
-        <circle class="win" cx="250" cy="112" r="11" stroke="#F4F7FD" stroke-width="2.4"/><path d="M250 101 v22 M239 112 h22" stroke="#F4F7FD" stroke-width="1.4"/>
-        <rect class="win" x="184" y="152" width="30" height="26" rx="3" stroke="#F4F7FD" stroke-width="2.4"/><path d="M199 152 v26 M184 165 h30" stroke="#F4F7FD" stroke-width="1.4"/>
-        <rect class="win" x="286" y="152" width="30" height="26" rx="3" stroke="#F4F7FD" stroke-width="2.4"/><path d="M301 152 v26 M286 165 h30" stroke="#F4F7FD" stroke-width="1.4"/>
-        <path d="M184 178 h30 v3 h-30z M286 178 h30 v3 h-30z" fill="#F4F7FD"/>
-        <path d="M237 212 V176 Q237 164 250 164 Q263 164 263 176 V212Z" fill="url(#door)"/><circle cx="258" cy="190" r="1.5" fill="#F2C14E"/>
-        <circle class="wreath" cx="250" cy="178" r="6.5" fill="none" stroke="#1F5A44" stroke-width="3.4"/><path d="M247 184 l3 -2 3 2" stroke="#D93A35" stroke-width="1.6" fill="none"/>
-        <path d="M232 212 h36 v3 h-36z" fill="#EEF3FB"/>
-        <!-- bushes -->
-        <g fill="#1F5A44"><path d="M170 212 q0 -16 14 -16 q8 -8 16 0 q12 0 12 16z"/><path d="M288 212 q0 -16 14 -16 q8 -8 16 0 q12 0 12 16z"/></g>
-        <g fill="#EEF3FB"><path d="M174 200 q6 -6 12 -3 q6 -6 13 -1 q6 0 9 4 q-17 -3 -34 0z"/><path d="M292 200 q6 -6 12 -3 q6 -6 13 -1 q6 0 9 4 q-17 -3 -34 0z"/></g>
+        <!-- house: two-story with dormer, porch and one-car garage -->
+        <path d="M262 214 L250 260 H400 V246 L330 214Z" fill="#C3CFE4" opacity=".9"/>
+        <!-- upper story, board and batten -->
+        <rect x="170" y="98" width="160" height="62" fill="url(#sage)"/>
+        <path d="M178 104 V160 M186 104 V160 M194 104 V160 M202 104 V160 M210 104 V160 M218 104 V160 M226 104 V160 M234 104 V160 M242 104 V160 M250 104 V160 M258 104 V160 M266 104 V160 M274 104 V160 M282 104 V160 M290 104 V160 M298 104 V160 M306 104 V160 M314 104 V160 M322 104 V160" stroke="#5E7A7E" stroke-width=".6" opacity=".55"/>
+        <!-- main hip roof + dormer -->
+        <path d="M154 102 Q152 99 155 97 L180 70 Q182 68 185 68 H315 Q318 68 320 70 L345 97 Q348 99 346 102Z" fill="url(#roof)"/>
+        <path d="M160 96 L182 71 H318 L340 96" stroke="#F4F7FD" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="224" y="66" width="52" height="22" fill="url(#sage)"/>
+        <path d="M218 68 Q217 66 219 65 L232 56 H268 L281 65 Q283 66 282 68Z" fill="url(#roof)"/>
+        <path d="M221 64 L233 56 H267 L279 64" stroke="#F4F7FD" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M218 68 H282" stroke="#F4F7FD" stroke-width="2.2"/>
+        <rect class="win" x="229" y="72" width="12" height="11" rx="1" stroke="#F4F7FD" stroke-width="1.8"/><rect class="win" x="244" y="72" width="12" height="11" rx="1" stroke="#F4F7FD" stroke-width="1.8"/><rect class="win" x="259" y="72" width="12" height="11" rx="1" stroke="#F4F7FD" stroke-width="1.8"/>
+        <path d="M152 102 H348" stroke="#F4F7FD" stroke-width="4" stroke-linecap="round"/>
+        <!-- upper windows -->
+        <g stroke="#F4F7FD"><rect class="win" x="181" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/><rect class="win" x="220" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/><rect class="win" x="260" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/><rect class="win" x="299" y="113" width="20" height="32" rx="1.5" stroke-width="2.6"/></g>
+        <path d="M191 113 v32 M181 129 h20 M230 113 v32 M220 129 h20 M270 113 v32 M260 129 h20 M309 113 v32 M299 129 h20" stroke="#F4F7FD" stroke-width="1.1"/>
+        <!-- porch roof -->
+        <path d="M160 160 H340 L350 174 Q351 177 348 177 H152 Q149 177 150 174Z" fill="url(#roof)"/>
+        <path d="M162 159 H338" stroke="#F4F7FD" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="M150 177 H350" stroke="#F4F7FD" stroke-width="3.4" stroke-linecap="round"/>
+        <!-- lower story, lap siding -->
+        <rect x="168" y="179" width="76" height="35" fill="url(#lap)"/>
+        <rect x="244" y="179" width="86" height="35" fill="url(#lap2)"/>
+        <path d="M168 185 h162 M168 191 h162 M168 197 h162 M168 203 h162 M168 209 h162" stroke="#7D8AA8" stroke-width=".6" opacity=".6"/>
+        <path d="M244 179 v35" stroke="#F4F7FD" stroke-width="2"/>
+        <rect class="win" x="180" y="184" width="17" height="26" rx="1.5" stroke="#F4F7FD" stroke-width="2.4"/><path d="M188.5 184 v26 M180 197 h17" stroke="#F4F7FD" stroke-width="1"/>
+        <rect x="215" y="183" width="20" height="31" fill="#F4F7FD"/><rect x="218" y="186" width="14" height="28" rx="1" fill="#171A24"/><circle cx="229.5" cy="200" r="1" fill="#C59A2E"/>
+        <circle class="wreath" cx="225" cy="194" r="4.6" fill="none" stroke="#1F5A44" stroke-width="2.6"/><path d="M223 198.5 l2 -1.4 2 1.4" stroke="#D93A35" stroke-width="1.2" fill="none"/>
+        <rect x="171" y="179" width="6" height="35" fill="#F4F7FD"/><rect x="206" y="179" width="6" height="35" fill="#F4F7FD"/>
+        <rect x="254" y="185" width="68" height="29" rx="1" fill="#E3E8F2"/>
+        <path d="M254 194 h68 M254 201 h68 M254 208 h68 M271 194 v20 M288 194 v20 M305 194 v20" stroke="#B4C0DA" stroke-width=".9"/>
+        <g class="win"><rect x="258" y="187.5" width="12" height="4.5" rx=".8"/><rect x="274" y="187.5" width="12" height="4.5" rx=".8"/><rect x="290" y="187.5" width="12" height="4.5" rx=".8"/><rect x="306" y="187.5" width="12" height="4.5" rx=".8"/></g>
+        <path d="M212 214 h24 l4 4 h-30z" fill="#DCE3F1"/>
+        <!-- bushes along the porch -->
+        <g fill="#1F5A44"><circle cx="176" cy="212" r="6"/><circle cx="188" cy="211" r="6.5"/><circle cx="200" cy="212" r="6"/><circle cx="246" cy="212" r="5"/></g>
+        <g fill="#EEF3FB"><path d="M171 208 q5 -5 10 -2 q4 -4 10 -1 q4 -3 9 0 q-14 -1 -29 3z"/></g>
         <path d="M0 236 Q120 222 230 234 Q320 244 400 230 V260 H0Z" fill="#F7F9FE"/>
         <!-- lights (built by script) -->
         <g mask="url(#lightMask)"><g id="wires" fill="none" stroke="#14301F" stroke-width="1.1"></g><g id="halos" fill="none" stroke-linecap="round" filter="url(#soft)" opacity=".75"></g><g id="bulbs" fill="none" stroke-linecap="round"></g><g id="shine" fill="none" stroke="#fff" stroke-linecap="round" opacity=".85"></g></g>
@@ -288,10 +302,11 @@
   // light runs: roofline, eaves, garage, bushes, windows and a garland spiral on the tree
   let tree = 'M71 98'; const rows = 10;
   for (let i = 1; i <= rows; i++) { const y = 98 + i * 9.6, half = 6 + i * 3.4, dir = i % 2 ? 1 : -1; tree += ` Q${71 + dir * (half + 5)} ${y - 5} ${71 + dir * half} ${y}`; }
+  const col = x => { let d = `M${x} 179`; for (let y = 179; y < 212; y += 5) d += ` L${x + 6} ${y + 2.5} L${x} ${y + 5}`; return d; };
   const RUNS = [
-    'M152 140 L250 84 L348 140', 'M152 144 H348', 'M110 166 L144 144 L178 166',
-    'M182 150 h34 v30 h-34z', 'M284 150 h34 v30 h-34z', 'M250 99 a13 13 0 1 1 -0.1 0',
-    'M172 202 q12 -14 24 -4 q8 -6 16 4', 'M290 202 q12 -14 24 -4 q8 -6 16 4', 'M116 164 V212', tree ];
+    'M152 101 L180 69 H320 L348 101', 'M152 104 H348', 'M218 67 L232 55 H268 L282 67',
+    'M150 178 H350', 'M162 158 H338', col(171), col(206), 'M252 214 V183 H324 V214',
+    'M170 206 q6 -8 12 -2 q6 -8 12 -1 q6 -6 10 1', tree ];
   const COLORS = ['#FF5A4E', '#FFD045', '#3FE08E', '#5CB2FF'];
   const maskG = document.getElementById('maskPaths'), wires = document.getElementById('wires'), bulbs = document.getElementById('bulbs'), halos = document.getElementById('halos'), shine = document.getElementById('shine');
   const maskPaths = RUNS.map(d => {
