@@ -200,3 +200,19 @@ footer .nn9{font-size:1.2rem!important}
 /* tap targets: at least 44px tall */
 .chip,.btn.sm{min-height:44px}
 .town-svcs li a{color:inherit;text-decoration:underline;text-decoration-color:#C59A2E66;text-underline-offset:3px}
+
+/* ===== 2 + 1 color rule (Nov 21, 2026) =====
+   Navy + white get along; red is the one color that doesn't, so it goes ONLY
+   on the buttons we want clicked. Every other old "red" accent is now navy. */
+:root{--brass:#23344F;--cta:#C42B2B;--cta-dk:#9E2121}
+h1 em,h2 em{color:inherit!important}
+.hero h1 em,.hero h1 .u,.town-hero h1 em{color:var(--brass-lt)!important}
+.btn.brass,.top .btn.sm,.band .btn,.dock .btn:last-child{background:var(--cta)!important;color:#fff!important}
+.btn.brass:hover,.top .btn.sm:hover,.band .btn:hover,.dock .btn:last-child:hover{background:var(--cta-dk)!important;filter:none}
+.btn.brass{box-shadow:none!important}
+.season b{color:var(--teal)!important}
+.season a{color:var(--cta)!important}
+.svc .ico{box-shadow:0 6px 14px #23344F40!important}
+/* Chat bubble stays navy so the quote buttons are the only red on screen */
+.fnc-btn{background:#23344F!important}
+.fnc-hd{border-bottom-color:#C59A2E!important}
