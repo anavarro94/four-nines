@@ -18,9 +18,18 @@
 const SECRET = 'CHANGE-ME';                                   // ← your office-app passcode
 const NOTIFY_EMAIL = 'office@fourninesenterprise.com';     // ← where quote requests are emailed
 const PHOTO_FOLDER = 'Four Nines Quote Photos';
-const TABLES = ['Requests', 'Customers', 'Jobs', 'Docs', 'Expenses'];
+const TABLES = ['Requests', 'Customers', 'Jobs', 'Docs', 'Expenses', 'ThumbtackLeads'];
 const BUSINESS_NAME = 'Four Nines Enterprise, LLC';
 const DIGEST_HOUR = 20;                                        // ← daily to-do email time (24h clock, 20 = 8 PM)
+
+// ---------- Thumbtack lead/message alerts ----------
+// Free instant push: install the "ntfy" app (iOS/Android), subscribe to a topic name only you know,
+// paste that exact topic name below. Leave blank to skip push and just get email.
+const NTFY_TOPIC = '';                                          // ← e.g. 'fournines-az7x2k-leads' (pick something unguessable)
+// Thumbtack doesn't sign these requests. Set your own secret here, then add the SAME value as a
+// custom header (name: X-Webhook-Secret) when you create the webhook in Thumbtack, so random
+// internet traffic to this URL can't fake a lead alert. Leave blank to accept any request (not recommended).
+const THUMBTACK_WEBHOOK_SECRET = '';
 
 // ---------- one-time setup ----------
 function setup() {
@@ -47,6 +56,8 @@ function doPost(e) {
   let p;
   try { p = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'Bad request' }); }
   try {
+    // Thumbtack's own webhook calls (no action/key — just their event payload).
+    if (!p.action && (p.eventType || p.event_type)) return thumbtackEvent_(e, p);
     if (p.action === 'quote') return json_(quote_(p.request || {}));
     if (SECRET === 'CHANGE-ME') return json_({ ok: false, error: 'Set your passcode (SECRET) in the script first.' });
     if (p.key !== SECRET) return json_({ ok: false, error: 'Wrong passcode' });
@@ -112,6 +123,73 @@ function quote_(r) {
     MailApp.sendEmail(NOTIFY_EMAIL, `New quote request: ${req.service || 'Job'} — ${req.name}`, lines, opts);
   }
   return { ok: true };
+}
+
+// ---------- Thumbtack webhook (leads, messages, reviews) ----------
+function thumbtackEvent_(e, p) {
+  // Optional shared-secret check (set THUMBTACK_WEBHOOK_SECRET above and the same custom
+  // header when you create the webhook in Thumbtack).
+  if (THUMBTACK_WEBHOOK_SECRET) {
+    const h = (e.parameter && e.parameter['X-Webhook-Secret']) ||
+      (e.postData && e.postData.headers && e.postData.headers['X-Webhook-Secret']);
+    // Apps Script doesn't expose inbound headers directly; if Thumbtack lets you put the
+    // secret in the URL instead (?secret=...), check e.parameter.secret too.
+    if (e.parameter && e.parameter.secret && e.parameter.secret !== THUMBTACK_WEBHOOK_SECRET) {
+      return json_({ ok: false, error: 'bad secret' });
+    }
+  }
+
+  const type = String(p.eventType || p.event_type || '');
+  const data = p.data || p;
+  const req = (data.request || {});
+  const cust = (data.customer || {});
+  const id = String(data.negotiationID || data.negotiation_id || data.id || Utilities.getUuid().slice(0, 12));
+
+  let kind = 'Thumbtack update', name = (cust.firstName || cust.first_name || '') + ' ' + (cust.lastName || cust.last_name || '');
+  name = name.trim() || 'a customer';
+  let line2 = '';
+
+  if (/Negotiation.*Created/i.test(type)) {
+    kind = 'New Thumbtack lead';
+    line2 = [req.category && req.category.name, req.location && [req.location.city, req.location.state].filter(Boolean).join(', ')]
+      .filter(Boolean).join(' · ') || (req.description || '');
+  } else if (/Message/i.test(type)) {
+    kind = 'New Thumbtack message';
+    line2 = String(data.message && (data.message.text || data.message.body) || '').slice(0, 300);
+  } else if (/Review/i.test(type)) {
+    kind = 'New Thumbtack review';
+    line2 = String(data.review && (data.review.text || data.review.comment) || '').slice(0, 300);
+  }
+
+  // Log it (never lose the raw payload, even if Thumbtack's shape shifts later).
+  try {
+    upsert_('ThumbtackLeads', {
+      id, created: new Date().toISOString(), type, name, summary: line2,
+      raw: JSON.stringify(p).slice(0, 4000)
+    });
+  } catch (err) { /* logging failure shouldn't block the alert */ }
+
+  notifyAll_(`${kind}: ${name}`, line2 || 'Open Thumbtack to see details.',
+    'https://www.thumbtack.com/pro-leads');
+
+  return json_({ ok: true }); // 2XX, fast — tells Thumbtack we got it
+}
+
+// Fires every alert channel you've set up (email always; push if NTFY_TOPIC is set).
+function notifyAll_(title, body, link) {
+  if (NOTIFY_EMAIL) {
+    MailApp.sendEmail(NOTIFY_EMAIL, title, body + (link ? '\n\n' + link : ''), { name: 'Four Nines Alerts' });
+  }
+  if (NTFY_TOPIC) {
+    try {
+      UrlFetchApp.fetch('https://ntfy.sh/' + encodeURIComponent(NTFY_TOPIC), {
+        method: 'post',
+        payload: body,
+        headers: { Title: title, Click: link || '', Priority: 'urgent', Tags: 'rotating_light' },
+        muteHttpExceptions: true
+      });
+    } catch (err) { /* push is best-effort */ }
+  }
 }
 
 // ---------- email a quote/invoice as a PDF ----------
