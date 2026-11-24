@@ -47,6 +47,7 @@
   <button data-t="Billing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Billing</button>
   <button data-t="Customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Clients</button>
   <button data-t="Expenses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/><path d="M6 10v.01M18 15v.01"/></svg>Spent</button>
+  <button data-t="Thumbtack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 3"/></svg>Thumbtack<span class="badge" id="ttBadge" hidden></span></button>
 </nav>
 
 <dialog id="dlg"></dialog>
@@ -56,7 +57,7 @@
 <script>
 // ================= setup =================
 const C = window.FN_CONFIG;
-const TABLES = ['Requests','Customers','Jobs','Docs','Expenses'];
+const TABLES = ['Requests','Customers','Jobs','Docs','Expenses','ThumbtackLeads'];
 const JOB_STATUS = ['Lead','Quoted','Scheduled','In progress','Done','Paid'];
 const DOC_STATUS = ['Draft','Sent','Accepted','Paid','Void'];
 const EXP_CAT = ['Materials','Tools','Fuel','Disposal','Subcontractor','Other'];
@@ -116,10 +117,12 @@ async function refresh() { const b = document.querySelector('.hbtn[aria-label=Re
 // ================= rendering =================
 function render() {
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === S.tab));
-  $('#hTitle').textContent = { Today:'Today', Jobs:'Jobs', Requests:'Requests', Customers:'Clients', Billing:'Billing', Expenses:'Expenses' }[S.tab];
+  $('#hTitle').textContent = { Today:'Today', Jobs:'Jobs', Requests:'Requests', Customers:'Clients', Billing:'Billing', Expenses:'Expenses', Thumbtack:'Thumbtack' }[S.tab];
   const n = DB.Requests.filter(r => !r.status || r.status === 'New').length;
   $('#reqBadge').hidden = !n; $('#reqBadge').textContent = n;
-  $('#view').innerHTML = ({ Today: vToday, Jobs: vJobs, Requests: vRequests, Customers: vCustomers, Billing: vBilling, Expenses: vExpenses })[S.tab]();
+  const tn = DB.ThumbtackLeads.filter(r => !r.status || r.status === 'New').length;
+  $('#ttBadge').hidden = !tn; $('#ttBadge').textContent = tn;
+  $('#view').innerHTML = ({ Today: vToday, Jobs: vJobs, Requests: vRequests, Customers: vCustomers, Billing: vBilling, Expenses: vExpenses, Thumbtack: vThumbtack })[S.tab]();
 }
 document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => { S.tab = b.dataset.t; S.q = ''; render(); scrollTo(0, 0); });
 const go = (tab, k, v) => { S.tab = tab; if (k) S[k] = v; render(); };
@@ -199,6 +202,43 @@ async function convert(id, quiet) {
     notes: r.details + (r.preferredTime ? `\nBest time: ${r.preferredTime}` : '') }, true);
   await save('Requests', { ...r, status: 'Converted' }, true);
   if (quiet) return j;
+  S.tab = 'Jobs'; S.jobFilter = 'Open'; render(); toast('Job created'); openForm('Jobs', job(j.id));
+  return j;
+}
+
+// ---- Thumbtack leads
+function vThumbtack() {
+  const order = { New: 0, '': 0, Replied: 1, Converted: 2, Archived: 3 };
+  const L = [...DB.ThumbtackLeads].sort((a, b) => (order[a.status || ''] - order[b.status || '']) || String(b.created).localeCompare(String(a.created)));
+  const note = `<div class="card small" style="margin-bottom:12px">Leads, messages and reviews Thumbtack sends to your webhook land here automatically. "Make job" turns a lead into a client + job so you can track it with costs and billing like anything else.</div>`;
+  const bar = L.length ? `<div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn danger sm" onclick="clearTT()">Clear all</button></div>` : '';
+  return note + bar + (L.length ? `<div class="list">${L.map(r => `<div class="item"><div class="hd"><div><h3>${esc(r.name || 'Thumbtack')} ${r.type ? '— ' + esc(String(r.type).replace(/V\d+$/,'')) : ''}</h3>
+      <div class="meta">${esc(fmtWhen(r.created))}</div></div>${pill(r.status || 'New')}</div>
+      <p style="margin:8px 0 4px">${esc(r.summary || '')}</p>
+      <div class="acts">
+      ${r.status === 'Converted' ? '' : `<button class="btn ghost" onclick="convertTT('${r.id}')">Make job</button>`}
+      ${r.status === 'Archived' ? '' : `<button class="btn ghost" onclick="setTT('${r.id}','Archived')">Archive</button>`}
+      <button class="btn ghost" onclick="if(confirm('Delete this?'))del('ThumbtackLeads','${r.id}')">Delete</button></div></div>`).join('')}</div>` : `<div class="empty">No Thumbtack activity yet.</div>`);
+}
+async function clearTT() {
+  const ids = DB.ThumbtackLeads.map(r => r.id); if (!ids.length) return;
+  if (!confirm(`Delete all ${ids.length} Thumbtack item${ids.length > 1 ? 's' : ''}? This can't be undone. Jobs and clients you already made stay.`)) return;
+  DB.ThumbtackLeads = []; persist(); render();
+  if (REMOTE) { let bad = 0; for (const id of ids) { try { await api({ action: 'delete', table: 'ThumbtackLeads', id }); } catch (e) { bad++; } }
+    toast(bad ? `${bad} couldn't be deleted. Tap refresh and try again.` : 'Cleared', !!bad); }
+  else toast('Cleared');
+}
+function setTT(id, status) { const r = DB.ThumbtackLeads.find(x => x.id === id); save('ThumbtackLeads', { ...r, status }); }
+async function convertTT(id) {
+  const r = DB.ThumbtackLeads.find(x => x.id === id);
+  let raw = {}; try { raw = JSON.parse(r.raw || '{}'); } catch (e) {}
+  const data = raw.data || raw; const req = data.request || {}; const custD = data.customer || {};
+  let c = null;
+  if (custD.phone || custD.email) c = DB.Customers.find(x => (digits(x.phone) && custD.phone && digits(x.phone) === digits(custD.phone)) || (x.email && custD.email && x.email.toLowerCase() === String(custD.email).toLowerCase()));
+  if (!c) c = await save('Customers', { name: r.name || [custD.firstName, custD.lastName].filter(Boolean).join(' ') || 'Thumbtack customer', phone: custD.phone || '', email: custD.email || '', address: req.location ? [req.location.city, req.location.state].filter(Boolean).join(', ') : '', notes: 'From Thumbtack' }, true);
+  const j = await save('Jobs', { title: (req.category && req.category.name) || r.summary || 'Thumbtack job', customerId: c.id, address: c.address, status: 'Lead', scheduled: '', price: '',
+    notes: (req.description || r.summary || '') + '\nSource: Thumbtack' }, true);
+  await save('ThumbtackLeads', { ...r, status: 'Converted' }, true);
   S.tab = 'Jobs'; S.jobFilter = 'Open'; render(); toast('Job created'); openForm('Jobs', job(j.id));
   return j;
 }
